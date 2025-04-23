@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Teacher;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,5 +20,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+        $this->call(PermissionSeeder::class);
+        $this->call(RoleSeeder::class);
+        $this->call(UserRoleSeeder::class);
+
+        Teacher::factory(15)->create();
+
     }
 }
