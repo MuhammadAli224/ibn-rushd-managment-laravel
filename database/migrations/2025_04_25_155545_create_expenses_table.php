@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Center;
+use App\Models\ExpenseCategory;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,14 +14,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subjects', function (Blueprint $table) {
+        Schema::create('expenses', function (Blueprint $table) {
+           
             $table->id();
-            $table->string('name');
-            $table->foreignIdFor(model: Center::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(ExpenseCategory::class )->constrained()->onDelete('cascade');
+            $table->decimal('amount', 8, 2);
             $table->text('description')->nullable();
+            $table->date('date');
+            $table->foreignIdFor(Center::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
-         
+       
             $table->timestamps();
         });
     }
@@ -30,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('expenses');
     }
 };

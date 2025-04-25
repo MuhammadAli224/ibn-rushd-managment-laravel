@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Center;
 use App\Models\Drivers;
 use App\Models\Student;
 use App\Models\Subject;
@@ -22,6 +23,8 @@ return new class extends Migration
             $table->foreignIdFor(Teacher::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Drivers::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Student::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(model: Center::class)->constrained()->onDelete('cascade');
+
             $table->date('lesson_date');
             $table->time('lesson_start_time');
             $table->time('lesson_end_time');
@@ -36,6 +39,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
+            $table->decimal('commission_rate', 5, 2)->nullable();
             $table->timestamps();
         });
     }

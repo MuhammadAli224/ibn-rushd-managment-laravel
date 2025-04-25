@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Center;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,11 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('subjects', function (Blueprint $table) {
+        Schema::create('centers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreignIdFor(model: Center::class)->constrained()->onDelete('cascade');
-            $table->text('description')->nullable();
+            $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->string('address');
+            $table->json('commission_ranges')->nullable();
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
          
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('subjects');
+        Schema::dropIfExists('centers');
     }
 };

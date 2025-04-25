@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Center;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -14,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(model: Center::class)->constrained()->onDelete('cascade');
+
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique();

@@ -30,6 +30,7 @@ class TeacherFactory extends Factory
             'experience' => $this->faker->word,
             'status' => $this->faker->randomElement(['active', 'inactive']),
             'profile_picture' => $this->faker->imageUrl,
+            "center_id"=> 1,
             'password' => bcrypt('password'),
         ];
     }

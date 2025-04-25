@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Center;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,6 +16,7 @@ return new class extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignIdFor(model: Center::class)->constrained()->onDelete('cascade');
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('address');
@@ -30,8 +32,6 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
-
-
             $table->timestamps();
         });
     }
