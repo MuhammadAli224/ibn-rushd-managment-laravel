@@ -8,7 +8,7 @@ use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Teacher extends Model implements Wallet
+class Teacher extends BaseModel implements Wallet
 {
     use HasWallet,
         HasFactory;

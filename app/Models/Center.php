@@ -6,7 +6,7 @@ use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Database\Eloquent\Model;
 
-class Center extends Model implements Wallet
+class Center extends BaseModel implements Wallet
 {
     use HasWallet;
 
