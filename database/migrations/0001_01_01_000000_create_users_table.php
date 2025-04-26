@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,8 +16,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone')->unique();
+            $table->string('address')->nullable();
+            $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('fcm_token')->nullable();
+            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
+         
             $table->rememberToken();
             $table->timestamps();
         });

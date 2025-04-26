@@ -7,11 +7,14 @@ use Bavix\Wallet\Traits\HasWallet;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\HasApiTokens;
 
-class Teacher extends BaseModel implements Wallet
+class Teacher extends Authenticatable implements Wallet
 {
-    use HasWallet,
-        HasFactory;
+    use HasWallet, HasApiTokens, Notifiable,HasFactory;
 
     protected $fillable = [
         'name',
@@ -27,6 +30,12 @@ class Teacher extends BaseModel implements Wallet
         'status',
         'profile_picture',
         'password',
+        'center_id',
+        'created_by',
+        'updated_by',
+        'fcm_token',
+        'is_active',
+        'remember_token',
     ];
 
     protected $hidden = [
@@ -72,6 +81,22 @@ class Teacher extends BaseModel implements Wallet
     public function center()
     {
         return $this->belongsTo(Center::class);
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (Auth::check()) {
+                $model->created_by = Auth::id();
+                $model->updated_by = Auth::id();
+            }
+        });
+
+        static::updating(function ($model) {
+            if (Auth::check()) {
+                $model->updated_by = Auth::id();
+            }
+        });
     }
 }
 

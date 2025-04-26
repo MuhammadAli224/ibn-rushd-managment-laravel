@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Models\Drivers;
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
+use App\Models\ExpenseCategory;
 use Illuminate\Http\Request;
 
-class DriversController extends Controller
+class ExpenseCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class DriversController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Drivers $drivers)
+    public function show(ExpenseCategory $expenseCategory)
     {
         //
     }
@@ -42,7 +42,7 @@ class DriversController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Drivers $drivers)
+    public function edit(ExpenseCategory $expenseCategory)
     {
         //
     }
@@ -50,7 +50,7 @@ class DriversController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Drivers $drivers)
+    public function update(Request $request, ExpenseCategory $expenseCategory)
     {
         //
     }
@@ -58,7 +58,7 @@ class DriversController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Drivers $drivers)
+    public function destroy(ExpenseCategory $expenseCategory)
     {
         //
     }

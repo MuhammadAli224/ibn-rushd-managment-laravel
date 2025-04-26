@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Models\Student;
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
+use App\Models\Drivers;
 use Illuminate\Http\Request;
 
-class StudentController extends Controller
+class DriversController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Student $student)
+    public function show(Drivers $drivers)
     {
         //
     }
@@ -42,7 +42,7 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Student $student)
+    public function edit(Drivers $drivers)
     {
         //
     }
@@ -50,7 +50,7 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Drivers $drivers)
     {
         //
     }
@@ -58,7 +58,7 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
+    public function destroy(Drivers $drivers)
     {
         //
     }

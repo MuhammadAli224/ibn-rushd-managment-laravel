@@ -24,6 +24,7 @@ class Drivers extends BaseModel
         "is_active",
         'created_by',
         'updated_by',
+        'fcm_token',
     ];
 
 

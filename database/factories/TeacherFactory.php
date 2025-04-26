@@ -31,6 +31,10 @@ class TeacherFactory extends Factory
             'status' => $this->faker->randomElement(['active', 'inactive']),
             'profile_picture' => $this->faker->imageUrl,
             "center_id"=> 1,
+            "fcm_token"=> Str::random(10),
+            'is_active' => $this->faker->boolean,
+            'created_by' => 1,
+            'updated_by' => 1,
             'password' => bcrypt('password'),
         ];
     }

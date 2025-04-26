@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('remember_token')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->string('fcm_token')->nullable();
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
             $table->timestamps();

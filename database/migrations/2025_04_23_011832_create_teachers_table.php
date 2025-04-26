@@ -34,7 +34,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
-
+            $table->string('fcm_token')->nullable();
             $table->timestamps();
         });
     }

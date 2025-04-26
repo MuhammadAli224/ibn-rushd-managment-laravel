@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Models\Center;
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 
-class CenterController extends Controller
+class ExpenseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class CenterController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Center $center)
+    public function show(Expense $expense)
     {
         //
     }
@@ -42,7 +42,7 @@ class CenterController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Center $center)
+    public function edit(Expense $expense)
     {
         //
     }
@@ -50,7 +50,7 @@ class CenterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Center $center)
+    public function update(Request $request, Expense $expense)
     {
         //
     }
@@ -58,7 +58,7 @@ class CenterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Center $center)
+    public function destroy(Expense $expense)
     {
         //
     }
