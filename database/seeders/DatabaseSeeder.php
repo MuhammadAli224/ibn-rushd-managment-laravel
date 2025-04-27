@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call(CenterSeeder::class);
         $this->call(RoleAndPermissionSeeder::class);
-        $this->call(UserRoleSeeder::class);
+        $this->call(ExpenseCategorySeeder::class);
 
 
     }
