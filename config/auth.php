@@ -40,14 +40,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'teacher' => [
-            'driver' => 'session',
-            'provider' => 'teachers',
-        ],
-        'teacher_api' => [
-            'driver' => 'sanctum',
-            'provider' => 'teachers',
-        ],
+       
     ],
 
     /*
@@ -72,10 +65,7 @@ return [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
         ],
-        'teachers' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Teacher::class,
-        ],
+        
 
 
         // 'users' => [
@@ -111,13 +101,7 @@ return [
             'throttle' => 60,
         ],
 
-        'teachers' => [
-            'provider' => 'teachers',
-            'table'    => 'password_resets',
-            'expire'   => 60,
-            'throttle' => 60,
-
-        ],
+        
 
     ],
 

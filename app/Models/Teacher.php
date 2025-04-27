@@ -1,106 +1,56 @@
 <?php
 
+
 namespace App\Models;
 
+use App\Models\BaseModel;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 
-class Teacher extends Authenticatable implements Wallet
+class Teacher extends BaseModel
 {
-    use HasWallet, HasApiTokens, Notifiable,HasFactory;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'address',
+        'center_id',
+        'user_id',
         'national_id',
-        'gender',
         'date_of_birth',
         'qualification',
         'specialization',
         'experience',
-        'status',
-        'profile_picture',
-        'password',
-        'center_id',
-        'created_by',
-        'updated_by',
-        'fcm_token',
-        'is_active',
-        'remember_token',
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
     ];
 
     protected $casts = [
         'date_of_birth' => 'date',
-        'email_verified_at' => 'datetime',
     ];
-
-    public function lessons()
-    {
-        return $this->hasMany(Lesson::class);
-    }
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-    public function updater()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
-    }
-    public function scopeInactive($query)
-    {
-        return $query->where('status', 'inactive');
-    }
-    public function scopeSearch($query, $search)
-    {
-        return $query->where(function ($q) use ($search) {
-            $q->where('name', 'like', "%$search%")
-                ->orWhere('email', 'like', "%$search%")
-                ->orWhere('phone', 'like', "%$search%")
-                ->orWhere('address', 'like', "%$search%");
-        });
-    }
 
     public function center()
     {
         return $this->belongsTo(Center::class);
     }
 
-    protected static function booted()
+    public function user()
     {
-        static::creating(function ($model) {
-            if (Auth::check()) {
-                $model->created_by = Auth::id();
-                $model->updated_by = Auth::id();
-            }
-        });
-
-        static::updating(function ($model) {
-            if (Auth::check()) {
-                $model->updated_by = Auth::id();
-            }
-        });
+        return $this->belongsTo(User::class);
     }
+
+    public function lessons()
+    {
+        return $this->hasMany(Lesson::class);
+    }
+
+    public function scopeSpecialization($query, $specialization)
+    {
+        return $query->where('specialization', 'like', "%$specialization%");
+    }
+
+    
 }
-
-
 
 // use Bavix\Wallet\Models\Transaction;
 

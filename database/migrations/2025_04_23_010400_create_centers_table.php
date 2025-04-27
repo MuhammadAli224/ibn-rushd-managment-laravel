@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('address');
             $table->json('commission_ranges')->nullable();
-            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained('users')->onDelete('cascade');
          
             $table->timestamps();
         });

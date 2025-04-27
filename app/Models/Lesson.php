@@ -27,6 +27,8 @@ class Lesson extends BaseModel
         'lesson_price',
         'is_active',
         'created_by',
+        'updated_by',
+        'commission_rate',
     ];
 
     public function subject()
@@ -36,12 +38,12 @@ class Lesson extends BaseModel
 
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(User::class, 'teacher_id');
     }
 
     public function driver()
     {
-        return $this->belongsTo(Drivers::class);
+        return $this->belongsTo(User::class, 'driver_id');
     }
 
     public function student()
@@ -49,18 +51,9 @@ class Lesson extends BaseModel
         return $this->belongsTo(Student::class);
     }
 
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-    public function updater()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
 
     public function center()
     {
         return $this->belongsTo(Center::class);
     }
-    
 }

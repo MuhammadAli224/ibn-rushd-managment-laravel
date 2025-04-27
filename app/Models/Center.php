@@ -25,6 +25,14 @@ class Center extends BaseModel implements Wallet
     {
         return $this->hasMany(Lesson::class);
     }
+    // public function teachers()
+    // {
+    //     return $this->hasMany(User::class, 'center_id');
+    // }
+    // public function drivers()
+    // {
+    //     return $this->hasMany(User::class, 'center_id');
+    // }
     public function teachers()
     {
         return $this->hasMany(Teacher::class);
@@ -41,14 +49,7 @@ class Center extends BaseModel implements Wallet
     {
         return $this->hasMany(Subject::class);
     }
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-    public function updater()
-    {
-        return $this->belongsTo(User::class, 'updated_by');
-    }
+   
     public function calculateTeacherCommission($totalEarnings)
     {
         foreach ($this->commission_ranges as $range) {
@@ -76,5 +77,4 @@ class Center extends BaseModel implements Wallet
     {
         return $this->hasMany(ExpenseCategory::class);
     }
-    
 }

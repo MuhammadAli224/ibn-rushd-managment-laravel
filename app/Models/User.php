@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\GenderEnum;
+use App\Enums\StatusEnum;
+use Bavix\Wallet\Interfaces\Wallet;
+use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -9,16 +13,10 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements Wallet
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, HasWallet;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -30,31 +28,48 @@ class User extends Authenticatable
         'created_by',
         'updated_by',
         'image',
-        
+        'status',
+        'main_role',
+        'gender',
+
+
 
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+   
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'main_role' => 'string',
+            'is_active' => 'boolean',
+            'status' => StatusEnum::class,
+            'gender' => GenderEnum::class,
+            'created_by' => User::class,
+            'updated_by' => User::class,
         ];
+    }
+
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+    public function assignRoleToUser($role)
+    {
+        $this->assignRole($role);
     }
     protected static function booted()
     {

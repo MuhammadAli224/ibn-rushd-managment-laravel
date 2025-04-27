@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\GenderEnum;
+use App\Enums\StatusEnum;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -22,9 +24,14 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('fcm_token')->nullable();
+            $table->enum('status', array_column(StatusEnum::cases(), 'value'))
+                ->default(StatusEnum::ACTIVE->value);
+            $table->string('main_role')->nullable();
+            $table->enum('gender', array_column(GenderEnum::cases(), 'value'))->default(GenderEnum::MALE->value);
+
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
-         
+            $table->boolean('is_active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });

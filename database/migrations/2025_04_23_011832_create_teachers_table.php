@@ -15,26 +15,16 @@ return new class extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(model: Center::class)->constrained()->onDelete('cascade');
-
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone')->unique();
-            $table->string('address');
+            $table->foreignIdFor(Center::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->string('national_id')->nullable()->unique();
-            $table->enum('gender',['male','female'])->default('male');
-            $table->date('date_of_birth');
+            $table->date('date_of_birth')->nullable();
             $table->string('qualification');
             $table->string('specialization');
             $table->string('experience');
-            $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->string('profile_picture')->nullable();
-            $table->string('password');
-            $table->string('remember_token')->nullable();
-            $table->boolean('is_active')->default(true);
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
-            $table->string('fcm_token')->nullable();
+        
             $table->timestamps();
         });
     }
