@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\RoleEnum;
 use App\Models\Center;
 use App\Models\Teacher;
 use App\Models\User;
@@ -16,13 +17,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(RoleAndPermissionSeeder::class);
 
-        User::factory()->create([
+       $user= User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'password' => bcrypt('password'),
         ]);
+        $user->assignRole(RoleEnum::ADMIN);
         $this->call(CenterSeeder::class);
-        $this->call(RoleAndPermissionSeeder::class);
         $this->call(ExpenseCategorySeeder::class);
 
 

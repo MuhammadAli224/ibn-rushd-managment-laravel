@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\GenderEnum;
+use App\Enums\RoleEnum;
 use App\Enums\StatusEnum;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
@@ -11,12 +12,17 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
+use Filament\Panel;
+use Filament\Models\Contracts\FilamentUser;
+use Spatie\Permission\Contracts\Role;
 
-
-class User extends Authenticatable implements Wallet
+class User extends Authenticatable implements Wallet,FilamentUser
 {
     use HasFactory, Notifiable, HasRoles, HasWallet;
-
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return  $this->hasRole(RoleEnum::ADMIN);
+    }
     protected $fillable = [
         'name',
         'email',
