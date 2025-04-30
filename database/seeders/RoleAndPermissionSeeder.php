@@ -25,7 +25,7 @@ class RoleAndPermissionSeeder extends Seeder
         $driverRole = Role::firstOrCreate(['name' => RoleEnum::DRIVER->value]);
         $accountingRole = Role::firstOrCreate(['name' => RoleEnum::ACCOUNTING->value]);
         $dispatcherRole = Role::firstOrCreate(['name' => RoleEnum::DISPATCHER->value]);
-        $studentRole = Role::firstOrCreate(['name' => RoleEnum::STUDENT->value]);
+        // $studentRole = Role::firstOrCreate(['name' => RoleEnum::STUDENT->value]);
         $managementRole = Role::firstOrCreate(['name' => RoleEnum::MANAGMENT->value]);
 
         

@@ -34,6 +34,7 @@ class AppPanelProvider extends PanelProvider
             // ->emailVerification()
             // ->profile()
             ->spa()
+            ->font('Almarai')
             ->unsavedChangesAlerts()
             ->colors([
                 'primary' => Color::Blue,

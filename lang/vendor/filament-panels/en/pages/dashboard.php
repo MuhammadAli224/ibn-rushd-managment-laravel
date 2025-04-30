@@ -3,6 +3,8 @@
 return [
 
     'title' => 'Dashboard',
+    "user"=>"User",
+    "users"=>"Users",
 
     'actions' => [
 
