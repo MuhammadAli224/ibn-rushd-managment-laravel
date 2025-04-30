@@ -16,13 +16,13 @@ use Filament\Panel;
 use Filament\Models\Contracts\FilamentUser;
 use Spatie\Permission\Contracts\Role;
 
-class User extends Authenticatable implements Wallet,FilamentUser
+class User extends Authenticatable implements Wallet
 {
     use HasFactory, Notifiable, HasRoles, HasWallet;
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return  $this->hasRole(RoleEnum::ADMIN);
-    }
+    // public function canAccessPanel(Panel $panel): bool
+    // {
+    //     return  $this->hasRole(RoleEnum::ADMIN);
+    // }
     protected $fillable = [
         'name',
         'email',
@@ -37,18 +37,15 @@ class User extends Authenticatable implements Wallet,FilamentUser
         'status',
         'main_role',
         'gender',
-
-
-
     ];
 
-   
+
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    
+
     protected function casts(): array
     {
         return [
@@ -67,6 +64,16 @@ class User extends Authenticatable implements Wallet,FilamentUser
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function teacherDetails()
+    {
+        return $this->hasOne(Teacher::class);
+    }
+
+    public function driverDetails()
+    {
+        return $this->hasOne(Drivers::class);
     }
 
     public function updater()

@@ -19,10 +19,12 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleAndPermissionSeeder::class);
 
-       $user= User::factory()->create([
+       $user= User::create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'phone'=>"0500000000",
             'password' => bcrypt('password'),
+            
         ]);
         $user->assignRole(RoleEnum::ADMIN);
         $this->call(CenterSeeder::class);

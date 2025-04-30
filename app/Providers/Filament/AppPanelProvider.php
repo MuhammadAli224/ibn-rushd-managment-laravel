@@ -10,6 +10,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -19,20 +20,20 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AdminPanelProvider extends PanelProvider
+class AppPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
             ->default()
-            ->id('admin')
+            ->id('app')
             ->path('/')
             ->login()
             ->brandName('Ibn Rushd Academy')
-            ->passwordReset()
-            ->emailVerification()
-            ->profile()
-            // ->spa()
+            // ->passwordReset()
+            // ->emailVerification()
+            // ->profile()
+            ->spa()
             ->unsavedChangesAlerts()
             ->colors([
                 'primary' => Color::Blue,
@@ -71,6 +72,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->darkMode(false)
             ->defaultThemeMode(ThemeMode::Light)
-            ;
+            ->plugin(
+                SpatieLaravelTranslatablePlugin::make()
+                    ->defaultLocales(['en', 'ar']),
+
+            )
+        ;
     }
 }
