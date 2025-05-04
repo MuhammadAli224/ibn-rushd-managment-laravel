@@ -5,6 +5,9 @@ return [
     'title' => 'Dashboard',
     "user"=>"User",
     "users"=>"Users",
+    "subject"=>"Subject",
+    "subjects"=>"Subjects",
+    "settings"=>"Settings",
 
     'actions' => [
 

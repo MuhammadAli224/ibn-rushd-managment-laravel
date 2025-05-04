@@ -2,6 +2,7 @@
 
 use App\Enums\GenderEnum;
 use App\Enums\StatusEnum;
+use App\Models\Center;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,6 +17,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Center::class)->constrained();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->unique();
@@ -26,13 +28,11 @@ return new class extends Migration
             $table->string('fcm_token')->nullable();
             $table->enum('status', array_column(StatusEnum::cases(), 'value'))
                 ->default(StatusEnum::ACTIVE->value);
-            $table->string('main_role')->nullable();
             $table->enum('gender', array_column(GenderEnum::cases(), 'value'))->default(GenderEnum::MALE->value);
 
-            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
             $table->boolean('is_active')->default(true);
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
 

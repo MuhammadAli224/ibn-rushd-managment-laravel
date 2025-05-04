@@ -10,11 +10,7 @@ use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
-use Filament\Panel;
-use Filament\Models\Contracts\FilamentUser;
-use Spatie\Permission\Contracts\Role;
 
 class User extends Authenticatable implements Wallet
 {
@@ -35,8 +31,8 @@ class User extends Authenticatable implements Wallet
         'updated_by',
         'image',
         'status',
-        'main_role',
         'gender',
+        'center_id',
     ];
 
 
@@ -66,37 +62,51 @@ class User extends Authenticatable implements Wallet
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function teacherDetails()
+    public function teacher()
     {
         return $this->hasOne(Teacher::class);
     }
 
-    public function driverDetails()
+    public function driver()
     {
         return $this->hasOne(Drivers::class);
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+    public function gurdian()
+    {
+        return $this->hasOne(Guardian::class);
+    }
+    public function center()
+
+    {
+        return $this->belongsTo(Center::class);
     }
 
     public function updater()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-    public function assignRoleToUser($role)
+    public function subjects()
     {
-        $this->assignRole($role);
+        return $this->belongsToMany(Subject::class, 'subject_teacher', 'teacher_id', 'subject_id');
     }
-    protected static function booted()
-    {
-        static::creating(function ($model) {
-            if (Auth::check()) {
-                $model->created_by = Auth::id();
-                $model->updated_by = Auth::id();
-            }
-        });
+    // protected static function booted()
+    // {
+    //     static::creating(function ($model) {
+    //         if (Auth::check()) {
+    //             $model->created_by = Auth::id();
+    //             $model->updated_by = Auth::id();
+    //         }
+    //     });
 
-        static::updating(function ($model) {
-            if (Auth::check()) {
-                $model->updated_by = Auth::id();
-            }
-        });
-    }
+    //     static::updating(function ($model) {
+    //         if (Auth::check()) {
+    //             $model->updated_by = Auth::id();
+    //         }
+    //     });
+    // }
 }

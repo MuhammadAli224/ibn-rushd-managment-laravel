@@ -5,6 +5,9 @@ return [
     'title' => 'لوحة التحكم',
     'user'=>"مستخدم",
     "users"=>"المستخدمين",
+    "subject"=>"مادة",
+    "subjects"=>"المواد",
+    "settings"=>"الإعدادات",
 
     'actions' => [
 

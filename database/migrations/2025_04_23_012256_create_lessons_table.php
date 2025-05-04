@@ -20,16 +20,19 @@ return new class extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
+            
+            $table->foreignIdFor(Center::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Subject::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class,'teacher_id')->constrained('users')->onDelete('cascade');
             $table->foreignIdFor(User::class,'driver_id')->constrained('users')->onDelete('cascade');
-            $table->foreignIdFor(Student::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor( Center::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class,'student_id')->constrained('users')->onDelete('cascade');
+
             $table->date('lesson_date');
             $table->time('lesson_start_time');
             $table->time('lesson_end_time');
             $table->string('lesson_location');
             $table->text('lesson_notes')->nullable();
+            
             $table->enum('status', array_column(LessonStatusEnum::cases(), 'value'))
             ->default(LessonStatusEnum::SCHEDULED->value);
 
@@ -38,10 +41,11 @@ return new class extends Migration
             $table->datetime('check_out_time')->nullable();
             $table->decimal('uber_charge', 8, 2)->nullable();
             $table->decimal('lesson_price', 8, 2)->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->foreignIdFor(User::class, 'created_by')->nullable('users')->constrained()->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'updated_by')->nullable('users')->constrained()->onDelete('cascade');
             $table->decimal('commission_rate', 5, 2)->nullable();
+
+            $table->boolean('is_active')->default(true);
+            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained('users')->onDelete('cascade');
+            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

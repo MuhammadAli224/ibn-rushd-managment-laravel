@@ -32,7 +32,7 @@ class AppPanelProvider extends PanelProvider
             ->brandName('Ibn Rushd Academy')
             // ->passwordReset()
             // ->emailVerification()
-            // ->profile()
+            ->profile()
             ->spa()
             ->font('Almarai')
             ->unsavedChangesAlerts()

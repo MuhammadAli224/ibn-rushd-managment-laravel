@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->json('name');
             $table->foreignIdFor(model: Center::class)->constrained()->onDelete('cascade');
-            $table->text('description')->nullable();
+            $table->json('description')->nullable();
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
-         
+            $table ->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

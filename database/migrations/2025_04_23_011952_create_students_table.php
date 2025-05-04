@@ -15,12 +15,9 @@ return new class extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(model: Center::class)->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->string('phone');
-            $table->string('address');
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class,'guardian_id')->constrained()->onDelete('cascade');
             $table->string('class');
-            $table->boolean('is_active')->default(true);
             $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
 

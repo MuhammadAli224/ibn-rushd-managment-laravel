@@ -23,13 +23,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
-    // use Translatable;
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
     public static function getModelLabel(): string
     {
-        return  __('filament-panels::pages/dashboard.users');
+        return  __('filament-panels::pages/dashboard.user');
     }
     public static function getPluralModelLabel(): string
     {

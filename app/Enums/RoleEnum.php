@@ -8,7 +8,9 @@ enum RoleEnum: string implements HasLabel
 {
     case ADMIN = 'ADMIN';
     case MANAGMENT = 'MANAGMENT';
+    case PARENT = 'PARENT';
     case TEACHER = 'TEACHER';
+    case STUDENT = 'STUDENT';
     case DRIVER = 'DRIVER';
     case ACCOUNTING = 'ACCOUNTING';
     case DISPATCHER = 'DISPATCHER';
@@ -18,6 +20,6 @@ enum RoleEnum: string implements HasLabel
 
     public function getLabel(): ?string
     {
-        return __('filament-panels::pages/user.' . $this->name);
+        return __('filament-panels::pages/roles.' . $this->name);
     }
 }

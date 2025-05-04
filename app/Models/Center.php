@@ -25,6 +25,10 @@ class Center extends BaseModel implements Wallet
     {
         return $this->hasMany(Lesson::class);
     }
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
     // public function teachers()
     // {
     //     return $this->hasMany(User::class, 'center_id');
@@ -49,7 +53,7 @@ class Center extends BaseModel implements Wallet
     {
         return $this->hasMany(Subject::class);
     }
-   
+
     public function calculateTeacherCommission($totalEarnings)
     {
         foreach ($this->commission_ranges as $range) {
