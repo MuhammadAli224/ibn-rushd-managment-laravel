@@ -29,6 +29,7 @@ return new class extends Migration
             $table->enum('status', array_column(StatusEnum::cases(), 'value'))
                 ->default(StatusEnum::ACTIVE->value);
             $table->enum('gender', array_column(GenderEnum::cases(), 'value'))->default(GenderEnum::MALE->value);
+            $table->string('national_id')->nullable()->unique();
 
             $table->boolean('is_active')->default(true);
             $table->rememberToken();

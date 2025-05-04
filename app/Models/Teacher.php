@@ -13,10 +13,8 @@ use Illuminate\Notifications\Notifiable;
 
 class Teacher extends BaseModel
 {
-    use HasFactory, Notifiable;
-
     protected $fillable = [
-        'center_id',
+      
         'user_id',
         'national_id',
         'date_of_birth',
