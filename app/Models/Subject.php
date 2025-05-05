@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
+
 class Subject extends BaseModel
 {
     use HasTranslations;
@@ -16,7 +17,7 @@ class Subject extends BaseModel
         'created_by',
         'updated_by',
     ];
-    
+
 
 
     public function center()
@@ -24,7 +25,7 @@ class Subject extends BaseModel
         return $this->belongsTo(Center::class);
     }
     public function teachers()
-{
-    return $this->belongsToMany(User::class, 'subject_teacher', 'subject_id', 'teacher_id');
-}
+    {
+        return $this->belongsToMany(User::class, 'subject_teacher', 'subject_id', 'teacher_id');
+    }
 }

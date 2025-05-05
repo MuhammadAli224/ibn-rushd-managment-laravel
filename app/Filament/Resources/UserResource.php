@@ -6,6 +6,7 @@ use App\Enums\GenderEnum;
 use App\Enums\RoleEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Sections\UserInfoSection;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
@@ -35,56 +36,72 @@ class UserResource extends Resource
         return  __('filament-panels::pages/dashboard.users');
     }
 
+
+    public static function getNavigationGroup(): ?string
+
+    {
+        return  __('filament-panels::pages/dashboard.users');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-
-                Section::make()
-                    ->columns(2)
-                    ->schema([
+                UserInfoSection::make(
+                    [
                         Select::make('role')
                             ->label(__('filament-panels::pages/user.role'))
                             ->options(RoleEnum::class)
                             ->required()
                             ->reactive(),
+                    ],
+                    '',
+                ),
+                // Section::make()
+                //     ->columns(2)
+                //     ->schema([
+                //         Select::make('role')
+                //             ->label(__('filament-panels::pages/user.role'))
+                //             ->options(RoleEnum::class)
+                //             ->required()
+                //             ->reactive(),
 
-                        Select::make('gender')
-                            ->label(__('filament-panels::pages/user.gender'))
-                            ->options(GenderEnum::class)
-                            ->required(),
+                //         Select::make('gender')
+                //             ->label(__('filament-panels::pages/user.gender'))
+                //             ->options(GenderEnum::class)
+                //             ->required(),
 
-                        TextInput::make('name')
-                            ->label(__('filament-panels::pages/user.name'))
-                            ->required()
-                            ->minLength(3)
-                            ->maxLength(255),
+                //         TextInput::make('name')
+                //             ->label(__('filament-panels::pages/user.name'))
+                //             ->required()
+                //             ->minLength(3)
+                //             ->maxLength(255),
 
-                        TextInput::make('email')
-                            ->label(__('filament-panels::pages/user.email'))
-                            ->email()
-                            ->unique()
-                            ->required(),
+                //         TextInput::make('email')
+                //             ->label(__('filament-panels::pages/user.email'))
+                //             ->email()
+                //             ->unique()
+                //             ->required(),
 
-                        TextInput::make('phone')
-                            ->label(__('filament-panels::pages/user.phone'))
-                            ->tel()
-                            ->unique()
-                            ->required(),
+                //         TextInput::make('phone')
+                //             ->label(__('filament-panels::pages/user.phone'))
+                //             ->tel()
+                //             ->unique()
+                //             ->required(),
 
-                        TextInput::make('address')
-                            ->label(__('filament-panels::pages/user.address')),
+                //         TextInput::make('address')
+                //             ->label(__('filament-panels::pages/user.address')),
 
-                        FileUpload::make('image')
-                            ->label(__('filament-panels::pages/user.image'))
-                            ->disk('public')
-                            ->directory('users/images')
-                            ->image()
-                            ->visibility('public')
-                            ->columnSpanFull()
-                            ->imageEditor(),
+                //         FileUpload::make('image')
+                //             ->label(__('filament-panels::pages/user.image'))
+                //             ->disk('public')
+                //             ->directory('users/images')
+                //             ->image()
+                //             ->visibility('public')
+                //             ->columnSpanFull()
+                //             ->imageEditor(),
 
-                    ]),
+                //     ]),
 
             ]);
     }
@@ -110,7 +127,7 @@ class UserResource extends Resource
 
                 TextColumn::make('roles.name')
                     ->label(__('filament-panels::pages/user.role'))
-                    ->formatStateUsing(fn($state, $record) => __('filament-panels::pages/user.'.$state))
+                    ->formatStateUsing(fn($state, $record) => __('filament-panels::pages/user.' . $state))
                     ->sortable()
                     ->searchable(),
 

@@ -13,6 +13,8 @@ return [
     "DISPATCHER" => "مسؤول حركة النقل",
     "MANAGMENT" => "إدارة",
     "PARENT" => "ولي أمر",
+    "STUDENT" => "طالب",
+    
     
 
 

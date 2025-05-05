@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'phone'=>"0500000000",
             'center_id'=>1,
             'password' => bcrypt('password'),
+            'country'=>"QA"
             
         ]);
         $user->assignRole(RoleEnum::ADMIN->value);

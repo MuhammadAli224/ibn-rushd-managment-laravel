@@ -71,7 +71,7 @@ class SubjectResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('filament-panels::pages/general.name'))
                     ->searchable()
-                    ->badge()
+                    
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->label(__('filament-panels::pages/general.description'))

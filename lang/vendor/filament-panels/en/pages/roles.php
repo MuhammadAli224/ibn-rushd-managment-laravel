@@ -10,7 +10,9 @@ return [
     "ADMIN" => "Admin",
     "DISPATCHER" => "Dispatcher",
     "MANAGMENT" => "Managment",
-    "PARENT" => "PARENT",
+    "PARENT" => "Parent",
+    "STUDENT" => "Student",
+    
 
 
 ];

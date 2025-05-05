@@ -16,6 +16,7 @@
         "laravel/sanctum": "^4.1",
         "laravel/tinker": "^2.10.1",
         "laravel/ui": "^4.6",
+        "parfaitementweb/filament-country-field": "^2.4",
         "spatie/laravel-permission": "^6.17",
         "spatie/laravel-translatable": "^6.11"
     },

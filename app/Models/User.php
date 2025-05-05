@@ -33,6 +33,8 @@ class User extends Authenticatable implements Wallet
         'status',
         'gender',
         'center_id',
+        'country',
+        'national_id',
     ];
 
 
@@ -66,6 +68,10 @@ class User extends Authenticatable implements Wallet
     {
         return $this->hasOne(Teacher::class);
     }
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'subject_teacher', 'teacher_id', 'subject_id');
+    }
 
     public function driver()
     {
@@ -90,10 +96,7 @@ class User extends Authenticatable implements Wallet
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-    public function subjects()
-    {
-        return $this->belongsToMany(Subject::class, 'subject_teacher', 'teacher_id', 'subject_id');
-    }
+   
     // protected static function booted()
     // {
     //     static::creating(function ($model) {

@@ -8,6 +8,14 @@ return [
     "subject"=>"مادة",
     "subjects"=>"المواد",
     "settings"=>"الإعدادات",
+    'teacher'=>"معلم",
+    "teachers"=>"المعلمين",
+    "drivers"=>"سائق",
+    "driver"=>"السائقين",
+    "student"=>"طالب",
+    "students"=>"الطلاب",
+    "guardian"=>"ولي امر",
+    "guardians"=>"اولياء الامور",
 
     'actions' => [
 

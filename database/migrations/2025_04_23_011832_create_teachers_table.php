@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\QualificationEnum;
 use App\Models\Center;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -17,12 +18,20 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->date('date_of_birth')->nullable();
-            $table->string('qualification');
+            $table->enum('qualification', array_column(QualificationEnum::cases(), 'value'))
+                ->default(QualificationEnum::Bachelor->value);
+        
             $table->string('specialization');
             $table->string('experience');
-            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
-        
+            $table->foreignIdFor(User::class, 'created_by')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
+            $table->foreignIdFor(User::class, 'updated_by')
+                ->nullable()
+                ->constrained()
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }

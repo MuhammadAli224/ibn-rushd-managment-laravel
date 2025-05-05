@@ -16,7 +16,6 @@ class Teacher extends BaseModel
     protected $fillable = [
       
         'user_id',
-        'national_id',
         'date_of_birth',
         'qualification',
         'specialization',
@@ -25,6 +24,8 @@ class Teacher extends BaseModel
 
     protected $casts = [
         'date_of_birth' => 'date',
+        'qualification' => \App\Enums\QualificationEnum::class,
+
     ];
 
     public function center()
