@@ -6,7 +6,7 @@ use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Traits\HasWallet;
 use Illuminate\Database\Eloquent\Model;
 
-class Center extends BaseModel implements Wallet
+class Center extends Model implements Wallet
 {
     use HasWallet;
 
@@ -43,7 +43,7 @@ class Center extends BaseModel implements Wallet
     }
     public function drivers()
     {
-        return $this->hasMany(Drivers::class);
+        return $this->hasMany(Driver::class);
     }
     public function students()
     {

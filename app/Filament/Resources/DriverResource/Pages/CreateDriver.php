@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Filament\Resources\TeacherResource\Pages;
+namespace App\Filament\Resources\DriverResource\Pages;
 
 use App\Enums\RoleEnum;
-use App\Filament\Resources\TeacherResource;
+use App\Filament\Resources\DriverResource;
 use App\Models\User;
-use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class CreateTeacher extends CreateRecord
+class CreateDriver extends CreateRecord
 {
-    protected static string $resource = TeacherResource::class;
+    protected static string $resource = DriverResource::class;
     protected function handleRecordCreation(array $data): Model
     {
         $validatedUserData = Validator::make($data['user'], [
@@ -29,7 +29,7 @@ class CreateTeacher extends CreateRecord
             'center_id' => 'required|exists:centers,id',
         ])->validate();
         return DB::transaction(function () use ($data, $validatedUserData) {
-            try {
+            try{
                 $user = User::create([
                     'name' => $validatedUserData['name'],
                     'email' => $validatedUserData['email'],
@@ -41,18 +41,15 @@ class CreateTeacher extends CreateRecord
                     'country' => $validatedUserData['country'],
                     'image' => $validatedUserData['image']
                 ]);
-               
                 $data['user_id'] = $user->id;
-                $user->assignRole(RoleEnum::TEACHER->value);
+                $user->assignRole(RoleEnum::DRIVER->value);
 
                 return static::getModel()::create($data);
             } catch (\Exception $e) {
-                Log::error('Error creating teacher: ' . $e->getMessage());
+                Log::error('Error creating Driver: ' . $e->getMessage());
 
                 throw $e;
             }
         });
     }
 }
-
-

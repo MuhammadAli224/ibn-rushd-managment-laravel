@@ -8,6 +8,8 @@ return [
     "specialization" => "Specialization",
     "experience" => "Experience",
     "subjects" => "Subjects",
+    "commission"=>"Commission",
+
 
 
 ];

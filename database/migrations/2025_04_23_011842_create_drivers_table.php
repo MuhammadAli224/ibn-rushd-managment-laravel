@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Center::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
-            $table->string('national_id')->nullable()->unique();
-            $table->string('license_number')->unique();
+            $table->string('license_number');
             $table->string('vehicle_type');
-            $table->string('vehicle_number')->unique();
+            $table->string('vehicle_number');
+            $table->string('attachment')->nullable();
+            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+
             $table->timestamps();
         });
     }

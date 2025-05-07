@@ -10,12 +10,16 @@ return [
     "settings"=>"الإعدادات",
     'teacher'=>"معلم",
     "teachers"=>"المعلمين",
-    "drivers"=>"سائق",
-    "driver"=>"السائقين",
+    "driver"=>"سائق",
+    "drivers"=>"السائقين",
     "student"=>"طالب",
     "students"=>"الطلاب",
     "guardian"=>"ولي امر",
     "guardians"=>"اولياء الامور",
+    "created_by" => "أنشأ بواسطة",
+    "updated_by" => "تم التحديث بواسطة",
+    "created_at" => "وقت الانشاء",
+    "updated_at" => "وقت اخر تعديل",
 
     'actions' => [
 

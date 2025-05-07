@@ -8,6 +8,7 @@ return [
     "specialization" => "التخصص",
     "experience" => "الخبرة",
     "subjects"=>"المواد الدراسية",
+    "commission"=>"العمولة",
 
 
 ];

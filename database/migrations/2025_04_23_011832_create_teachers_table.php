@@ -21,16 +21,13 @@ return new class extends Migration
             $table->enum('qualification', array_column(QualificationEnum::cases(), 'value'))
                 ->default(QualificationEnum::Bachelor->value);
         
+            $table->integer('commission')->default(40);
             $table->string('specialization');
             $table->string('experience');
-            $table->foreignIdFor(User::class, 'created_by')
-                ->nullable()
-                ->constrained()
-                ->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'updated_by')
-                ->nullable()
-                ->constrained()
-                ->onDelete('cascade');
+            
+            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+
 
             $table->timestamps();
         });

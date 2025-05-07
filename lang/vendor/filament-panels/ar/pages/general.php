@@ -23,6 +23,7 @@ return [
     "Master" => 'ماجسنير',
     "Doctorate" => 'دكتوراه',
     "Other" => 'اخرى',
+    "attachment" => 'المرفقات',
     
 
 ];

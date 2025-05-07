@@ -23,5 +23,6 @@ return [
     "Master" => 'Master',
     "Doctorate" => 'Doctorate',
     "Other" => 'Other',
+    "attachment" => 'Attachment',
 
 ];

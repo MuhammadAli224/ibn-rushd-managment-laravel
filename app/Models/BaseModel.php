@@ -21,19 +21,18 @@ class BaseModel extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-    protected static function booted()
+    protected static function boot()
     {
+        parent::boot();
+
         static::creating(function ($model) {
-            if (Auth::check()) {
-                $model->created_by = Auth::id();
-                $model->updated_by = Auth::id();
-            }
+            $model->created_by = auth()->check() ? auth()->id() : 1;
+            $model->updated_by = auth()->check() ? auth()->id() : 1;
+           
         });
 
         static::updating(function ($model) {
-            if (Auth::check()) {
-                $model->updated_by = Auth::id();
-            }
+            $model->updated_by = auth()->check() ? auth()->id() : 1;
         });
     }
 }

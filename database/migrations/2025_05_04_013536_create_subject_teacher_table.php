@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('subject_teacher', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(App\Models\Subject::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(App\Models\User::class, 'teacher_id')->constrained('users')->onDelete('cascade');
+            $table->foreignIdFor(App\Models\Teacher::class, )->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

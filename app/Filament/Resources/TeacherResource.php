@@ -3,6 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Enums\QualificationEnum;
+use App\Filament\Components\CreatorUpdator;
+use App\Filament\Components\UserTable;
 use App\Filament\Resources\TeacherResource\Pages;
 use App\Filament\Sections\UserInfoSection;
 use App\Models\Teacher;
@@ -46,7 +48,7 @@ class TeacherResource extends Resource
 
 
                 UserInfoSection::make([], prefix: 'user.')
-                ->hiddenOn('edit'),
+                    ->hiddenOn('edit'),
 
                 Section::make(__('filament-panels::pages/teachers.teacher_info'))
                     ->columns(3)
@@ -59,6 +61,7 @@ class TeacherResource extends Resource
                             ->minDate(now()->subYears(60))
                             ->maxDate(now()->subYears(18))
                             ->weekStartsOnSunday()
+                            ->suffixIcon('heroicon-o-calendar-date-range')
                             ->locale('ar'),
 
 
@@ -76,12 +79,19 @@ class TeacherResource extends Resource
                             ->numeric()
                             ->required(),
 
-                        Select::make('user.subjects')
+
+                        TextInput::make('commission')
+                            ->label(__('filament-panels::pages/teachers.commission'))
+                            ->numeric()
+
+                            ->suffix('%')
+                            ->required(),
+
+                        Select::make('subjects')
                             ->label(__('filament-panels::pages/teachers.subjects'))
-                            ->relationship('user.subjects', 'name')
+                            ->relationship('subjects', 'name')
                             ->multiple()
                             ->preload()
-                            ->columnSpan(2)
                             ->searchable()
                             ->required(),
 
@@ -100,20 +110,7 @@ class TeacherResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('user.name')
-                    ->label(__('filament-panels::pages/general.name'))
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('user.email')
-                    ->label(__('filament-panels::pages/general.email'))
-                    ->sortable()
-                    ->searchable(),
-
-                TextColumn::make('user.phone')
-                    ->label(__('filament-panels::pages/general.phone'))
-                    ->sortable()
-                    ->searchable(),
+                ...UserTable::columns(),
 
                 TextColumn::make('specialization')
                     ->label(__('filament-panels::pages/teachers.specialization'))
@@ -122,28 +119,21 @@ class TeacherResource extends Resource
                     ->badge()
                     ->searchable(),
 
-                TextColumn::make('user.subjects')
+                TextColumn::make('subjects.name')
                     ->label(__('filament-panels::pages/teachers.subjects'))
                     ->sortable()
                     ->badge()
                     ->searchable(),
-
-                ToggleColumn::make('user.is_active')
-                    ->label(__('filament-panels::pages/general.status')),
-
                 TextColumn::make('qualification')
                     ->label(__('filament-panels::pages/teachers.qualification'))
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
-
                 TextColumn::make('experience')
                     ->label(__('filament-panels::pages/teachers.experience'))
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->searchable(),
-
-
-
+                    ...CreatorUpdator::columns(),
 
 
 

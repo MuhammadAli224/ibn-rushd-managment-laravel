@@ -15,10 +15,6 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable implements Wallet
 {
     use HasFactory, Notifiable, HasRoles, HasWallet;
-    // public function canAccessPanel(Panel $panel): bool
-    // {
-    //     return  $this->hasRole(RoleEnum::ADMIN);
-    // }
     protected $fillable = [
         'name',
         'email',
@@ -68,14 +64,11 @@ class User extends Authenticatable implements Wallet
     {
         return $this->hasOne(Teacher::class);
     }
-    public function subjects()
-    {
-        return $this->belongsToMany(Subject::class, 'subject_teacher', 'teacher_id', 'subject_id');
-    }
+
 
     public function driver()
     {
-        return $this->hasOne(Drivers::class);
+        return $this->hasOne(Driver::class);
     }
 
     public function student()
@@ -96,7 +89,7 @@ class User extends Authenticatable implements Wallet
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-   
+
     // protected static function booted()
     // {
     //     static::creating(function ($model) {

@@ -14,12 +14,14 @@ use Illuminate\Notifications\Notifiable;
 class Teacher extends BaseModel
 {
     protected $fillable = [
-      
         'user_id',
         'date_of_birth',
         'qualification',
         'specialization',
         'experience',
+        'commission',
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [
@@ -47,8 +49,10 @@ class Teacher extends BaseModel
     {
         return $query->where('specialization', 'like', "%$specialization%");
     }
-
-    
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'subject_teacher', 'teacher_id', 'subject_id');
+    }
 }
 
 // use Bavix\Wallet\Models\Transaction;

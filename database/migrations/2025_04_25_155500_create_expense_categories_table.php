@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->foreignIdFor(Center::class)->constrained()->onDelete('cascade');
             $table->text('description')->nullable();
-            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained()->onDelete('cascade');
-           $table->timestamps();
+            $table->foreignIdFor(User::class, 'created_by')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignIdFor(User::class, 'updated_by')->nullable()->constrained('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->timestamps();
         });
     }
 

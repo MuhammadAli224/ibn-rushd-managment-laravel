@@ -24,8 +24,10 @@ class Subject extends BaseModel
     {
         return $this->belongsTo(Center::class);
     }
+
+    
     public function teachers()
     {
-        return $this->belongsToMany(User::class, 'subject_teacher', 'subject_id', 'teacher_id');
+        return $this->belongsToMany(Teacher::class, 'subject_teacher', 'subject_id', 'teacher_id');
     }
 }

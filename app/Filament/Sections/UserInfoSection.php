@@ -37,7 +37,7 @@ class UserInfoSection
 
                 TextInput::make("{$prefix}password")
                     ->label(__('filament-panels::pages/general.password'))
-                    ->minLength(5)
+                    ->minLength(8)
                     ->password()
                     ->revealable()
                     ->required(fn(string $operation): bool => $operation === 'create'),
