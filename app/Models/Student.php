@@ -8,23 +8,28 @@ class Student extends BaseModel
 {
     protected $fillable = [
         'name',
-        'center_id',
-        'phone',
-        'address',
-        'is_active',
+        'guardian_id',
+        'class',
+        "phone",
+        "address",
         'created_by',
         'updated_by',
     ];
 
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
 
-    public function parent()
+    // public function parent()
+    // {
+    //     return $this->belongsTo(User::class, 'guardian_id');
+    // }
+
+    public function guardian()
     {
-        return $this->belongsTo(User::class, 'guardian_id');
+        return $this->belongsTo(Guardian::class,'guardian_id');
     }
 
     public function lessons()
