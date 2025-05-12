@@ -10,13 +10,14 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use App\Enums\GenderEnum;
+use Filament\Forms\Components\Grid;
 
 class UserInfoSection
 {
     public static function make(array $additionalFields = [], string $prefix = 'user.'): Section
     {
         return Section::make(__('filament-panels::pages/general.user_info'))
-            ->columns(3)
+
             ->schema([
                 ...$additionalFields,
                 TextInput::make("{$prefix}name")
@@ -66,12 +67,27 @@ class UserInfoSection
                     ->directory('images/users')
                     ->image()
                     ->visibility('public')
-                    ->columnSpan(2)
+                    ->columnSpanFull()
+                   
                     ->imageEditor(),
 
-                    
+
                 Hidden::make("{$prefix}center_id")
                     ->default(\auth()->user()->center->id)
+            ])
+            ->columns([
+                'sm' => 1,
+                'md' => 2,
+                'lg' => 2,
+                'xl' => 3,
+                '2xl' => 3,
+            ])
+            ->columnSpan([
+               'sm' => 1,
+                'md' => 2,
+                'lg' => 2,
+                'xl' => 3,
+                '2xl' => 3,
             ]);
     }
 }
