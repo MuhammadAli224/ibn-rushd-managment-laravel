@@ -46,7 +46,7 @@ class GuardianResource extends Resource
             ->schema([
                 UserInfoSection::make([], prefix: 'user.')
                     ->hiddenOn('edit'),
-                Section::make(__('filament-panels::pages/drivers.driver_info'))
+                Section::make(__('filament-panels::pages/guardian.guardian_info'))
                     ->columns(2)
                     ->schema([
 

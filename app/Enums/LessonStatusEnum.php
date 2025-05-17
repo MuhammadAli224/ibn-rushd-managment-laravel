@@ -2,12 +2,17 @@
 
 namespace App\Enums;
 
-enum LessonStatusEnum:string
+use Filament\Support\Contracts\HasLabel;
+
+enum LessonStatusEnum: string implements HasLabel
 {
-    
-    case SCHEDULED = 'scheduled';
-    case COMPLETED = 'completed';
-    case CANCELLED = 'cancelled';
-    case IN_PROGRESS = 'in_progress';
-   
+
+    case SCHEDULED = 'SCHEDULED';
+    case COMPLETED = 'COMPLETED';
+    case CANCELLED = 'CANCELLED';
+    case IN_PROGRESS = 'IN_PROGRESS';
+    public function getLabel(): ?string
+    {
+        return __('filament-panels::pages/lesson.' . $this->name);
+    }
 }

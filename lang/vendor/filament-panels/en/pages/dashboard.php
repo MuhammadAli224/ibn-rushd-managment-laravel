@@ -16,6 +16,11 @@ return [
     "students"=>"Students",
     "guardian"=>"Guardian",
     "guardians"=>"Guardians",
+    "lesson"=>"Lesson",
+    "lessons"=>"Lessons",
+    "class"=>"Class",
+    "classes"=>"Classes",
+
     "created_by" => "Created By",
     "updated_by" => "Updated By",
     "created_at" => "Created At",

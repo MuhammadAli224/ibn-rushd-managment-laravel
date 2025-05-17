@@ -11,7 +11,7 @@ return [
     "address" => "العنوان",
     "image" => "الصورة",
     "status" => "الحالة",
-    "MALE" => "ذكر",
+     "MALE" => "ذكر",
     "FEMALE" => "أنثى",
     "DRIVER" => "سائق",
     "TEACHER" => "أستاذ",
@@ -19,7 +19,8 @@ return [
     "ADMIN" => "مسؤول",
     "DISPATCHER" => "مسؤول حركة النقل",
     "MANAGMENT" => "إدارة",
-    
+    "PARENT" => "ولي أمر",
+    "STUDENT" => "طالب",
 
 
 ];
