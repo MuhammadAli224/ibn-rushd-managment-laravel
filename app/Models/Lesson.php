@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\LessonStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,10 +36,10 @@ class Lesson extends BaseModel
     protected $casts = [
         'status' => LessonStatusEnum::class,
         'lesson_date' => 'date',
-        'lesson_start_time' => 'datetime:H:i',
-        'lesson_end_time' => 'datetime:H:i',
-        'check_in_time' => 'datetime:H:i',
-        'check_out_time' => 'datetime:H:i',
+        'lesson_start_time' => 'datetime:H:i A',
+        'lesson_end_time' => 'datetime:H:i A',
+        'check_in_time' => 'datetime:H:i A',
+        'check_out_time' => 'datetime:H:i A',
         'is_active' => 'boolean',
     ];
     public function subject()

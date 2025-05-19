@@ -35,7 +35,7 @@ class AppPanelProvider extends PanelProvider
             ->profile()
             ->spa()
             ->font('Almarai')
-            ->unsavedChangesAlerts()
+            // ->unsavedChangesAlerts()
             ->colors([
                 'primary' => Color::Blue,
                 'secondary' => Color::Stone,
