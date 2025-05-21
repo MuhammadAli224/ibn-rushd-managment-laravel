@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Enums\LessonStatusEnum;
 use App\Enums\RoleEnum;
+use App\Filament\Components\CreatorUpdator;
 use App\Filament\Resources\LessonResource\Pages;
 use App\Filament\Resources\LessonResource\RelationManagers;
 use App\Models\Driver;
@@ -22,9 +23,11 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Date;
 
 class LessonResource extends Resource
 {
@@ -122,7 +125,6 @@ class LessonResource extends Resource
 
                         Select::make('driver_id')
                             ->label(__('filament-panels::pages/dashboard.driver'))
-                           
                             ->searchable()
                             ->options(
                                 Driver::whereHas(
@@ -200,7 +202,7 @@ class LessonResource extends Resource
                         TextInput::make('uber_charge')
                             ->label(__('filament-panels::pages/lesson.uber_charge'))
                             ->numeric()
-                            ->prefix('QR')
+                            ->prefix('QAR')
                             ->nullable()
                             ->readOnly()
                             ->visibleOn('edit'),
@@ -229,7 +231,99 @@ class LessonResource extends Resource
     {
         return $table
             ->columns([
-                //
+                TextColumn::make('subject.name')
+                    ->label(__('filament-panels::pages/dashboard.subject'))
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+
+                TextColumn::make('teacher.name')
+                    ->label(__('filament-panels::pages/dashboard.teacher'))
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+
+                TextColumn::make('student.name')
+                    ->label(__('filament-panels::pages/dashboard.student'))
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+
+                TextColumn::make('status')
+                    ->label(__('filament-panels::pages/lesson.status'))
+                    ->sortable()
+                    ->badge()
+                    ->color(fn($state) => match ($state) {
+                        LessonStatusEnum::SCHEDULED => 'info',
+                        LessonStatusEnum::COMPLETED => 'success',
+                        LessonStatusEnum::CANCELLED => 'danger',
+                        LessonStatusEnum::IN_PROGRESS => 'warning',
+                        default => 'gray',
+                    })
+                    ->toggleable(),
+
+                TextColumn::make('driver.name')
+                    ->label(__('filament-panels::pages/dashboard.driver'))
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('lesson_date')
+                    ->label(__('filament-panels::pages/lesson.lesson_date'))
+                    ->sortable()
+                    ->dateTime('Y-m-d')
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('lesson_start_time')
+                    ->label(__('filament-panels::pages/lesson.lesson_start_time'))
+                    ->sortable()
+                    ->dateTime('h:i A')
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('lesson_end_time')
+                    ->label(__('filament-panels::pages/lesson.lesson_end_time'))
+                    ->sortable()
+                    ->dateTime('h:i A')
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('lesson_duration')
+                    ->label(__('filament-panels::pages/lesson.lesson_duration'))
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable()
+                    ->formatStateUsing(function ($state) {
+                        $hours = floor($state / 60);
+                        $minutes = $state % 60;
+                        return sprintf('%d:%02d', $hours, $minutes); // e.g., 1:30
+                    }),
+
+                TextColumn::make('lesson_location')
+                    ->label(__('filament-panels::pages/lesson.lesson_location'))
+                    ->sortable()
+                    ->searchable()
+                    ->toggleable(),
+
+                TextColumn::make('lesson_price')
+                    ->label(__('filament-panels::pages/lesson.lesson_price'))
+                    ->sortable()
+                    ->money("QAR")
+                    ->searchable()
+                    ->toggleable(),
+                TextColumn::make('commission_rate')
+                    ->label(__('filament-panels::pages/lesson.commission_rate'))
+                    ->sortable()
+                    ->suffix('%')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+
+                TextColumn::make('uber_charge')
+                    ->label(__('filament-panels::pages/lesson.uber_charge'))
+                    ->money("QAR"),
+
+                ...CreatorUpdator::columns(),
+
+
+
             ])
             ->filters([
                 //
@@ -238,9 +332,9 @@ class LessonResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Tables\Actions\BulkActionGroup::make([
+                //     Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 
