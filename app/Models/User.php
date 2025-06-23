@@ -11,10 +11,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
+
 
 class User extends Authenticatable implements Wallet
 {
-    use HasFactory, Notifiable, HasRoles, HasWallet;
+    use HasFactory, Notifiable, HasRoles, HasWallet, HasApiTokens;
     protected $fillable = [
         'name',
         'email',
@@ -90,6 +93,24 @@ class User extends Authenticatable implements Wallet
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+
+    public function scopeWhereEmailOrPhone($query, string $value)
+    {
+        return $query->where('email', $value)->orWhere('phone', $value);
+    }
+
+
+    public function assignRoleAndPermissions(RoleEnum $role): void
+    {
+        $roleModel = Role::where('name', $role->value)->firstOrFail();
+
+        $this->assignRole($roleModel);
+        $this->syncPermissions($roleModel->permissions);
+    }
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
     // protected static function booted()
     // {
     //     static::creating(function ($model) {

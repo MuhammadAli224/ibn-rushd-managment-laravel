@@ -19,27 +19,17 @@ class UserProfileResource extends JsonResource
             "name" => $this->name,
             "email" => $this->email,
             "phone" => $this->phone,
+            "address" => $this->address,
+            "image" => $this->image,
+            "status" => $this->status,
+            "gender" => $this->gender,
+            "center_id" => $this->center_id,
+            "country" => $this->country,
+            "national_id" => (int)$this->national_id,
+            "is_active" => $this->is_active,
             "fcm_token" => $this->fcm_token,
-
-            $this->mergeWhen($this->isOwner(), [
-                "comerical_number" => $this->comerical_number,
-                "tax_number" => $this->tax_number,
-                'branches' => $this->ownedBranches()->active()->get()->count() ?? 0,
-                'subscription' => new SubsecriptionResource($this->subscriptions()->active()->first()),
-
-
-            ],),
-            $this->mergeWhen($this->isBranchUser(), [
-
-                'user_branches' => BranchResource::collection($this->branches),
-
-            ],),
             'permissions' => $this->permissions?->pluck('name')->toArray() ?? [],
             'roles' => $this->roles?->pluck('name')->first() ?? [],
-
-
-
-
         ];
     }
 }
