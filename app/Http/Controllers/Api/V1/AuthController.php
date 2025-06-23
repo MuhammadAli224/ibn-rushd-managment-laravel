@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ClientRegisterRequest;
-use App\Http\Requests\Api\ClientUserRegisterRequest;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\UpdateUserRequest;
 use App\Http\Resources\UserProfileResource;

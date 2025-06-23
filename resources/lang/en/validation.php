@@ -95,8 +95,6 @@ return [
         'quantity_required' => 'The quantity is required.',
         'quantity_integer' => 'The quantity must be an integer.',
 
-        'price_numeric' => 'The branch price must be a number.',
-
         'is_active_boolean' => 'The active field must be true or false.',
         'is_most_popular_boolean' => 'The most popular field must be true or false.',
 
@@ -111,6 +109,8 @@ return [
         'branch_id_required' => 'Branch is required.',
         'branch_id_exists' => 'The selected branch is invalid.',
     ],
+
+    'login_required' => 'The login field is required.',
 
 
 ];

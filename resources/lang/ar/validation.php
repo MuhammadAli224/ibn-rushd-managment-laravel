@@ -84,7 +84,6 @@ return [
         'branch_id_exists' => 'الفرع غير موجود',
         'quantity_required' => 'الكمية مطلوبة',
         'quantity_integer' => 'الكمية يجب أن تكون رقمًا صحيحًا',
-        'price_numeric' => 'سعر الفرع يجب أن يكون رقمًا',
         'is_active_boolean' => 'حقل التفعيل يجب أن يكون true أو false',
         'is_most_popular_boolean' => 'الحقل المفضل يجب أن يكون true أو false',
         'status_in' => 'الحالة يجب أن تكون إما "active" أو "inactive"',
@@ -100,5 +99,5 @@ return [
         'branch_id_exists' => 'الفرع المحدد غير صالح.',
     ],
 
-
+    'login_required' => 'حقل تسجيل الدخول مطلوب.',
 ];

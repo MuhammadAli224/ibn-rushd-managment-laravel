@@ -31,7 +31,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->withProviders([
-        App\Providers\AppServiceProvider::class,
+         App\Providers\AppServiceProvider::class,
         App\Providers\Filament\AppPanelProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        // Berkayk\OneSignal\OneSignalServiceProvider::class
 
     ])->create();
