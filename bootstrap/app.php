@@ -15,12 +15,18 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->append(
-            [
-                \App\Http\Middleware\SetLocale::class,
+       $middleware->alias([
+            'role' => RoleMiddleware::class,
+            'permission' => PermissionMiddleware::class,
+            'role_or_permission' => RoleOrPermissionMiddleware::class,
+            'check.permissions' => \App\Http\Middleware\CheckMultiplePermissions::class,
+        ]);
+        $middleware->append([
+            \App\Http\Middleware\SetLocale::class,
+            \App\Http\Middleware\LanguageMiddleware::class,
+           
 
-            ]
-        );
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
