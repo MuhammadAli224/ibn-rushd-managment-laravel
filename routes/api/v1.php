@@ -1,10 +1,7 @@
-
 <?php
 
-use App\Enums\PermissionEnum;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\NotificationController;
-use App\Http\Controllers\Api\V1\ProductController;
 use App\Http\Middleware\LanguageMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -15,12 +12,12 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
         ->controller(AuthController::class)
         ->group(function () {
             Route::post('/login', 'login');
-            Route::post('/register', 'clientRegister');
-            // Route::middleware('auth:sanctum')->group(function () {
-            //     Route::post('/logout', 'logout');
-            //     Route::get('/user', 'profile')->middleware('can:' . PermissionEnum::VIEW_USERS->value);
-            //     Route::put('/profile', 'update')->middleware('can:' . PermissionEnum::EDIT_USER->value);
-            // });
+           
+            Route::middleware('auth:sanctum')->group(function () {
+                Route::post('/logout', 'logout');
+                // Route::get('/user', 'profile')->middleware('can:' . PermissionEnum::VIEW_USERS->value);
+                // Route::put('/profile', 'update')->middleware('can:' . PermissionEnum::EDIT_USER->value);
+            });
         });
 
 

@@ -19,59 +19,66 @@ class AuthController extends Controller
 {
     use ApiResponseTrait;
 
-    public function login(LoginRequest $request, PushNotificationService $pushService)
+    public function login(LoginRequest $request)
     {
 
-        $user = User::whereEmailOrPhone($request->input('login'))
-            ->active()
-            ->first();
+        try {
+            $user = User::whereEmailOrPhone($request->input('login'))
+                ->active()
+                ->first();
+            \Log::error('User found: ' . ($user ? $user->id : 'No user found'));
+            // if ($user->tokens()->exists()) {
+            //     $user->tokens->each->delete();  
+            // }
 
-        // if ($user->tokens()->exists()) {
-        //     $user->tokens->each->delete();  
-        // }
+            if (
+                !$user ||
+                !Hash::check($request->password, $user->password)
+            ) {
 
-        if (
-            !$user ||
-            !Hash::check($request->password, $user->password)
-        ) {
+                return $this->error(message: __('auth.failed'), error: 'Invalid Credentials');
+            }
+            if ($request->has('fcm_token')) {
+                User::where('fcm_token', $request->fcm_token)
+                    ->where('id', '!=', $user->id)
+                    ->update(['fcm_token' => null]);
 
-            return $this->error(message: __('auth.failed'), error: 'Invalid Credentials');
+                $user->update(['fcm_token' => $request->fcm_token]);
+
+
+
+                // $title = __('notification.new_login');
+                // $message = __('notification.new_login_notification') . $request->device_name;
+                // $user->notify(new OneSignalNotification($title, $message));
+
+                // $pushService->sendToUser($user->fcm_token, $title, $message);
+            }
+            // if ($user->tokens()->exists()) {
+            //     return $this->error(
+            //         __('auth.token_exist'),
+            //         statusCode: 403,
+            //         error: 'Forbidden'
+            //     );
+            // }
+
+
+
+
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return $this->successToken(
+                data: new UserProfileResource($user),
+                message: __('auth.login_success'),
+                token: $token
+            );
+        } catch (\Exception $e) {
+            \Log::error('Error during login: ' . $e->getMessage());
+            return $this->error(
+                message: __('validation.failed'),
+                statusCode: 500,
+                error: 'Internal Server Error : ' . $e->getMessage()
+            );
         }
-        if ($request->has('fcm_token')) {
-            User::where('fcm_token', $request->fcm_token)
-                ->where('id', '!=', $user->id)
-                ->update(['fcm_token' => null]);
-
-            $user->update(['fcm_token' => $request->fcm_token]);
-
-
-
-            // $title = __('notification.new_login');
-            // $message = __('notification.new_login_notification') . $request->device_name;
-            // $user->notify(new OneSignalNotification($title, $message));
-
-            // $pushService->sendToUser($user->fcm_token, $title, $message);
-        }
-        // if ($user->tokens()->exists()) {
-        //     return $this->error(
-        //         __('auth.token_exist'),
-        //         statusCode: 403,
-        //         error: 'Forbidden'
-        //     );
-        // }
-
-        // if (!$user->hasActiveSubscription() && !$user->isAdmin()) {
-        //     return $this->error(message: __('auth.no_active_subscription'), error: 'No Active Subscription');
-        // }
-
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return $this->successToken(
-            data: new UserProfileResource($user),
-            message: __('auth.login_success'),
-            token: $token
-        );
     }
 
 
