@@ -11,6 +11,8 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
 use App\Enums\GenderEnum;
 use Filament\Forms\Components\Grid;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserInfoSection
 {
@@ -36,12 +38,20 @@ class UserInfoSection
                     ->unique(table: 'users', column: 'phone', ignoreRecord: true)
                     ->required(),
 
+                // TextInput::make("{$prefix}password")
+                //     ->label(__('filament-panels::pages/general.password'))
+                //     ->minLength(8)
+                //     ->password()
+                //     ->revealable()
+                //     ->required(fn(string $operation): bool => $operation === 'create'),
                 TextInput::make("{$prefix}password")
                     ->label(__('filament-panels::pages/general.password'))
                     ->minLength(8)
                     ->password()
                     ->revealable()
-                    ->required(fn(string $operation): bool => $operation === 'create'),
+                    ->required(fn(string $operation): bool => $operation === 'create')
+                    ->dehydrated(fn($state) => filled($state))
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state)),
 
                 TextInput::make("{$prefix}national_id")
                     ->numeric()
@@ -68,7 +78,7 @@ class UserInfoSection
                     ->image()
                     ->visibility('public')
                     ->columnSpanFull()
-                   
+
                     ->imageEditor(),
 
 
@@ -83,7 +93,7 @@ class UserInfoSection
                 '2xl' => 3,
             ])
             ->columnSpan([
-               'sm' => 1,
+                'sm' => 1,
                 'md' => 2,
                 'lg' => 2,
                 'xl' => 3,

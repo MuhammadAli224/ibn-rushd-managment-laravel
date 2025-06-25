@@ -49,15 +49,52 @@ class UserResource extends Resource
             ->schema([
                 UserInfoSection::make(
                     [
-                        Select::make('role')
+                     
+                        Select::make('assign_role')
                             ->label(__('filament-panels::pages/user.role'))
-                            ->options(RoleEnum::class)
                             ->required()
-                            ->reactive(),
+                            ->native(false)
+                            ->options(function () {
+                                $auth = auth()->user();
+                                $allRoles = RoleEnum::cases();
+
+                                if ($auth->hasRole(RoleEnum::ADMIN->value)) {
+
+
+
+                                    return collect($allRoles)->mapWithKeys(fn($role) => [
+                                        $role->value => $role->getLabel(),
+                                    ]);
+                                }
+                            })
+                            ->reactive()
+                            ->afterStateUpdated(function ($state, callable $set, ?User $record) {
+                                if ($record) {
+                                    $record->syncRoles([$state]);
+                                }
+                            })
+                            ->visible(function (?User $record) {
+                                $auth = auth()->user();
+
+                                if ($auth->hasRole(RoleEnum::ADMIN->value)) {
+                                    return true;
+                                }
+
+                               
+                                return false;
+                            })
+
+                            ->afterStateHydrated(function (callable $set, ?User $record) {
+                                if ($record) {
+                                    $roles = $record->roles->pluck('name')->toArray();
+                                    $set('assign_role', $roles[0] ?? null);
+                                }
+                            }),
+
                     ],
                     '',
                 ),
-               
+
                 //     ->columns(2)
                 //     ->schema([
                 //         Select::make('role')

@@ -20,18 +20,6 @@ return [
         'email' => [
             'label' => 'Email address',
         ],
-        'phone' => [
-            'label' => 'Phone number',
-        ],
-        'is_active' => [
-            'label' => "Status",
-        ],
-        "branch" => [
-            'label' => "Branch",
-        ],
-        "client" => [
-            'label' => "Client",
-        ],
 
         'name' => [
             'label' => 'Name',
