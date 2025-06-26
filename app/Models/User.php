@@ -13,11 +13,15 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Models\Role;
+use Carbon\Carbon;
+use Bavix\Wallet\Traits\HasWalletFloat;
+use Bavix\Wallet\Interfaces\WalletFloat;
 
 
-class User extends Authenticatable implements Wallet
+
+class User extends Authenticatable implements Wallet, WalletFloat
 {
-    use HasFactory, Notifiable, HasRoles, HasWallet, HasApiTokens;
+    use HasFactory, Notifiable, HasRoles, HasWallet, HasApiTokens, HasWalletFloat;
     protected $fillable = [
         'name',
         'email',
@@ -78,10 +82,11 @@ class User extends Authenticatable implements Wallet
     {
         return $this->hasOne(Student::class);
     }
-    public function gurdian()
+    public function guardian()
     {
         return $this->hasOne(Guardian::class);
     }
+
     public function center()
 
     {
@@ -111,19 +116,96 @@ class User extends Authenticatable implements Wallet
     {
         return $query->where('is_active', true);
     }
-    // protected static function booted()
-    // {
-    //     static::creating(function ($model) {
-    //         if (Auth::check()) {
-    //             $model->created_by = Auth::id();
-    //             $model->updated_by = Auth::id();
-    //         }
-    //     });
 
-    //     static::updating(function ($model) {
-    //         if (Auth::check()) {
-    //             $model->updated_by = Auth::id();
-    //         }
-    //     });
-    // }
+
+    public function teacherLessons()
+    {
+        return $this->hasMany(Lesson::class, 'teacher_id');
+    }
+
+    public function driverLessons()
+    {
+        return $this->hasMany(Lesson::class, 'driver_id');
+    }
+
+    public function studentLessons()
+    {
+        return $this->hasMany(Lesson::class, 'student_id');
+    }
+    public function todayLessons()
+    {
+        return $this->lessonsByRole()
+            ->today();
+    }
+
+    public function thisWeekLessons()
+    {
+        return $this->lessonsByRole()
+            ->betweenDates(Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek());
+    }
+
+    public function thisMonthLessons()
+    {
+        return $this->lessonsByRole()
+            ->whereMonth('lesson_date', Carbon::now()->month);
+    }
+
+    public function activeLessons()
+    {
+        return $this->lessonsByRole()
+            ->where('is_active', true);
+    }
+
+    public function upcomingLessons()
+    {
+        return $this->lessonsByRole()
+            ->upcoming()
+        ;
+    }
+
+    public function ongoingLessons()
+    {
+        return $this->lessonsByRole()->ongoing();
+    }
+
+    public function tomorrowLessons()
+    {
+        return $this->lessonsByRole()
+            ->whereDate('lesson_date', Carbon::tomorrow());
+    }
+    public function lessonsByRole()
+    {
+        if ($this->hasRole(RoleEnum::ADMIN->value)) {
+            return Lesson::query();
+        }
+
+        if ($this->hasRole(RoleEnum::TEACHER->value)) {
+            return Lesson::where('teacher_id', $this->id);
+        }
+
+        if ($this->hasRole(RoleEnum::DRIVER->value)) {
+            return Lesson::where('driver_id', $this->id);
+        }
+
+        if ($this->hasRole(RoleEnum::PARENT->value)) {
+            $studentIds = $this->guardian->students->pluck('id') ?? [];
+            return Lesson::whereIn('student_id', $studentIds);
+        }
+
+        return Lesson::whereRaw('0 = 1');
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->created_by = auth()->check() ? auth()->id() : 1;
+            $model->updated_by = auth()->check() ? auth()->id() : 1;
+        });
+
+        static::updating(function ($model) {
+            $model->updated_by = auth()->check() ? auth()->id() : 1;
+        });
+    }
 }

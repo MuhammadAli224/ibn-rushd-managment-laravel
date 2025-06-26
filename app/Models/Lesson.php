@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\LessonStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Lesson extends BaseModel
 {
@@ -69,7 +70,19 @@ class Lesson extends BaseModel
 
     public function scopeUpcoming($query)
     {
-        return $query->whereDate('lesson_date', '>=', now())->orderBy('lesson_date');
+        return $query->where(function ($q) {
+            $q->whereDate('lesson_date', '>=', Carbon::today())
+                ->orWhere(function ($q2) {
+                    $q2->whereDate('lesson_date', Carbon::today())
+                        ->whereTime('lesson_start_time', '>', Carbon::now()->format('H:i:s'));
+                });
+        })->orderBy('lesson_date')->orderBy('lesson_start_time');
+    }
+    public function scopeOngoing($query)
+    {
+        return $query->whereDate('lesson_date', Carbon::today())
+            ->whereTime('lesson_start_time', '<=', now()->format('H:i:s'))
+            ->whereTime('lesson_end_time', '>=', now()->format('H:i:s'));
     }
 
     public function scopePast($query)
@@ -109,7 +122,10 @@ class Lesson extends BaseModel
 
     public function scopeBetweenDates($query, $from, $to)
     {
-        return $query->whereBetween('lesson_date', [$from, $to]);
+        return $query->whereBetween('lesson_date', [
+            Carbon::parse($from)->startOfDay(),
+            Carbon::parse($to)->endOfDay(),
+        ]);
     }
 
     public function scopeWithRelations($query)

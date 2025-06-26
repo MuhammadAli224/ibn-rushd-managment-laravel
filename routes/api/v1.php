@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Middleware\LanguageMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -12,11 +13,9 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
         ->controller(AuthController::class)
         ->group(function () {
             Route::post('/login', 'login');
-           
+
             Route::middleware('auth:sanctum')->group(function () {
                 Route::post('/logout', 'logout');
-                // Route::get('/user', 'profile')->middleware('can:' . PermissionEnum::VIEW_USERS->value);
-                // Route::put('/profile', 'update')->middleware('can:' . PermissionEnum::EDIT_USER->value);
             });
         });
 
@@ -24,16 +23,13 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
 
 
-
-        /// auth Product
-        // Route::prefix('products')
-        //     ->controller(ProductController::class)
-        //     ->group(function () {
-        //         Route::get('/', 'index')->middleware('can:' . PermissionEnum::VIEW_PRODUCTS->value);
-        //         Route::get('/{id}', 'show')->middleware('can:' . PermissionEnum::VIEW_PRODUCTS->value);
-        //         Route::post('/', 'store')->middleware('can:' . PermissionEnum::CREATE_PRODUCT->value);
-        //         Route::put('/{id}', 'update')->middleware('can:' . PermissionEnum::EDIT_PRODUCT->value);
-        //     });
+        /// auth Home
+        Route::prefix('home')
+            ->controller(HomeController::class)
+            ->group(function () {
+                Route::get('/', 'index');
+                // ->middleware('can:' . PermissionEnum::VIEW_PRODUCTS->value);
+            });
 
 
 

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignIdFor(Subject::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class, 'teacher_id')->constrained('users')->onDelete('cascade');
             $table->foreignIdFor(User::class, 'driver_id')->nullable()->constrained('users')->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'student_id')->constrained('users')->onDelete('cascade');
+            $table->foreignIdFor(Student::class, 'student_id')->constrained()->onDelete('cascade');
 
             $table->date('lesson_date');
             $table->time('lesson_start_time');
