@@ -31,7 +31,7 @@ class HomeController extends Controller
             $todayLessons = $user->todayLessons()->get();
             $weekLessons = $user->thisWeekLessons()->count();
             $monthLessons = $user->thisMonthLessons()->count();
-            $tomorrowLessons = $user->tomorrowLessons()->count();
+            $tomorrowLessons = $user->tomorrowLessons()->get();
             $upcomingLessons = $user->upcomingLessons()->limit(10)->get();
             $ongoingLessons = $user->ongoingLessons()->get();
             // $user->deposit(10.0);
