@@ -17,8 +17,7 @@ class LessonSeeder extends Seeder
     public function run()
     {
         $centers = Center::pluck('id')->toArray();
-        $subjects = Subject::with('teachers')->get(); // make sure you have this relationship
-        // $teachers = User::role(RoleEnum::TEACHER->value)->pluck('id')->toArray();
+        $subjects = Subject::with('teachers')->get();
         $drivers = User::role(RoleEnum::DRIVER->value)->pluck('id')->toArray();
         $students = Student::pluck('id')->toArray();
 
@@ -34,7 +33,7 @@ class LessonSeeder extends Seeder
 
         $adminId = User::role(RoleEnum::ADMIN->value)->first()?->id;
 
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 50; $i++) {
             $subject = $subjects->random();
             $teachersForSubject = $subject->teachers;
 
@@ -43,7 +42,7 @@ class LessonSeeder extends Seeder
             }
             $teacher = $teachersForSubject->random();
 
-            $lessonDate = Carbon::today()->addDays(rand(-30, 30));
+            $lessonDate = Carbon::today()->addDays(rand(-3, 30));
             $startTime = Carbon::createFromTime(rand(8, 20), [0, 30][rand(0, 1)], 0);
             $endTime = (clone $startTime)->addHours(rand(1, 2));
 

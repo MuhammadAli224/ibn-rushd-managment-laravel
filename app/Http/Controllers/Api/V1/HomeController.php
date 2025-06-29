@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\LessonResource;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 
@@ -39,21 +40,21 @@ class HomeController extends Controller
 
             return $this->success(
                 data: [
-                    'today_lessons' => $todayLessons,
+                    'today_lessons' => LessonResource::collection($todayLessons),
                     'week_lessons' => $weekLessons,
                     'month_lessons' => $monthLessons,
-                    'upcoming_lessons' => $upcomingLessons,
-                    'tomorrow_lessons' => $tomorrowLessons,
-                    'ongoing_lessons' => $ongoingLessons,
-                    'wallets' => $user->balance,
+                    'upcoming_lessons' => LessonResource::collection($upcomingLessons),
+                    'tomorrow_lessons' => LessonResource::collection($tomorrowLessons),
+                    'ongoing_lessons' => LessonResource::collection($ongoingLessons),
+                    // 'wallets' => $user->balance,
                     'notifications' => $user->unreadNotifications->count(),
                 ],
-                message: __('messages.success')
+                message: __('general.get_success')
             );
         } catch (\Exception $e) {
             \Log::error('Error in HomeController index: ' . $e->getMessage());
             return $this->error(
-                message: __('messages.error'),
+                message: __('general.get_failed'),
                 error: $e->getMessage(),
                 statusCode: 500
             );
