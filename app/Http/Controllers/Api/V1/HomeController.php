@@ -36,7 +36,7 @@ class HomeController extends Controller
             $upcomingLessons = $user->upcomingLessons()->limit(10)->get();
             $ongoingLessons = $user->ongoingLessons()->get();
             // $user->deposit(10.0);
-            // $user->withdraw(10.0);
+            // $user->withdraw(20.0);
 
             return $this->success(
                 data: [
@@ -46,7 +46,6 @@ class HomeController extends Controller
                     'upcoming_lessons' => LessonResource::collection($upcomingLessons),
                     'tomorrow_lessons' => LessonResource::collection($tomorrowLessons),
                     'ongoing_lessons' => LessonResource::collection($ongoingLessons),
-                    // 'wallets' => $user->balance,
                     'notifications' => $user->unreadNotifications->count(),
                 ],
                 message: __('general.get_success')
