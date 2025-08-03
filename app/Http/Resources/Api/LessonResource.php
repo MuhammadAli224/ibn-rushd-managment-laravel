@@ -32,7 +32,7 @@ class LessonResource extends JsonResource
             'lesson_duration' => $this->lesson_duration,
             'check_in_time' => $this->check_in_time,
             'check_out_time' => $this->check_out_time,
-            'uber_charge' =>(float)$this->uber_charge,
+            'uber_charge' => (float)$this->uber_charge,
             'lesson_price' => $this->lesson_price,
             'is_active' => $this->is_active,
             'commission_rate' => $this->commission_rate,
@@ -41,15 +41,15 @@ class LessonResource extends JsonResource
         ];
     }
 
-   private function combineDateTime($date, $time)
-{
-    if (!$date || !$time) {
-        return null;
+    private function combineDateTime($date, $time)
+    {
+        if (!$date || !$time) {
+            return null;
+        }
+
+        $dateString = $date instanceof \Carbon\Carbon ? $date->format('Y-m-d') : (string)$date;
+
+        return \Carbon\Carbon::parse($dateString . ' ' . $time)
+            ->format('Y-m-d H:i:s'); 
     }
-
-    $dateString = $date instanceof \Carbon\Carbon ? $date->format('Y-m-d') : (string)$date;
-
-    return \Carbon\Carbon::parse($dateString . ' ' . $time)->format('Y-m-d H:i:s A');
-}
-
 }

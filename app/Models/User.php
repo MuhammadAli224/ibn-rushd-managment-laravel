@@ -135,19 +135,22 @@ class User extends Authenticatable implements Wallet, WalletFloat
     public function todayLessons()
     {
         return $this->lessonsByRole()
-            ->today();
+            ->today()
+            ->ordered();
     }
 
     public function thisWeekLessons()
     {
         return $this->lessonsByRole()
-            ->betweenDates(Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek());
+            ->betweenDates(Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek())
+            ->ordered();
     }
 
     public function thisMonthLessons()
     {
         return $this->lessonsByRole()
-            ->whereMonth('lesson_date', Carbon::now()->month);
+            ->whereMonth('lesson_date', Carbon::now()->month)
+            ->ordered();
     }
 
     public function activeLessons()
@@ -160,18 +163,21 @@ class User extends Authenticatable implements Wallet, WalletFloat
     {
         return $this->lessonsByRole()
             ->upcoming()
+            ->ordered()
         ;
     }
 
     public function ongoingLessons()
     {
-        return $this->lessonsByRole()->ongoing();
+        return $this->lessonsByRole()->ongoing()
+            ->ordered();
     }
 
     public function tomorrowLessons()
     {
         return $this->lessonsByRole()
-            ->whereDate('lesson_date', Carbon::tomorrow());
+            ->whereDate('lesson_date', Carbon::tomorrow())
+            ->ordered();
     }
     public function lessonsByRole()
     {

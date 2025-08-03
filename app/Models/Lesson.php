@@ -137,4 +137,8 @@ class Lesson extends BaseModel
     {
         return $query->where('created_by', $userId);
     }
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('lesson_date')->orderBy('lesson_start_time');
+    }
 }
