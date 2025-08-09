@@ -38,6 +38,7 @@ class User extends Authenticatable implements Wallet, WalletFloat
         'center_id',
         'country',
         'national_id',
+        'onesignal_token',
     ];
 
 

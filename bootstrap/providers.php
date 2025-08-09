@@ -4,5 +4,5 @@ return [
     App\Providers\AppServiceProvider::class,
     App\Providers\Filament\AppPanelProvider::class,
     App\Providers\RouteServiceProvider::class,
-    // Berkayk\OneSignal\OneSignalServiceProvider::class
+    Berkayk\OneSignal\OneSignalServiceProvider::class
 ];

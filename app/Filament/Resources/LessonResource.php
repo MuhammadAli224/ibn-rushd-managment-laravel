@@ -34,10 +34,13 @@ class LessonResource extends Resource
     protected static ?string $model = Lesson::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
     public static function getModelLabel(): string
     {
         return  __('filament-panels::pages/dashboard.lesson');
     }
+
+
     public static function getPluralModelLabel(): string
     {
         return  __('filament-panels::pages/dashboard.lessons');
@@ -63,34 +66,7 @@ class LessonResource extends Resource
 
                         Select::make('teacher_id')
                             ->label(__('filament-panels::pages/dashboard.teacher'))
-                            // ->options(
 
-                            //     function (callable $get) {
-                            //         $subjectId = $get('subject_id');
-
-                            //         if (!$subjectId) {
-                            //             return Teacher::whereHas(
-                            //                 'user.roles',
-                            //                 fn($q) =>
-                            //                 $q->where('name', RoleEnum::TEACHER->value)
-                            //             )->with('user')->get()->pluck('user.name', 'id');
-                            //         }
-
-                            //         return Teacher::whereHas(
-                            //             'user.roles',
-                            //             fn($q) =>
-                            //             $q->where('name', RoleEnum::TEACHER->value)
-                            //         )
-                            //             ->whereHas(
-                            //                 'subjects',
-                            //                 fn($query) =>
-                            //                 $query->where('subjects.id', $subjectId)
-                            //             )
-                            //             ->with('user')
-                            //             ->get()
-                            //             ->pluck('user.name', 'id');
-                            //     }
-                            // )
                             ->options(fn(callable $get) => Teacher::query()
                                 ->when(
                                     $get('subject_id'),
@@ -143,6 +119,7 @@ class LessonResource extends Resource
                             ->weekStartsOnSunday()
                             ->suffixIcon('heroicon-o-calendar-date-range')
                             ->locale('ar')
+                            ->timezone('Asia/Qatar')
                             ->closeOnDateSelection()
                             ->minDate(now()->subDays(5))
                             ->default(Carbon::now()->addDay())
@@ -154,6 +131,7 @@ class LessonResource extends Resource
                             ->native(false)
                             ->displayFormat('h:i A')
                             ->default(now()->format('h:i A'))
+                            ->timezone('Asia/Qatar')
                             ->required(),
 
                         TimePicker::make('lesson_end_time')
@@ -161,6 +139,7 @@ class LessonResource extends Resource
                             ->seconds(false)
                             ->native(false)
                             ->displayFormat('h:i A')
+                            ->timezone('Asia/Qatar')
                             ->default(now()->addHour()->format('h:i A'))
                             ->required(),
 
