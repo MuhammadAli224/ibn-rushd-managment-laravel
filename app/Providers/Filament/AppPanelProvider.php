@@ -78,6 +78,8 @@ class AppPanelProvider extends PanelProvider
                     ->defaultLocales(['en', 'ar']),
 
             )
+            ->plugin(\TomatoPHP\FilamentWallet\FilamentWalletPlugin::make())
+
         ;
     }
 }

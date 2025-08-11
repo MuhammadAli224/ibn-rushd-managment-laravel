@@ -2,25 +2,18 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\GenderEnum;
+use TomatoPHP\FilamentWallet\Filament\Actions\WalletAction;
+
 use App\Enums\RoleEnum;
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Sections\UserInfoSection;
 use App\Models\User;
-use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
@@ -49,7 +42,7 @@ class UserResource extends Resource
             ->schema([
                 UserInfoSection::make(
                     [
-                     
+
                         Select::make('assign_role')
                             ->label(__('filament-panels::pages/user.role'))
                             ->required()
@@ -80,7 +73,7 @@ class UserResource extends Resource
                                     return true;
                                 }
 
-                               
+
                                 return false;
                             })
 
@@ -175,6 +168,17 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                //  WalletAction::make('wallet'),
+                WalletAction::make('wallet')
+                    ->visible(
+                        fn($record) =>
+                        auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
+                            $record->hasRole(RoleEnum::TEACHER->value)
+                    )
+                    ->label(__('filament-panels::pages/user.wallet'))
+                    ->icon('heroicon-o-wallet')
+                    ->color('success')
+                   ,
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

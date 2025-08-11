@@ -5,14 +5,12 @@ namespace App\Models;
 
 use App\Models\BaseModel;
 use Bavix\Wallet\Interfaces\Wallet;
-use Bavix\Wallet\Traits\HasWallet;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Notifications\Notifiable;
+use Bavix\Wallet\Traits\HasWalletFloat;
 
-class Teacher extends BaseModel
+
+class Teacher extends BaseModel implements Wallet
 {
+      use HasWalletFloat;
     protected $fillable = [
         'user_id',
         'date_of_birth',
