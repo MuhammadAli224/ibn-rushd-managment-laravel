@@ -31,8 +31,16 @@ class TeacherSeeder extends Seeder
 
         $qualifications = array_column(QualificationEnum::cases(), 'value');
         $specializations = [
-            'Mathematics', 'Science', 'English', 'Arabic', 'Islamic Studies',
-            'Qatari History', 'Physics', 'Chemistry', 'Biology', 'Computer Science'
+            'Mathematics',
+            'Science',
+            'English',
+            'Arabic',
+            'Islamic Studies',
+            'Qatari History',
+            'Physics',
+            'Chemistry',
+            'Biology',
+            'Computer Science'
         ];
         $experiences = ['1-3 years', '3-5 years', '5-10 years', '10+ years'];
 

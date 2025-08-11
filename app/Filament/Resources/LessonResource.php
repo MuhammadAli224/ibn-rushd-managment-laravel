@@ -110,7 +110,7 @@ class LessonResource extends Resource
                                 )->with('user')->get()->pluck('user.name', 'id')
                             )
                             ->preload()
-                            ->required(),
+                            ->nullable(),
 
                         DatePicker::make('lesson_date')
                             ->label(__('filament-panels::pages/lesson.lesson_date'))
@@ -190,7 +190,7 @@ class LessonResource extends Resource
                             ->label(__('filament-panels::pages/lesson.lesson_price'))
                             ->numeric()
                             ->prefix('QR')
-                            ->nullable(),
+                            ->required(),
 
                         TextInput::make('commission_rate')
                             ->label(__('filament-panels::pages/lesson.commission_rate'))
@@ -216,7 +216,7 @@ class LessonResource extends Resource
                     ->searchable()
                     ->toggleable(),
 
-                TextColumn::make('teacher.name')
+                TextColumn::make('teacher.user.name')
                     ->label(__('filament-panels::pages/dashboard.teacher'))
                     ->sortable()
                     ->searchable()
@@ -241,11 +241,11 @@ class LessonResource extends Resource
                     })
                     ->toggleable(),
 
-                TextColumn::make('driver.name')
+                TextColumn::make('driver.user.name')
                     ->label(__('filament-panels::pages/dashboard.driver'))
                     ->sortable()
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
 
                 TextColumn::make('lesson_date')
                     ->label(__('filament-panels::pages/lesson.lesson_date'))
@@ -297,7 +297,8 @@ class LessonResource extends Resource
 
                 TextColumn::make('uber_charge')
                     ->label(__('filament-panels::pages/lesson.uber_charge'))
-                    ->money("QAR"),
+                    ->money("QAR")
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 ...CreatorUpdator::columns(),
 

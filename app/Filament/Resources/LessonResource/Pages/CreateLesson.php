@@ -28,15 +28,15 @@ class CreateLesson extends CreateRecord
         $recipients = collect();
 
         if ($lesson->teacher) {
-            $recipients->push($lesson->teacher);
+            $recipients->push($lesson->teacher->user);
         }
 
         if ($lesson->driver) {
-            $recipients->push($lesson->driver);
+            $recipients->push($lesson->driver->user);
         }
 
-        if ($lesson->student && method_exists($lesson->student, 'user') && $lesson->student->user) {
-            $recipients->push($lesson->student->user);
+        if ($lesson->student) {
+            $recipients->push($lesson->student->guardian->user);
         }
 
         $admins = User::role('admin')->get();
@@ -53,7 +53,8 @@ class CreateLesson extends CreateRecord
             $user->notify(new OneSignalNotification($title, $message));
 
             if ($user->onesignal_token) {
-                app(PushNotificationService::class)->sendToUser($user->onesignal_token, $title, $message);
+                app(PushNotificationService::class)
+                    ->sendToUser($user->onesignal_token, $title, $message);
             }
         }
     }

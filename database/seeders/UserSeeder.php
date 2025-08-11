@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
         // Admin
         $admin = User::create([
             'center_id' => $centers[0] ?? null,
-            'name' => 'Mohammed Al-Thani',
+            'name' => 'Admin User',
             'email' => 'admin@test.qa',
             'phone' => '97433123456',
             'password' => Hash::make('password'),
@@ -55,11 +55,11 @@ class UserSeeder extends Seeder
         $management->assignRole(RoleEnum::MANAGMENT->value);
 
         // Seed other roles
-        $this->createUsersWithRole(RoleEnum::TEACHER,  10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
-        $this->createUsersWithRole(RoleEnum::DRIVER, 10, $centers, $maleNames, [], $lastNames, $addresses);
-        $this->createUsersWithRole(RoleEnum::PARENT, 10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
-        $this->createUsersWithRole(RoleEnum::ACCOUNTING, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
-        $this->createUsersWithRole(RoleEnum::DISPATCHER, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::TEACHER,  10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::DRIVER, 10, $centers, $maleNames, [], $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::PARENT, 10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::ACCOUNTING, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::DISPATCHER, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
     }
 
     public function createUsersWithRole(RoleEnum $role, int $count, array $centers, array $maleNames, array $femaleNames, array $lastNames, array $addresses)
