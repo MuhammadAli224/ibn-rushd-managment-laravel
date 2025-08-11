@@ -19,8 +19,7 @@
         "laravel/ui": "^4.6",
         "parfaitementweb/filament-country-field": "^2.4",
         "spatie/laravel-permission": "^6.17",
-        "spatie/laravel-translatable": "^6.11",
-        "tomatophp/filament-wallet": "^1.0"
+        "spatie/laravel-translatable": "^6.11"
     },
     "require-dev": {
         "doctrine/dbal": "^4.2",

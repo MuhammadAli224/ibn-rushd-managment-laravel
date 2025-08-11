@@ -16,12 +16,13 @@ use Spatie\Permission\Models\Role;
 use Carbon\Carbon;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Interfaces\WalletFloat;
+use Bavix\Wallet\Traits\HasWallets;
 
 
 
 class User extends Authenticatable implements Wallet, WalletFloat
 {
-    use HasFactory, Notifiable, HasRoles, HasWallet, HasApiTokens, HasWalletFloat;
+    use HasFactory, Notifiable, HasRoles, HasWallet, HasApiTokens, HasWalletFloat, HasWallets;
     protected $fillable = [
         'name',
         'email',
@@ -39,6 +40,7 @@ class User extends Authenticatable implements Wallet, WalletFloat
         'country',
         'national_id',
         'onesignal_token',
+        'is_super_admin',
     ];
 
 
@@ -55,6 +57,7 @@ class User extends Authenticatable implements Wallet, WalletFloat
             'password' => 'hashed',
             'main_role' => 'string',
             'is_active' => 'boolean',
+            'is_super_admin' => 'boolean',
             'status' => StatusEnum::class,
             'gender' => GenderEnum::class,
             'created_by' => User::class,
