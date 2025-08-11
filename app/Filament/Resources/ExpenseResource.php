@@ -6,6 +6,7 @@ use App\Filament\Components\CreatorUpdator;
 use App\Filament\Resources\ExpenseResource\Pages;
 use App\Filament\Resources\ExpenseResource\RelationManagers;
 use App\Models\Expense;
+use App\Models\ExpenseCategory;
 use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Hidden;
@@ -13,8 +14,11 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Tables\Actions\Action;
+
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -97,8 +101,7 @@ class ExpenseResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->label(__('filament-panels::pages/wallet.expenses.columns.amount'))
-                    // ->numeric()
-                     ->badge()
+                    ->badge()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('date')
                     ->label(__('filament-panels::pages/wallet.expenses.columns.created_at'))
@@ -115,17 +118,19 @@ class ExpenseResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('today')
-                    ->label(__('Today'))
+                    ->default()
+                    ->label(__('filament-panels::pages/wallet.expenses.columns.today'))
                     ->query(fn(Builder $query) => $query->today()),
 
                 Tables\Filters\Filter::make('this_month')
-                    ->label(__('This Month'))
+                    ->label(__('filament-panels::pages/wallet.expenses.columns.this_month'))
                     ->query(fn(Builder $query) => $query->thisMonth()),
 
                 Tables\Filters\Filter::make('date')
-                    ->label(__('Specific Date'))
+                    ->label(__('filament-panels::pages/wallet.expenses.columns.specific_date'))
                     ->form([
-                        Forms\Components\DatePicker::make('date'),
+                        Forms\Components\DatePicker::make('date')
+                            ->label(__('filament-panels::pages/wallet.expenses.columns.specific_date')),
                     ])
                     ->query(function (Builder $query, array $data) {
                         return $query
@@ -134,16 +139,29 @@ class ExpenseResource extends Resource
                                 fn(Builder $query, $date) => $query->whereDate('date', $date)
                             );
                     }),
-            ])
+
+                Tables\Filters\SelectFilter::make('expense_category_id')
+                    ->label(__('filament-panels::pages/wallet.expenses.columns.category'))
+                    ->options(fn(): array => ExpenseCategory::query()->pluck('name', 'id')->toArray())
+                    ->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when(
+                                $data['value'] ?? null,
+                                fn($query, $value) => $query->where('expense_category_id', $value)
+                            );
+                    }),
+            ],)
+
 
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+
+            ->filtersTriggerAction(
+                fn(Action $action) => $action
+                    ->button()
+                    ->label('Filter'),
+            );
     }
 
     public static function getRelations(): array

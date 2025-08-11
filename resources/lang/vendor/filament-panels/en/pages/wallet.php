@@ -59,6 +59,9 @@ return [
             "user" => "User",
             "confirmed" => "Confirmed",
             "uuid" => "Code",
+            "today" => "Today",
+            "this_month" => "This Month",
+            "specific_date" => "Specific Date",
         ],
         "filters" => [
             "category" => "Filter by Category",
@@ -76,6 +79,21 @@ return [
             "description" => "Description",
             "wallet" => "Wallet",
             "date" => "Date",
+        ],
+         "widgets" => [
+            "expenses_overview" => [
+                "title" => "Expenses Overview",
+                "description" => "View total expenses for today, this month, or a specific date.",
+                "today" => "Today's Total Expenses",
+                "this_month" => "This Month's Total Expenses",
+                "this_week" => "This Week's Total Expenses",
+                "specific_date" => "Total Expenses for Specific Date",
+            ],
+             "expenses_title" => [
+                "today" => "Daily Expenses",
+                "this_month" => "Monthly Expenses",
+                "this_week" => "Weekly Expenses",
+            ],
         ],
     ],
 ];
