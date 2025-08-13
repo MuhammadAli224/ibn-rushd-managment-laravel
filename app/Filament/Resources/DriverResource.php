@@ -24,6 +24,11 @@ class DriverResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     protected static ?int $navigationSort = 2;
+     public static function getNavigationBadge(): ?string
+    {
+        
+        return static::getModel()::count();
+    }
 
     public static function getModelLabel(): string
     {

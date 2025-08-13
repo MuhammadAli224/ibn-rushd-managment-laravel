@@ -42,6 +42,10 @@ return [
         ],
         "filters" => [
             "accounts" => "تصفية حسب الحسابات",
+        ],
+        "notification" => [
+            "title" => "تمت العملية بنجاح",
+            "message" => " تم تحديث رصيد المحفظة بنجاح.",
         ]
     ],
     "expenses" => [

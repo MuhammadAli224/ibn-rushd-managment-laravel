@@ -25,7 +25,7 @@ class WalletAction extends Action
                     ->numeric()
                     ->required()
                    
-                    ->default($record->balanceFloatNum),
+                    ->default($record->balance),
                 Select::make('type')
                     ->searchable()
                     ->default('credit')
@@ -43,18 +43,18 @@ class WalletAction extends Action
                    
                     ->afterStateUpdated(function ($record, $state, Set $set, Get $get) {
                         if ($get('type') == 'debit') {
-                            $set('current_balance', $record->balanceFloatNum - $state);
+                            $set('current_balance', $record->balance - $state);
                         } else {
-                            $set('current_balance', $record->balanceFloatNum + $state);
+                            $set('current_balance', $record->balance + $state);
                         }
                     })
             ];
         });
         $this->action(function ($record, array $data) {
             if ($data['type'] == 'debit') {
-                $record->withdrawFloat($data['amount']);
+                $record->withdraw($data['amount']);
             } else {
-                $record->depositFloat($data['amount']);
+                $record->deposit($data['amount']);
             }
 
             Notification::make()

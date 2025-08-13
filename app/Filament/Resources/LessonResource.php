@@ -34,6 +34,11 @@ class LessonResource extends Resource
     protected static ?string $model = Lesson::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
+     public static function getNavigationBadge(): ?string
+    {
+        
+        return static::getModel()::today()->count();
+    }
 
     public static function getModelLabel(): string
     {

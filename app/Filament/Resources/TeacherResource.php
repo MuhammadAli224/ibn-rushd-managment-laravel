@@ -26,6 +26,11 @@ class TeacherResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?int $navigationSort = 1;
+     public static function getNavigationBadge(): ?string
+    {
+        
+        return static::getModel()::count();
+    }
 
     public static function getModelLabel(): string
     {

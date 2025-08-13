@@ -26,6 +26,11 @@ class GuardianResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $navigationSort = 3;
+     public static function getNavigationBadge(): ?string
+    {
+        
+        return static::getModel()::count();
+    }
     public static function getModelLabel(): string
     {
         return  __('filament-panels::pages/dashboard.guardian');

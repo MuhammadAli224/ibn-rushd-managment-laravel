@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use TomatoPHP\FilamentWallet\Filament\Actions\WalletAction;
 
 use App\Enums\RoleEnum;
+use App\Filament\Actions\WalletAction;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Sections\UserInfoSection;
 use App\Models\User;
@@ -34,6 +34,11 @@ class UserResource extends Resource
 
     {
         return  __('filament-panels::pages/dashboard.users');
+    }
+     public static function getNavigationBadge(): ?string
+    {
+        
+        return static::getModel()::where('is_super_admin', 'false')->count();
     }
 
     public static function form(Form $form): Form
@@ -177,8 +182,7 @@ class UserResource extends Resource
                     )
                     ->label(__('filament-panels::pages/user.wallet'))
                     ->icon('heroicon-o-wallet')
-                    ->color('success')
-                   ,
+                    ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

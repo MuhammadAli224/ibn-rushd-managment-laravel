@@ -44,6 +44,10 @@ return [
         ],
         "filters" => [
             "accounts" => "Filter by Accounts",
+        ],,
+        "notification" => [
+            "title" => "Operation Successful",
+            "message" => " Wallet balance updated successfully.",
         ]
     ],
 
@@ -81,7 +85,7 @@ return [
             "wallet" => "Wallet",
             "date" => "Date",
         ],
-         "widgets" => [
+        "widgets" => [
             "expenses_overview" => [
                 "title" => "Expenses Overview",
                 "description" => "View total expenses for today, this month, or a specific date.",
@@ -90,7 +94,7 @@ return [
                 "this_week" => "This Week's Total Expenses",
                 "specific_date" => "Total Expenses for Specific Date",
             ],
-             "expenses_title" => [
+            "expenses_title" => [
                 "today" => "Daily Expenses",
                 "this_month" => "Monthly Expenses",
                 "this_week" => "Weekly Expenses",
