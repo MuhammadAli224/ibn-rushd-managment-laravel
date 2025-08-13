@@ -62,6 +62,7 @@ return [
             "today" => "Today",
             "this_month" => "This Month",
             "specific_date" => "Specific Date",
+            'total' => "Total",
         ],
         "filters" => [
             "category" => "Filter by Category",

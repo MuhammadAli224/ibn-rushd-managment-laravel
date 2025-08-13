@@ -102,7 +102,12 @@ class ExpenseResource extends Resource
                 Tables\Columns\TextColumn::make('amount')
                     ->label(__('filament-panels::pages/wallet.expenses.columns.amount'))
                     ->badge()
-                    ->sortable(),
+                    ->sortable()
+                    ->summarize(
+                        Tables\Columns\Summarizers\Sum::make()
+                            ->label(__('filament-panels::pages/wallet.expenses.columns.total'))
+                        ->money('QAR')
+                    ),
                 Tables\Columns\TextColumn::make('date')
                     ->label(__('filament-panels::pages/wallet.expenses.columns.created_at'))
 

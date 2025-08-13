@@ -59,6 +59,7 @@ return [
             "today" => "اليوم",
             "this_month" => "هذا الشهر",
             "specific_date" => "تاريخ محدد",
+            'total' => "الإجمالي",
         ],
         "filters" => [
             "category" => "تصفية حسب الفئة",
