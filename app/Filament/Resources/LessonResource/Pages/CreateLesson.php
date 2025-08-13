@@ -58,7 +58,7 @@ class CreateLesson extends CreateRecord
             }
         }
 
-         if ($lesson->status === \App\Enums\LessonStatusEnum::COMPLETED) {
+        if ($lesson->status === \App\Enums\LessonStatusEnum::COMPLETED) {
 
             if (!$lesson->transactions()->exists()) {
 
@@ -89,6 +89,7 @@ class CreateLesson extends CreateRecord
                 //         'type' => 'driver_payment',
                 //     ]);
                 // }
+            }
         }
     }
 
