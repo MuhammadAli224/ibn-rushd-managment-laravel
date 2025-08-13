@@ -20,6 +20,9 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
+
+
+
     public static function getModelLabel(): string
     {
         return  __('filament-panels::pages/dashboard.user');
@@ -35,10 +38,14 @@ class UserResource extends Resource
     {
         return  __('filament-panels::pages/dashboard.users');
     }
-     public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
-        
-        return static::getModel()::where('is_super_admin', 'false')->count();
+
+        return static::getModel()::where(function ($q) {
+    $q->where('is_super_admin', '!=', 1)
+      ->orWhereNull('is_super_admin');
+})->count();
+
     }
 
     public static function form(Form $form): Form
