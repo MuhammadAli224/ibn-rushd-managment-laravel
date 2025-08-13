@@ -42,10 +42,9 @@ class UserResource extends Resource
     {
 
         return static::getModel()::where(function ($q) {
-    $q->where('is_super_admin', '!=', 1)
-      ->orWhereNull('is_super_admin');
-})->count();
-
+            $q->where('is_super_admin', '!=', 1)
+                ->orWhereNull('is_super_admin');
+        })->count();
     }
 
     public static function form(Form $form): Form

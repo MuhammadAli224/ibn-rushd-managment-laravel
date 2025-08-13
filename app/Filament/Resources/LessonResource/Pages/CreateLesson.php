@@ -57,6 +57,39 @@ class CreateLesson extends CreateRecord
                     ->sendToUser($user->onesignal_token, $title, $message);
             }
         }
+
+         if ($lesson->status === \App\Enums\LessonStatusEnum::COMPLETED) {
+
+            if (!$lesson->transactions()->exists()) {
+
+                $teacherAmount = $lesson->lesson_price;
+
+                // Father pays (deduct from wallet)
+                $lesson->student->guardian->user->forceWithdraw($lesson->lesson_price, [
+                    'lesson_id' => $lesson->id,
+                    'type' => 'lesson_payment',
+                ]);
+
+                // Teacher earns
+                $lesson->teacher->user->deposit($teacherAmount, [
+                    'lesson_id' => $lesson->id,
+                    'type' => 'lesson_earning',
+                ]);
+
+                // // Owner earns commission
+                // $lesson->center->owner->deposit($commissionAmount, [
+                //     'lesson_id' => $lesson->id,
+                //     'type' => 'commission',
+                // ]);
+
+                // Optional: If driver exists, pay driver
+                // if ($lesson->driver_id && $lesson->uber_charge) {
+                //     $lesson->driver->deposit($lesson->uber_charge, [
+                //         'lesson_id' => $lesson->id,
+                //         'type' => 'driver_payment',
+                //     ]);
+                // }
+        }
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array
