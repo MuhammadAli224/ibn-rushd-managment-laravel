@@ -61,7 +61,7 @@ class WalletResource extends Resource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('holder.name')
-                  ->label(__('filament-panels::pages/wallet.wallets.columns.user'))
+                    ->label(__('filament-panels::pages/wallet.wallets.columns.user'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('filament-panels::pages/wallet.wallets.columns.name'))
@@ -85,23 +85,11 @@ class WalletResource extends Resource
             ->filters(
                 []
 
-                // filament('filament-wallet')->useAccounts ? [
-                // Tables\Filters\SelectFilter::make('holder_id')
-                // ->label(__('filament-panels::pages/wallet.wallets.filters.accounts'))
-                // ->searchable()
-                // ->options(fn () => config('filament-accounts.model')::query()->pluck('name', 'id')->toArray())
-                // ] : []
-
             )
             ->actions([
-                // WalletAction::make('wallet')
-                    WalletAction::make('wallet'),
+                WalletAction::make('wallet'),
             ])
-            ->bulkActions([
-                // Tables\Actions\BulkActionGroup::make([
-                //     Tables\Actions\DeleteBulkAction::make(),
-                // ]),
-            ]);
+        ;
     }
 
     public static function getRelations(): array
@@ -115,8 +103,7 @@ class WalletResource extends Resource
     {
         return [
             'index' => Pages\ListWallets::route('/'),
-            'create' => Pages\CreateWallet::route('/create'),
-            'edit' => Pages\EditWallet::route('/{record}/edit'),
+
         ];
     }
 }
