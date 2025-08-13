@@ -24,6 +24,8 @@ return [
     "updated_by" => "تم التحديث بواسطة",
     "created_at" => "وقت الانشاء",
     "updated_at" => "وقت اخر تعديل",
+    "expenseCategory" => "تنصيف المصروفات",
+    "expenseCategories" => "تصنيفات المصروفات",
 
     'actions' => [
 

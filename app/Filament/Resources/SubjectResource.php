@@ -15,7 +15,7 @@ use Filament\Tables\Table;
 class SubjectResource extends Resource
 {
     protected static ?string $model = Subject::class;
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
     public static function getNavigationGroup(): ?string
 
     {
