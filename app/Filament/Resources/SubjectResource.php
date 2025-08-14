@@ -21,7 +21,7 @@ class SubjectResource extends Resource
     {
         return  __('filament-panels::pages/dashboard.settings');
     }
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-server-stack';
     public static function getModelLabel(): string
     {
         return  __('filament-panels::pages/dashboard.subject');
@@ -71,7 +71,7 @@ class SubjectResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('filament-panels::pages/general.name'))
                     ->searchable()
-                    
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->label(__('filament-panels::pages/general.description'))

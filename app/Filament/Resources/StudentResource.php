@@ -24,9 +24,9 @@ class StudentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?int $navigationSort = 4;
-     public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
-        
+
         return static::getModel()::count();
     }
     public static function getModelLabel(): string
@@ -76,10 +76,31 @@ class StudentResource extends Resource
                             ->required()
                             ->maxLength(255),
 
-                        Forms\Components\TextInput::make('class')
+                        // Forms\Components\TextInput::make('class')
+                        //     ->label(__('filament-panels::pages/students.class'))
+                        //     ->required()
+                        //     ->maxLength(255),
+
+                        Select::make('class')
                             ->label(__('filament-panels::pages/students.class'))
+                            ->options([
+                                'grade_1' => __('filament-panels::pages/students.classes.grade_1'),
+                                'grade_2' => __('filament-panels::pages/students.classes.grade_2'),
+                                'grade_3' => __('filament-panels::pages/students.classes.grade_3'),
+                                'grade_4' => __('filament-panels::pages/students.classes.grade_4'),
+                                'grade_5' => __('filament-panels::pages/students.classes.grade_5'),
+                                'grade_6' => __('filament-panels::pages/students.classes.grade_6'),
+                                'grade_7' => __('filament-panels::pages/students.classes.grade_7'),
+                                'grade_8' => __('filament-panels::pages/students.classes.grade_8'),
+                                'grade_9' => __('filament-panels::pages/students.classes.grade_9'),
+                                'grade_10' => __('filament-panels::pages/students.classes.grade_10'),
+                                'grade_11' => __('filament-panels::pages/students.classes.grade_11'),
+                                'grade_12' => __('filament-panels::pages/students.classes.grade_12'),
+                                'diploma' => __('filament-panels::pages/students.classes.diploma'),
+                                'university' => __('filament-panels::pages/students.classes.university'),
+                            ])
                             ->required()
-                            ->maxLength(255),
+                            ->searchable(),
 
                         Forms\Components\TextInput::make('phone')
                             ->label(__('filament-panels::pages/students.phone'))
@@ -99,7 +120,7 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                  Tables\Columns\TextColumn::make('name')
+                Tables\Columns\TextColumn::make('name')
                     ->label(__('filament-panels::pages/students.name'))
                     ->sortable()
                     ->searchable(),
@@ -107,7 +128,9 @@ class StudentResource extends Resource
                 Tables\Columns\TextColumn::make('class')
                     ->label(__('filament-panels::pages/students.class'))
                     ->sortable()
-                    ->searchable(),
+                    ->formatStateUsing(fn($state) => __(
+                        'filament-panels::pages/students.classes.' . $state
+                    )),
 
                 Tables\Columns\TextColumn::make('phone')
                     ->label(__('filament-panels::pages/students.phone'))
@@ -119,7 +142,7 @@ class StudentResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                    ...CreatorUpdator::columns(),
+                ...CreatorUpdator::columns(),
             ])
             ->filters([
                 //

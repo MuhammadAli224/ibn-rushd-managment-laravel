@@ -26,6 +26,9 @@ return [
     "updated_at" => "وقت اخر تعديل",
     "expenseCategory" => "تنصيف المصروفات",
     "expenseCategories" => "تصنيفات المصروفات",
+    "center" => "مركز",
+    "centers" => "المراكز",
+    'center_info' => "معلومات المركز",
 
     'actions' => [
 

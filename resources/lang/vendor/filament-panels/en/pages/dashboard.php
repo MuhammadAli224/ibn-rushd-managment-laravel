@@ -27,6 +27,9 @@ return [
     "updated_at" => "Updated At",
     "expenseCategory" => "Expense Category",
     "expenseCategories" => "Expense Categories",
+    "center" => "Center",
+    "centers" => "Centers",
+    'center_info' => "Center Info",
 
 
     'actions' => [
