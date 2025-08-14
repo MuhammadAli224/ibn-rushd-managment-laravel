@@ -14,8 +14,15 @@ class Driver extends BaseModel
         "vehicle_type",
         "vehicle_number",
         "created_by",
-        "updated_by"
+        "updated_by",
+        "salary",
+        "salary_type",
     ];
+
+    // protected $casts = [
+    //     'salary' => 'decimal',
+    //     'salary_type' => 'enum',
+    // ];
 
     public function center()
     {
