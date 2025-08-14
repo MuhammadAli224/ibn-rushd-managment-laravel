@@ -9,6 +9,11 @@ return [
     "experience" => "الخبرة",
     "subjects"=>"المواد الدراسية",
     "commission"=>"العمولة",
+    "commission_type" => "نوع العمولة",
+    "commission_type_options" => [
+        "fixed" => "ثابتة",
+        "changed" => "متغيرة",
+    ],
 
 
 ];

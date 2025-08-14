@@ -8,6 +8,7 @@ use App\Filament\Components\CreatorUpdator;
 use App\Filament\Resources\LessonResource\Pages;
 use App\Filament\Resources\LessonResource\RelationManagers;
 use App\Models\Driver;
+use App\Models\Guardian;
 use App\Models\Lesson;
 use App\Models\Teacher;
 use Carbon\Carbon;
@@ -24,19 +25,22 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Date;
+use Filament\Tables\Enums\FiltersLayout;
+
 
 class LessonResource extends Resource
 {
     protected static ?string $model = Lesson::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
-     public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
-        
+
         return static::getModel()::today()->count();
     }
 
@@ -214,7 +218,7 @@ class LessonResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-         ->defaultSort('created_at', 'desc')
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('subject.name')
                     ->label(__('filament-panels::pages/dashboard.subject'))
@@ -312,8 +316,65 @@ class LessonResource extends Resource
 
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('status')
+                    ->label(__('filament-panels::pages/lesson.status'))
+                    ->options(
+                        fn() => collect(LessonStatusEnum::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => __('filament-panels::pages/lesson.' . $case->value)])
+                            ->toArray()
+                    ),
+
+
+
+                Tables\Filters\Filter::make('lesson_date')
+                    ->label(__('filament-panels::pages/wallet.expenses.columns.specific_date'))
+                    ->form([
+                        Forms\Components\DatePicker::make('lesson_date')
+                            ->label(__('filament-panels::pages/wallet.expenses.columns.specific_date')),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when(
+                                $data['lesson_date'],
+                                fn(Builder $query, $date) => $query->whereDate('lesson_date', $date)
+                            );
+                    }),
+
+
+                SelectFilter::make('subject')
+                    ->label(__('filament-panels::pages/dashboard.subject'))
+                    ->relationship('subject', 'name'),
+
+                SelectFilter::make('teacher')
+                    ->label(__('filament-panels::pages/dashboard.teacher'))
+                    ->options(
+                        fn() => Teacher::with('user')->get()->pluck('user.name', 'id')->toArray()
+                    ),
+
+                SelectFilter::make('student')
+                    ->label(__('filament-panels::pages/dashboard.student'))
+                    ->relationship('student', 'name'),
+
+                SelectFilter::make('driver')
+                    ->label(__('filament-panels::pages/dashboard.driver'))
+                    ->options(
+                        fn() => Driver::with('user')->get()->pluck('user.name', 'id')->toArray()
+                    ),
+
+                SelectFilter::make('guardian')
+                    ->label(__('filament-panels::pages/dashboard.guardian'))
+                    ->options(function () {
+                        return Guardian::with('user')
+                            ->get()
+                            ->mapWithKeys(fn($guardian) => [$guardian->id => $guardian->user->name ?? ''])
+                            ->toArray();
+                    })
+                    ->query(function (Builder $query, array $data) {
+                        if (!empty($data['value'])) {
+                            $query->whereHas('student', fn($q) => $q->where('guardian_id', $data['value']));
+                        }
+                    }),
+                ],layout:FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

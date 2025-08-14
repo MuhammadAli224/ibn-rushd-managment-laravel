@@ -69,13 +69,15 @@ class CenterResource extends Resource
                             ->label(__('filament-panels::pages/center.commission_ranges'))
                             ->schema([
                                 Forms\Components\TextInput::make('min')
-                                   ->label(__('filament-panels::pages/center.min_value'))
+                                    ->label(__('filament-panels::pages/center.min_value'))
                                     ->numeric()
+                                    ->suffix('QAR')
                                     ->required(),
 
                                 Forms\Components\TextInput::make('max')
                                     ->label(__('filament-panels::pages/center.max_value'))
                                     ->numeric()
+                                    ->suffix('QAR')
                                     ->nullable(),
 
                                 Forms\Components\TextInput::make('percentage')
@@ -89,7 +91,7 @@ class CenterResource extends Resource
                             //     ['min' => 20000, 'max' => null,  'percentage' => 50],
                             // ])
                             ->columns(2)
-                            // ->columnSpanFull()
+                        // ->columnSpanFull()
 
 
                     ]),

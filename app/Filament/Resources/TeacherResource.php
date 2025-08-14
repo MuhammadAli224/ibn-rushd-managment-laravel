@@ -26,9 +26,9 @@ class TeacherResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?int $navigationSort = 1;
-     public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
-        
+
         return static::getModel()::count();
     }
 
@@ -85,12 +85,31 @@ class TeacherResource extends Resource
                             ->required(),
 
 
+                        // TextInput::make('commission')
+                        //     ->label(__('filament-panels::pages/teachers.commission'))
+                        //     ->numeric()
+
+                        //     ->suffix('%')
+                        //     ->required(),
+
+                        Select::make('commission_type')
+                            ->label(__('filament-panels::pages/teachers.commission_type'))
+                            ->options([
+                                'fixed' => __('filament-panels::pages/teachers.commission_type_options.fixed'),
+                                'changed' => __('filament-panels::pages/teachers.commission_type_options.changed'),
+                            ])
+                            ->default('fixed')
+                            ->required()
+                            ->reactive(),
+
                         TextInput::make('commission')
                             ->label(__('filament-panels::pages/teachers.commission'))
                             ->numeric()
-
                             ->suffix('%')
-                            ->required(),
+                            ->required(fn($get) => $get('commission_type') !== 'fixed')
+                            ->visible(fn($get) => $get('commission_type') !== 'fixed')
+                            ,
+
 
                         Select::make('subjects')
                             ->label(__('filament-panels::pages/teachers.subjects'))
@@ -138,7 +157,7 @@ class TeacherResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->numeric()
                     ->searchable(),
-                    ...CreatorUpdator::columns(),
+                ...CreatorUpdator::columns(),
 
 
 
@@ -146,11 +165,11 @@ class TeacherResource extends Resource
 
             ])
             ->filters([
-                //
+                
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                
+
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([

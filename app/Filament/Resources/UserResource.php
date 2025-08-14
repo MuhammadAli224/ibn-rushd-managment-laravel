@@ -13,6 +13,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class UserResource extends Resource
@@ -175,7 +176,16 @@ class UserResource extends Resource
 
             ])
             ->filters([
-                //
+                SelectFilter::make('role')
+                    ->label(__('filament-panels::pages/user.role'))
+                    ->options(fn() => collect(RoleEnum::cases())->mapWithKeys(fn($role) => [
+                        $role->value => $role->getLabel(),
+                    ])->toArray())
+                    ->query(function ( $query, array $data) {
+                        if (!empty($data['value'])) {
+                            $query->whereHas('roles', fn($q) => $q->where('name', $data['value']));
+                        }
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
