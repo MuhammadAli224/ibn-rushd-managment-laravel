@@ -51,6 +51,7 @@ return [
     "expenses" => [
         "title" => "المصروفات",
         "single" => "مصروف",
+        "export" => "تصدير المصروفات",
         "columns" => [
             "created_at" => "التاريخ",
             "category" => "الفئة",

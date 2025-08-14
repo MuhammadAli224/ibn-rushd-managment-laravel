@@ -44,16 +44,18 @@ return [
         ],
         "filters" => [
             "accounts" => "Filter by Accounts",
-        ],,
+        ],
         "notification" => [
             "title" => "Operation Successful",
             "message" => " Wallet balance updated successfully.",
-        ]
+        ],
+        
     ],
 
     "expenses" => [
         "title" => "Expenses",
         "single" => "Expense",
+        "export" => "Export Expenses",
         "columns" => [
             "created_at" => "Date",
             "category" => "Category",

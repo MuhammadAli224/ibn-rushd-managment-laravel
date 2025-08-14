@@ -106,7 +106,7 @@ class ExpenseResource extends Resource
                     ->summarize(
                         Tables\Columns\Summarizers\Sum::make()
                             ->label(__('filament-panels::pages/wallet.expenses.columns.total'))
-                        ->money('QAR')
+                            ->money('QAR')
                     ),
                 Tables\Columns\TextColumn::make('date')
                     ->label(__('filament-panels::pages/wallet.expenses.columns.created_at'))
@@ -123,7 +123,7 @@ class ExpenseResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('today')
-                    ->default()
+                    // ->default()
                     ->label(__('filament-panels::pages/wallet.expenses.columns.today'))
                     ->query(fn(Builder $query) => $query->today()),
 

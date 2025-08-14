@@ -15,6 +15,11 @@ class ListExpenses extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\ExportAction::make()
+                ->exporter(\App\Filament\Exports\ExpenseExporter::class)
+               
+                ->label(__('filament-panels::pages/wallet.expenses.export'))
+                ->fileDisk('public'),
         ];
     }
 
