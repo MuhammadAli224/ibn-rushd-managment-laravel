@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RoleEnum;
 use App\Filament\Resources\SalaryResource\Pages;
 use App\Filament\Resources\SalaryResource\RelationManagers;
 use App\Models\Salary;
@@ -13,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Spatie\Permission\Contracts\Role;
 
 class SalaryResource extends Resource
 {
@@ -154,7 +156,13 @@ class SalaryResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(
+                        fn($record) =>
+                        !$record->is_paid  &&
+                            (auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
+                                auth()->user()->hasRole(RoleEnum::ACCOUNTANT->value))
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

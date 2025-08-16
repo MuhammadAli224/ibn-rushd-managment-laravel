@@ -236,4 +236,72 @@ return [
             ],
         ],
     ],
+
+     "incoming" => [
+        "title" => "Incomes",
+        "single" => "Income",
+        "export" => "Export Incomes",
+        "columns" => [
+            "created_at" => "Date",
+            "category" => "Category",
+            "amount" => "Amount",
+            "description" => "Description",
+            "wallet" => "Wallet",
+            "user" => "User",
+            "confirmed" => "Confirmed",
+            "uuid" => "Code",
+            "today" => "Today",
+            "this_month" => "This Month",
+            "specific_date" => "Specific Date",
+            "total" => "Total",
+            "source" => "Source",
+        ],
+        "filters" => [
+            "category" => "Filter by Category",
+            "wallet" => "Filter by Wallet",
+            "date_range" => "Filter by Date Range",
+        ],
+        "actions" => [
+            "create" => "Add New Income",
+            "edit" => "Edit Income",
+            "delete" => "Delete Income",
+        ],
+        "form" => [
+            "category" => "Category",
+            "amount" => "Amount",
+            "description" => "Description",
+            "wallet" => "Wallet",
+            "date" => "Date",
+            "source" => "Source",
+        ],
+        "widgets" => [
+            "incoming_overview" => [
+                "title" => "Income Overview",
+                "description" => "View total incomes today, this month, or for a specific date.",
+                "today" => "Total Income Today",
+                "this_month" => "Total Income This Month",
+                "this_week" => "Total Income This Week",
+                "specific_date" => "Total Income for Specific Date",
+            ],
+            "incoming_title" => [
+                "today" => "Daily Incomes",
+                "this_month" => "Monthly Incomes",
+                "this_week" => "Weekly Incomes",
+            ],
+        ],
+        "notifications" => [
+            "created_success" => [
+                "title" => "Added Successfully",
+                "message" => "The new income has been added successfully.",
+            ],
+            "updated_success" => [
+                "title" => "Updated Successfully",
+                "message" => "The income has been updated successfully.",
+            ],
+            "deleted_success" => [
+                "title" => "Deleted Successfully",
+                "message" => "The income has been deleted successfully.",
+            ],
+        ],
+    ],
 ];
