@@ -51,6 +51,21 @@ class Center extends Model implements Wallet
         return $this->hasMany(Subject::class);
     }
 
+    // public function calculateTeacherCommission($totalEarnings)
+    // {
+    //     foreach ($this->commission_ranges as $range) {
+    //         $min = $range['min'];
+    //         $max = $range['max'];
+    //         $percentage = $range['percentage'];
+
+    //         if ($totalEarnings >= $min && ($totalEarnings <= $max || is_null($max))) {
+    //             return ($totalEarnings * $percentage) / 100;
+    //         }
+    //     }
+
+    //     return 0;
+    // }
+
     public function calculateTeacherCommission($totalEarnings)
     {
         foreach ($this->commission_ranges as $range) {
@@ -62,13 +77,25 @@ class Center extends Model implements Wallet
                 return ($totalEarnings * $percentage) / 100;
             }
         }
-
         return 0;
     }
 
     public function getTeacherCommission($totalEarnings)
     {
         return $this->calculateTeacherCommission($totalEarnings);
+    }
+    public function calculateCenterCommission($totalEarnings)
+    {
+        foreach ($this->commission_ranges as $range) {
+            $min = $range['min'];
+            $max = $range['max'];
+            $percentage = $range['percentage'];
+
+            if ($totalEarnings >= $min && ($totalEarnings <= $max || is_null($max))) {
+                return  $percentage;
+            }
+        }
+        return 0;
     }
     public function expenses()
     {

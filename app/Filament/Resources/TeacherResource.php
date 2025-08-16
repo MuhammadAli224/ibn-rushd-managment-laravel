@@ -106,9 +106,8 @@ class TeacherResource extends Resource
                             ->label(__('filament-panels::pages/teachers.commission'))
                             ->numeric()
                             ->suffix('%')
-                            ->required(fn($get) => $get('commission_type') !== 'fixed')
-                            ->visible(fn($get) => $get('commission_type') !== 'fixed')
-                            ,
+                            ->required(fn($get) => $get('commission_type') !== 'changed')
+                            ->visible(fn($get) => $get('commission_type') !== 'changed'),
 
 
                         Select::make('subjects')
@@ -164,9 +163,7 @@ class TeacherResource extends Resource
 
 
             ])
-            ->filters([
-                
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
 

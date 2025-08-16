@@ -16,4 +16,9 @@ class Balance extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function scopeThisMonth(Builder $query, ?string $month = null): Builder
+    {
+        $month = $month ?? Carbon::now()->format('Y-m');
+        return $query->where('month', $month);
+    }
 }

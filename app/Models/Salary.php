@@ -6,11 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Salary extends Model
 {
-    use HasFactory;
-
+   
     protected $fillable = [
-        'salaryable_id',
-        'salaryable_type',
+        'user_id',
         'amount',
         'type',
         'salary_date',
@@ -18,13 +16,13 @@ class Salary extends Model
         'is_paid',
         'payment_method',
         'transaction_id',
-        'center_commission_value',
-        'center_commission_percentage',
+        'center_commession_percentage',
+        'center_commession_value',
         'notes',
     ];
 
-    public function salaryable()
+    public function user()
     {
-        return $this->morphTo();
+        return $this->belongsTo(User::class);
     }
 }

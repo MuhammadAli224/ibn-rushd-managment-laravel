@@ -210,8 +210,8 @@ class User extends Authenticatable implements Wallet, WalletFloat
         return $this->hasMany(Balance::class);
     }
 
-    public function salaries()
+    public function salary()
     {
-        return $this->morphMany(Salary::class, 'salaryable');
+        return $this->hasMany(Salary::class);
     }
 }
