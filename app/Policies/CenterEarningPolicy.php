@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Subject;
+use App\Models\CenterEarning;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class SubjectPolicy
+class CenterEarningPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class SubjectPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Subject $subject): bool
+    public function view(User $user, CenterEarning $centerEarning): bool
     {
          return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
@@ -29,21 +29,21 @@ class SubjectPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+       return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Subject $subject): bool
+    public function update(User $user, CenterEarning $centerEarning): bool
     {
-         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Subject $subject): bool
+    public function delete(User $user, CenterEarning $centerEarning): bool
     {
         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
@@ -51,14 +51,15 @@ class SubjectPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Subject $subject): bool
+    public function restore(User $user, CenterEarning $centerEarning): bool
     {
          return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
+
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Subject $subject): bool
+    public function forceDelete(User $user, CenterEarning $centerEarning): bool
     {
         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }

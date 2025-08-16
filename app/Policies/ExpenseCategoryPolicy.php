@@ -2,26 +2,26 @@
 
 namespace App\Policies;
 
-use App\Models\Subject;
+use App\Models\ExpenseCategory;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class SubjectPolicy
+class ExpenseCategoryPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+       return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Subject $subject): bool
+    public function view(User $user, ExpenseCategory $expenseCategory): bool
     {
-         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+       return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
 
     /**
@@ -29,13 +29,13 @@ class SubjectPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Subject $subject): bool
+    public function update(User $user, ExpenseCategory $expenseCategory): bool
     {
          return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
@@ -43,7 +43,7 @@ class SubjectPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Subject $subject): bool
+    public function delete(User $user, ExpenseCategory $expenseCategory): bool
     {
         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
@@ -51,15 +51,16 @@ class SubjectPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Subject $subject): bool
+    public function restore(User $user, ExpenseCategory $expenseCategory): bool
     {
          return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
+
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Subject $subject): bool
+    public function forceDelete(User $user, ExpenseCategory $expenseCategory): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
     }
 }
