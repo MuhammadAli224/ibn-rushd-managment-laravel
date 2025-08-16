@@ -36,4 +36,13 @@ class Driver extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
+    public function balances()
+    {
+        return $this->morphMany(Balance::class, 'balanceable');
+    }
+
+    public function salaries()
+    {
+        return $this->morphMany(Salary::class, 'salaryable');
+    }
 }

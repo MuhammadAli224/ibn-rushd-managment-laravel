@@ -49,7 +49,7 @@ return [
             "title" => "Operation Successful",
             "message" => " Wallet balance updated successfully.",
         ],
-        
+
     ],
 
     "expenses" => [
@@ -100,6 +100,54 @@ return [
                 "today" => "Daily Expenses",
                 "this_month" => "Monthly Expenses",
                 "this_week" => "Weekly Expenses",
+            ],
+        ],
+    ],
+
+
+    "balance" => [
+        "title" => "Balances",
+        "single" => "Balance",
+        "export" => "Export Expenses",
+        "columns" => [
+            "created_at" => "Date",
+            "category" => "Category",
+            "amount" => "Amount",
+            "description" => "Description",
+            "wallet" => "Wallet",
+            "user" => "User",
+            "confirmed" => "Confirmed",
+            "uuid" => "Code",
+            "today" => "Today",
+            "this_month" => "This Month",
+            "specific_date" => "Specific Date",
+            'total' => "Total",
+            'month' => "Month",
+        ],
+        "filters" => [
+            "category" => "Filter by Category",
+            "wallet" => "Filter by Wallet",
+            "date_range" => "Filter by Date Range",
+        ],
+      
+        "form" => [
+            "category" => "Category",
+            "amount" => "Amount",
+            "description" => "Description",
+            "wallet" => "Wallet",
+            "date" => "Date",
+        ],
+        "widgets" => [
+            "balance_overview" => [
+                "title" => "Balance Overview",
+                "description" => "View total balance for this month, or a specific Month.",
+
+                "this_month" => "This Month's Total Balance",
+
+                "specific_month" => "Total Expenses for Specific Month",
+            ],
+            "expenses_title" => [
+                "this_month" => "Monthly Balance",
             ],
         ],
     ],

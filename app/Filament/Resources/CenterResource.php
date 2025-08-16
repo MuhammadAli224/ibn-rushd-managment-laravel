@@ -110,9 +110,10 @@ class CenterResource extends Resource
                     ->label(__('filament-panels::pages/center.phone')),
                 Tables\Columns\TextColumn::make('address')
                     ->label(__('filament-panels::pages/center.address')),
-                Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('commission_ranges')
-                    ->label(__('filament-panels::pages/center.commission_ranges'))
+                Tables\Columns\ImageColumn::make('image')
+                ->label(__('filament-panels::pages/center.image')),
+                // Tables\Columns\TextColumn::make('commission_ranges')
+                //     ->label(__('filament-panels::pages/center.commission_ranges'))
 
             ])
             ->filters([

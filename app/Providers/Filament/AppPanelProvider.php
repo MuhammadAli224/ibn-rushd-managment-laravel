@@ -78,8 +78,8 @@ class AppPanelProvider extends PanelProvider
                     ->defaultLocales(['en', 'ar']),
 
             )
-             ->databaseNotifications()
-            // ->plugin(\TomatoPHP\FilamentWallet\FilamentWalletPlugin::make())
+            ->databaseNotifications()
+
 
         ;
     }

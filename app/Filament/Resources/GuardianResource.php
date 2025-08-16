@@ -26,9 +26,9 @@ class GuardianResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $navigationSort = 3;
-     public static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
-        
+
         return static::getModel()::count();
     }
     public static function getModelLabel(): string
@@ -74,6 +74,9 @@ class GuardianResource extends Resource
         return $table
             ->columns([
                 ...UserTable::columns(),
+                TextColumn::make('user.balance')
+                    ->label(__('filament-panels::pages/guardian.balance'))
+                    ->searchable(),
 
                 TextColumn::make('occupation')
                     ->label(__('filament-panels::pages/guardian.occupation'))

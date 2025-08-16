@@ -10,7 +10,7 @@ use Bavix\Wallet\Traits\HasWalletFloat;
 
 class Teacher extends BaseModel implements Wallet
 {
-      use HasWalletFloat;
+    use HasWalletFloat;
     protected $fillable = [
         'user_id',
         'date_of_birth',
@@ -51,47 +51,15 @@ class Teacher extends BaseModel implements Wallet
     {
         return $this->belongsToMany(Subject::class, 'subject_teacher', 'teacher_id', 'subject_id');
     }
+
+
+    public function balances()
+    {
+        return $this->morphMany(Balance::class, 'balanceable');
+    }
+
+    public function salaries()
+    {
+        return $this->morphMany(Salary::class, 'salaryable');
+    }
 }
-
-// use Bavix\Wallet\Models\Transaction;
-
-// // After a lesson is completed
-// $lessonPrice = $lesson->lesson_price;
-// $commissionRate = ($totalIncome >= 10000) ? 0.5 : 0.4;  // 50% if earnings > 10k
-// $teacherCommission = $lessonPrice * $commissionRate;
-
-// // Deposit the commission into the teacher's wallet
-// $teacher->deposit($teacherCommission, [
-//     'type' => 'lesson',
-//     'lesson_id' => $lesson->id,
-//     'commission_rate' => $commissionRate,
-// ]);
-
-// // Log the transaction
-// Transaction::create([
-//     'wallet_id' => $teacher->wallet->id,
-//     'amount' => $teacherCommission,
-//     'transaction_type' => 'deposit',
-//     'details' => "Commission for lesson ID: {$lesson->id}",
-// ]);
-
-
-// // End of month salary calculation
-// $teacherWalletBalance = $teacher->wallet->balance;  // Current balance
-
-// // Calculate teacher's final salary (you can aggregate based on lessons completed)
-// $teacherSalary = $teacher->wallet->balance;
-
-// // Allow the teacher to withdraw the salary to their bank account
-// $teacher->withdraw($teacherSalary, [
-//     'type' => 'salary',
-//     'details' => 'End of month salary withdrawal',
-// ]);
-
-// // Record the withdrawal transaction
-// Transaction::create([
-//     'wallet_id' => $teacher->wallet->id,
-//     'amount' => $teacherSalary,
-//     'transaction_type' => 'withdrawal',
-//     'details' => 'Salary withdrawal',
-// ]);

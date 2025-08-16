@@ -100,4 +100,52 @@ return [
         ],
 
     ],
+
+
+    "balance" => [
+        "title" => "الأرصدة",
+        "single" => "رصيد",
+        "export" => "تصدير الأرصدة",
+        "columns" => [
+            "created_at" => "التاريخ",
+            "category" => "الفئة",
+            "amount" => "المبلغ",
+            "description" => "الوصف",
+            "wallet" => "المحفظة",
+            "user" => "المستخدم",
+            "confirmed" => "تم التأكيد",
+            "uuid" => "الكود",
+            "today" => "اليوم",
+            "this_month" => "هذا الشهر",
+            "specific_date" => "تاريخ محدد",
+            'total' => "الإجمالي",
+            'month' => "الشهر",
+        ],
+        "filters" => [
+            "category" => "تصفية حسب الفئة",
+            "wallet" => "تصفية حسب المحفظة",
+            "date_range" => "تصفية حسب النطاق الزمني",
+        ],
+      
+        "form" => [
+            "category" => "الفئة",
+            "amount" => "المبلغ",
+            "description" => "الوصف",
+            "wallet" => "المحفظة",
+            "date" => " التاريخ",
+        ],
+        "widgets" => [
+            "balance_overview" => [
+                "title" => "نظرة عامة على الأرصدة",
+                "description" => "عرض إجمالي الأرصدة اليوم، هذا الشهر، أو لشهر محدد.",
+
+                "this_month" => "إجمالي الأرصدة لهذا الشهر",
+
+                "specific_month" => "إجمالي الأرصدة للشهر المحدد",
+            ],
+            "balance_title" => [
+                "this_month" => "الأرصدة الشهرية",
+            ],
+        ],
+    ],
 ];

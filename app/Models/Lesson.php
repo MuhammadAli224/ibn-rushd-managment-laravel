@@ -41,8 +41,8 @@ class Lesson extends BaseModel
         'lesson_date' => 'date',
         // 'lesson_start_time' => 'datetime:H:i A',
         // 'lesson_end_time' => 'datetime:H:i A',
-        // 'check_in_time' => 'datetime:H:i A',
-        // 'check_out_time' => 'datetime:H:i A',
+        'check_in_time' => 'datetime',
+        'check_out_time' => 'datetime',
         'is_active' => 'boolean',
     ];
     public function subject()

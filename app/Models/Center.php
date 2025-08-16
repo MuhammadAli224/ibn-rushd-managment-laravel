@@ -29,14 +29,11 @@ class Center extends Model implements Wallet
     {
         return $this->hasMany(User::class);
     }
-    // public function teachers()
-    // {
-    //     return $this->hasMany(User::class, 'center_id');
-    // }
-    // public function drivers()
-    // {
-    //     return $this->hasMany(User::class, 'center_id');
-    // }
+    public function earnings()
+    {
+        return $this->hasMany(CenterEarning::class);
+    }
+
     public function teachers()
     {
         return $this->hasMany(Teacher::class);
