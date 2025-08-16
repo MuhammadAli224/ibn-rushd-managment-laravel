@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
 use App\Models\Salary;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class SalaryPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class SalaryPolicy
      */
     public function view(User $user, Salary $salary): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class SalaryPolicy
      */
     public function create(User $user): bool
     {
-         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+         return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class SalaryPolicy
      */
     public function update(User $user, Salary $salary): bool
     {
-       return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+       return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class SalaryPolicy
      */
     public function delete(User $user, Salary $salary): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class SalaryPolicy
      */
     public function restore(User $user, Salary $salary): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class SalaryPolicy
      */
     public function forceDelete(User $user, Salary $salary): bool
     {
-         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+         return $user->hasRole( RoleEnum::ADMIN->value);
     }
 }

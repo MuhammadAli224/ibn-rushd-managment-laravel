@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
 use App\Models\Guardian;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class GuardianPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class GuardianPolicy
      */
     public function view(User $user, Guardian $guardian): bool
     {
-         return $user->hasRole(App\Enums\RoleEnum::Admin->value) || $user->id === $guardian->user_id;
+        return $user->hasRole(RoleEnum::ADMIN->value) || $user->id === $guardian->user_id;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
 use App\Models\Expense;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,9 +14,9 @@ class ExpensePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value) ||
-            $user->hasRole(App\Enums\RoleEnum::Manager->value) ||
-            $user->hasRole(App\Enums\RoleEnum::Accountant->value);
+        return $user->hasRole( RoleEnum::ADMIN->value) ||
+            $user->hasRole( RoleEnum::MANAGMENT->value) ||
+            $user->hasRole( RoleEnum::ACCOUNTING->value);
     }
 
     /**
@@ -23,9 +24,9 @@ class ExpensePolicy
      */
     public function view(User $user, Expense $expense): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value)
-            || $user->hasRole(App\Enums\RoleEnum::Manager->value)
-            || $user->hasRole(App\Enums\RoleEnum::Accountant->value);
+        return $user->hasRole( RoleEnum::ADMIN->value)
+            || $user->hasRole( RoleEnum::MANAGMENT->value)
+            || $user->hasRole( RoleEnum::ACCOUNTING->value);
     }
 
     /**
@@ -33,9 +34,9 @@ class ExpensePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value)
-            || $user->hasRole(App\Enums\RoleEnum::Manager->value)
-            || $user->hasRole(App\Enums\RoleEnum::Accountant->value);
+        return $user->hasRole( RoleEnum::ADMIN->value)
+            || $user->hasRole( RoleEnum::MANAGMENT->value)
+            || $user->hasRole( RoleEnum::ACCOUNTING->value);
     }
 
     /**
@@ -43,9 +44,9 @@ class ExpensePolicy
      */
     public function update(User $user, Expense $expense): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value)
-            || $user->hasRole(App\Enums\RoleEnum::Manager->value)
-            || $user->hasRole(App\Enums\RoleEnum::Accountant->value);
+        return $user->hasRole( RoleEnum::ADMIN->value)
+            || $user->hasRole( RoleEnum::MANAGMENT->value)
+            || $user->hasRole( RoleEnum::ACCOUNTING->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class ExpensePolicy
      */
     public function delete(User $user, Expense $expense): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -61,7 +62,7 @@ class ExpensePolicy
      */
     public function restore(User $user, Expense $expense): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -69,6 +70,6 @@ class ExpensePolicy
      */
     public function forceDelete(User $user, Expense $expense): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 }

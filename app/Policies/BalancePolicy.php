@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
 use App\Models\Balance;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class BalancePolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class BalancePolicy
      */
     public function view(User $user, Balance $balance): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value) || $user->id === $balance->user_id;
+        return $user->hasRole(RoleEnum::ADMIN->value) || $user->id === $balance->user_id;
     }
 
     /**
@@ -29,7 +30,7 @@ class BalancePolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class BalancePolicy
      */
     public function update(User $user, Balance $balance): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class BalancePolicy
      */
     public function delete(User $user, Balance $balance): bool
     {
-       return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -53,7 +54,7 @@ class BalancePolicy
      */
     public function restore(User $user, Balance $balance): bool
     {
-         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -61,6 +62,6 @@ class BalancePolicy
      */
     public function forceDelete(User $user, Balance $balance): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 }

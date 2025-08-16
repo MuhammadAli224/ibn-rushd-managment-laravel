@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
 use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -13,7 +14,7 @@ class SubjectPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -21,7 +22,7 @@ class SubjectPolicy
      */
     public function view(User $user, Subject $subject): bool
     {
-         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+         return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -29,7 +30,7 @@ class SubjectPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -37,7 +38,7 @@ class SubjectPolicy
      */
     public function update(User $user, Subject $subject): bool
     {
-         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+         return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -45,7 +46,7 @@ class SubjectPolicy
      */
     public function delete(User $user, Subject $subject): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -53,13 +54,13 @@ class SubjectPolicy
      */
     public function restore(User $user, Subject $subject): bool
     {
-         return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+         return $user->hasRole( RoleEnum::ADMIN->value);
     }
     /**
      * Determine whether the user can permanently delete the model.
      */
     public function forceDelete(User $user, Subject $subject): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 }

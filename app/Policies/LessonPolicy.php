@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\RoleEnum;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -21,23 +22,23 @@ class LessonPolicy
      */
     public function view(User $user, Lesson $lesson): bool
     {
-        if ($user->hasRole(App\Enums\RoleEnum::Admin->value)) {
+        if ($user->hasRole( RoleEnum::ADMIN->value)) {
             return true;
         }
 
-        if ($user->hasRole(App\Enums\RoleEnum::Teacher->value) && $user->id === $lesson->teacher->user_id) {
+        if ($user->hasRole( RoleEnum::TEACHER->value) && $user->id === $lesson->teacher->user_id) {
             return true;
         }
 
-        if ($user->hasRole(App\Enums\RoleEnum::Student->value) && $user->id === $lesson->student->guardian->user_id) {
+        if ($user->hasRole( RoleEnum::STUDENT->value) && $user->id === $lesson->student->guardian->user_id) {
             return true;
         }
 
-        if ($user->hasRole(App\Enums\RoleEnum::Parent->value) && $user->id === $lesson->guardian->user_id) {
+        if ($user->hasRole( RoleEnum::PARENT->value) && $user->id === $lesson->guardian->user_id) {
             return true;
         }
 
-        if ($user->hasRole(App\Enums\RoleEnum::Driver->value) && $user->id === $lesson->driver->user_id) {
+        if ($user->hasRole( RoleEnum::DRIVER->value) && $user->id === $lesson->driver->user_id) {
             return true;
         }
 
@@ -49,7 +50,7 @@ class LessonPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(RoleEnum::Admin->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -57,10 +58,10 @@ class LessonPolicy
      */
     public function update(User $user, Lesson $lesson): bool
     {
-        if ($user->hasRole(App\Enums\RoleEnum::Admin->value)) {
+        if ($user->hasRole( RoleEnum::ADMIN->value)) {
             return true;
         }
-        return $user->hasRole(App\Enums\RoleEnum::Teacher->value) && $user->id === $lesson->teacher->user_id;
+        return $user->hasRole( RoleEnum::TEACHER->value) && $user->id === $lesson->teacher->user_id;
     }
 
     /**
@@ -68,7 +69,7 @@ class LessonPolicy
      */
     public function delete(User $user, Lesson $lesson): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -76,7 +77,7 @@ class LessonPolicy
      */
     public function restore(User $user, Lesson $lesson): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 
     /**
@@ -84,6 +85,6 @@ class LessonPolicy
      */
     public function forceDelete(User $user, Lesson $lesson): bool
     {
-        return $user->hasRole(App\Enums\RoleEnum::Admin->value);
+        return $user->hasRole( RoleEnum::ADMIN->value);
     }
 }
