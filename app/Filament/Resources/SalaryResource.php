@@ -155,6 +155,7 @@ class SalaryResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('this_month')
+                ->default()
                     ->label(__('filament-panels::pages/wallet.balance.columns.this_month'))
                     ->query(fn(Builder $query) => $query->where('month', now()->format('Y-m'))),
 
