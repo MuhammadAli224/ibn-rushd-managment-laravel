@@ -158,6 +158,8 @@ return [
         "single" => "Salary",
         "export" => "Export Salaries",
         "calculate_salary" => "Calculate Salaries",
+        "month_helper" => "Select the month for which you want to calculate salaries.",
+        "month_placeholder" => "Select Month",
         "columns" => [
             "created_at" => "Date",
             "user" => "Employee",
@@ -212,9 +214,13 @@ return [
                 "this_month" => "Total Salaries This Month",
                 "specific_month" => "Total Salaries for Selected Month",
                 "today" => "Total Salaries Today",
+                "commission" => "Total Center Commission This Month",
+                "center_commission" => "Total Center Commission for Selected Month",
             ],
             "salary_title" => [
                 "this_month" => "Monthly Salaries",
+                "commission" => "Monthly Center Commission",
+
             ],
         ],
         "notifications" => [

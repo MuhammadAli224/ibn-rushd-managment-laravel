@@ -154,6 +154,8 @@ return [
         "single" => "راتب",
         "export" => "تصدير الرواتب",
         "calculate_salary" => "حساب الرواتب",
+        "month_helper" => "اختر الشهر الذي تريد حساب الرواتب له.",
+        "month_placeholder" => "اختر الشهر",
         "columns" => [
             "created_at" => "التاريخ",
             "user" => "الموظف",
@@ -208,9 +210,12 @@ return [
                 "this_month" => "إجمالي الرواتب لهذا الشهر",
                 "specific_month" => "إجمالي الرواتب للشهر المحدد",
                 "today" => "إجمالي الرواتب اليوم",
+                "commission" => "إجمالي عمولة المركز لهذا الشهر",
+                "center_commission" => "إجمالي عمولة المركز للشهر المحدد",
             ],
             "salary_title" => [
                 "this_month" => "الرواتب الشهرية",
+                "commission" => "عمولة المركز الشهرية",
             ],
         ],
         "notifications" => [

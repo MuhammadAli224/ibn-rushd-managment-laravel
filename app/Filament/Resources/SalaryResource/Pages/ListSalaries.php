@@ -3,8 +3,10 @@
 namespace App\Filament\Resources\SalaryResource\Pages;
 
 use App\Filament\Resources\SalaryResource;
+use App\Filament\Resources\SalaryResource\Widgets\ThisMonthSalary;
 use Filament\Actions;
 use Filament\Actions\Action;
+use Filament\Forms\Components\DatePicker;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Support\Facades\DB;
 
@@ -12,14 +14,38 @@ class ListSalaries extends ListRecords
 {
     protected static string $resource = SalaryResource::class;
 
+     protected function getHeaderWidgets(): array
+    {
+        return [
+            ThisMonthSalary::class,
+        ];
+    }
+
     protected function getHeaderActions(): array
     {
         return [
             Action::make('calculate_salary')
                 ->label(__('filament-panels::pages/wallet.salary.calculate_salary'))
                 ->color('success')
-                ->action(function () {
-                    $thisMonth = now()->format('Y-m');
+                ->form([
+                    DatePicker::make('month')
+                        ->label(__('filament-panels::pages/wallet.salary.columns.month'))
+                        ->helperText(__('filament-panels::pages/wallet.salary.month_helper'))
+                        ->placeholder(__('filament-panels::pages/wallet.salary.month_placeholder'))
+                        ->minDate(now()->subYear())
+                        ->maxDate(now())
+                        ->suffixIcon('heroicon-o-calendar-date-range')
+                        ->locale('ar')
+                        ->displayFormat('Y-m')
+                        ->required()
+                        ->default(now()) // default current month
+                        ->native(false) // show nice UI instead of raw HTML picker
+                        ->closeOnDateSelection(),
+                ])
+                ->action(function (array $data) {
+
+                    $thisMonth = \Carbon\Carbon::parse($data['month'])->format('Y-m');
+
 
                     DB::transaction(function () use ($thisMonth) {
                         $balances = \App\Models\Balance::where('month', $thisMonth)->get();

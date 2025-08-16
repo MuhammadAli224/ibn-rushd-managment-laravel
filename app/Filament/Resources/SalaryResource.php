@@ -11,6 +11,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -153,8 +154,41 @@ class SalaryResource extends Resource
 
             ])
             ->filters([
-                //
-            ])
+                Tables\Filters\Filter::make('this_month')
+                    ->label(__('filament-panels::pages/wallet.balance.columns.this_month'))
+                    ->query(fn(Builder $query) => $query->where('month', now()->format('Y-m'))),
+
+                Tables\Filters\SelectFilter::make('month')
+                    ->label('Select Month')
+                    ->options(function () {
+                        $months = [];
+                        $currentYear = now()->year;
+                        for ($i = 1; $i <= 12; $i++) {
+                            $monthKey = sprintf('%04d-%02d', $currentYear, $i);
+                            $months[$monthKey] = \Carbon\Carbon::create($currentYear, $i, 1)->format('F');
+                        }
+                        return $months;
+                    })
+                    ->query(function (Builder $query, array $data) {
+
+                        if (!empty($data['value'])) {
+                            $query->where('month', $data['value']);
+                        }
+                    }),
+
+
+
+                Tables\Filters\SelectFilter::make('user_id')
+                    ->label(__('filament-panels::pages/wallet.balance.columns.user'))
+                    ->options(function () {
+                        return \App\Models\User::whereHas('salary')
+                            ->pluck('name', 'id')
+                            ->toArray();
+                    })
+                    ->preload()
+                    ->searchable(),
+
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->visible(
