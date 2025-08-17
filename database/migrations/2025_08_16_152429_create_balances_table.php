@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('balances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable()->after('id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
             $table->decimal('amount', 12, 2)->default(0);
-            $table->string('month', 7); 
+            $table->string('month', 7);
             $table->unique(['user_id', 'month']);
 
             $table->timestamps();
