@@ -33,16 +33,74 @@ use Illuminate\Support\Facades\Date;
 use Filament\Tables\Enums\FiltersLayout;
 
 
+
 class LessonResource extends Resource
 {
     protected static ?string $model = Lesson::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return parent::getEloquentQuery();
+        }
+
+        if ($user->hasRole(RoleEnum::TEACHER->value)) {
+            return parent::getEloquentQuery()
+                ->where('teacher_id', $user->teacher->id);
+        }
+        if ($user->hasRole(RoleEnum::DRIVER->value)) {
+            return parent::getEloquentQuery()
+                ->where('driver_id', $user->driver->id);
+        }
+
+
+        if ($user->hasRole(RoleEnum::PARENT->value)) {
+            return parent::getEloquentQuery()
+                ->whereHas('student', fn($q) => $q->where('guardian_id', $user->guardian->id));
+        }
+
+
+
+        return parent::getEloquentQuery()->whereRaw('1 = 0');
+    }
+
     public static function getNavigationBadge(): ?string
     {
+        $user = auth()->user();
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return parent::getEloquentQuery()->count();
+        }
 
-        return static::getModel()::today()->count();
+        if ($user->hasRole(RoleEnum::TEACHER->value)) {
+            return parent::getEloquentQuery()
+                ->where('teacher_id', $user->teacher->id)->count();
+        }
+        if ($user->hasRole(RoleEnum::DRIVER->value)) {
+            return parent::getEloquentQuery()
+                ->where('driver_id', $user->driver->id)->count();
+        }
+
+
+        if ($user->hasRole(RoleEnum::PARENT->value)) {
+            return parent::getEloquentQuery()
+                ->whereHas('student', fn($q) => $q->where('guardian_id', $user->guardian->id))->count();
+        }
+
+
+
+        return "1";
     }
+
+
+    // public static function getNavigationBadge(): ?string
+    // {
+
+    //     return static::getModel()::today()->count();
+    // }
 
     public static function getModelLabel(): string
     {
@@ -131,7 +189,7 @@ class LessonResource extends Resource
                             ->nullable()
                             ->reactive(),
 
-                            
+
                         DatePicker::make('lesson_date')
                             ->label(__('filament-panels::pages/lesson.lesson_date'))
                             ->native(false)
@@ -368,6 +426,9 @@ class LessonResource extends Resource
                     ->label(__('filament-panels::pages/dashboard.teacher'))
                     ->options(
                         fn() => Teacher::with('user')->get()->pluck('user.name', 'id')->toArray()
+                    )
+                    ->visible(
+                        fn() => auth()->user()->hasRole(RoleEnum::ADMIN->value)
                     ),
 
                 SelectFilter::make('student')
