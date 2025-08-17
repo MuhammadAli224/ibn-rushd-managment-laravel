@@ -15,6 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class UserResource extends Resource
 {
@@ -39,14 +40,43 @@ class UserResource extends Resource
     {
         return  __('filament-panels::pages/dashboard.users');
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return parent::getEloquentQuery();
+        } else {
+            return parent::getEloquentQuery()
+                ->where('id', $user->id);
+        }
+    }
+
     public static function getNavigationBadge(): ?string
     {
+        $user = auth()->user();
 
-        return static::getModel()::where(function ($q) {
-            $q->where('is_super_admin', '!=', 1)
-                ->orWhereNull('is_super_admin');
-        })->count();
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return static::getModel()::where(function ($q) {
+                $q->where('is_super_admin', '!=', 1)
+                    ->orWhereNull('is_super_admin');
+            })->count();
+        }
+
+
+
+        return "1";
     }
+
+    // public static function getNavigationBadge(): ?string
+    // {
+
+    //     return static::getModel()::where(function ($q) {
+    //         $q->where('is_super_admin', '!=', 1)
+    //             ->orWhereNull('is_super_admin');
+    //     })->count();
+    // }
 
     public static function form(Form $form): Form
     {
@@ -100,50 +130,6 @@ class UserResource extends Resource
                     '',
                 ),
 
-                //     ->columns(2)
-                //     ->schema([
-                //         Select::make('role')
-                //             ->label(__('filament-panels::pages/user.role'))
-                //             ->options(RoleEnum::class)
-                //             ->required()
-                //             ->reactive(),
-
-                //         Select::make('gender')
-                //             ->label(__('filament-panels::pages/user.gender'))
-                //             ->options(GenderEnum::class)
-                //             ->required(),
-
-                //         TextInput::make('name')
-                //             ->label(__('filament-panels::pages/user.name'))
-                //             ->required()
-                //             ->minLength(3)
-                //             ->maxLength(255),
-
-                //         TextInput::make('email')
-                //             ->label(__('filament-panels::pages/user.email'))
-                //             ->email()
-                //             ->unique()
-                //             ->required(),
-
-                //         TextInput::make('phone')
-                //             ->label(__('filament-panels::pages/user.phone'))
-                //             ->tel()
-                //             ->unique()
-                //             ->required(),
-
-                //         TextInput::make('address')
-                //             ->label(__('filament-panels::pages/user.address')),
-
-                //         FileUpload::make('image')
-                //             ->label(__('filament-panels::pages/user.image'))
-                //             ->disk('public')
-                //             ->directory('users/images')
-                //             ->image()
-                //             ->visibility('public')
-                //             ->columnSpanFull()
-                //             ->imageEditor(),
-
-                //     ]),
 
             ]);
     }
@@ -181,7 +167,7 @@ class UserResource extends Resource
                     ->options(fn() => collect(RoleEnum::cases())->mapWithKeys(fn($role) => [
                         $role->value => $role->getLabel(),
                     ])->toArray())
-                    ->query(function ( $query, array $data) {
+                    ->query(function ($query, array $data) {
                         if (!empty($data['value'])) {
                             $query->whereHas('roles', fn($q) => $q->where('name', $data['value']));
                         }
@@ -190,15 +176,15 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 //  WalletAction::make('wallet'),
-                WalletAction::make('wallet')
-                    ->visible(
-                        fn($record) =>
-                        auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
-                            $record->hasRole(RoleEnum::TEACHER->value)
-                    )
-                    ->label(__('filament-panels::pages/user.wallet'))
-                    ->icon('heroicon-o-wallet')
-                    ->color('success'),
+                // WalletAction::make('wallet')
+                //     ->visible(
+                //         fn($record) =>
+                //         auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
+                //             $record->hasRole(RoleEnum::TEACHER->value)
+                //     )
+                //     ->label(__('filament-panels::pages/user.wallet'))
+                //     ->icon('heroicon-o-wallet')
+                //     ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\QualificationEnum;
+use App\Enums\RoleEnum;
 use App\Filament\Components\CreatorUpdator;
 use App\Filament\Components\UserTable;
 use App\Filament\Resources\TeacherResource\Pages;
@@ -19,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class TeacherResource extends Resource
 {
@@ -26,10 +28,33 @@ class TeacherResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?int $navigationSort = 1;
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return parent::getEloquentQuery();
+        }
+
+        if ($user->hasRole(RoleEnum::TEACHER->value)) {
+            return parent::getEloquentQuery()
+                ->where('user_id', $user->id);
+        }
+
+        return parent::getEloquentQuery()->whereRaw('1 = 0');
+    }
+
     public static function getNavigationBadge(): ?string
     {
+        $user = auth()->user();
 
-        return static::getModel()::count();
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return static::getModel()::count();
+        }
+
+
+
+        return null;
     }
 
     public static function getModelLabel(): string
@@ -85,13 +110,6 @@ class TeacherResource extends Resource
                             ->required(),
 
 
-                        // TextInput::make('commission')
-                        //     ->label(__('filament-panels::pages/teachers.commission'))
-                        //     ->numeric()
-
-                        //     ->suffix('%')
-                        //     ->required(),
-
                         Select::make('commission_type')
                             ->label(__('filament-panels::pages/teachers.commission_type'))
                             ->options([
@@ -100,12 +118,15 @@ class TeacherResource extends Resource
                             ])
                             ->default('fixed')
                             ->required()
+                            ->visibleOn((auth()->user()->hasRole(RoleEnum::ADMIN->value)))
                             ->reactive(),
 
                         TextInput::make('commission')
                             ->label(__('filament-panels::pages/teachers.commission'))
                             ->numeric()
                             ->suffix('%')
+                            ->visibleOn((auth()->user()->hasRole(RoleEnum::ADMIN->value)))
+
                             ->required(fn($get) => $get('commission_type') !== 'changed')
                             ->visible(fn($get) => $get('commission_type') !== 'changed'),
 
@@ -116,6 +137,9 @@ class TeacherResource extends Resource
                             ->multiple()
                             ->preload()
                             ->searchable()
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
                             ->required(),
 
 

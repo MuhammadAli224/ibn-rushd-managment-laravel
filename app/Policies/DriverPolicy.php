@@ -14,7 +14,7 @@ class DriverPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value) ;
+        return $user->hasRole(RoleEnum::ADMIN->value) || $user->hasRole(RoleEnum::DRIVER->value);
     }
 
     /**
@@ -22,7 +22,8 @@ class DriverPolicy
      */
     public function view(User $user, Driver $driver): bool
     {
-       return $user->hasRole( RoleEnum::ADMIN->value) || $user->id === $driver->user_id;
+        return $user->hasRole(RoleEnum::ADMIN->value)
+            || ($user->hasRole(RoleEnum::DRIVER->value) && $user->id === $driver->user_id);
     }
 
     /**
@@ -30,7 +31,7 @@ class DriverPolicy
      */
     public function create(User $user): bool
     {
-         return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -38,7 +39,8 @@ class DriverPolicy
      */
     public function update(User $user, Driver $driver): bool
     {
-       return $user->hasRole( RoleEnum::ADMIN->value) || $user->id === $driver->user_id;
+        return $user->hasRole(RoleEnum::ADMIN->value)
+            || ($user->hasRole(RoleEnum::DRIVER->value) && $user->id === $driver->user_id);
     }
 
     /**
@@ -46,7 +48,7 @@ class DriverPolicy
      */
     public function delete(User $user, Driver $driver): bool
     {
-      return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -54,7 +56,7 @@ class DriverPolicy
      */
     public function restore(User $user, Driver $driver): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -62,6 +64,6 @@ class DriverPolicy
      */
     public function forceDelete(User $user, Driver $driver): bool
     {
-         return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 }

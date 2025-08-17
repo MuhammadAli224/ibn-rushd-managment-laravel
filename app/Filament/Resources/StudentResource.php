@@ -76,10 +76,7 @@ class StudentResource extends Resource
                             ->required()
                             ->maxLength(255),
 
-                        // Forms\Components\TextInput::make('class')
-                        //     ->label(__('filament-panels::pages/students.class'))
-                        //     ->required()
-                        //     ->maxLength(255),
+
 
                         Select::make('class')
                             ->label(__('filament-panels::pages/students.class'))

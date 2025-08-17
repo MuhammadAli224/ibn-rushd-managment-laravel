@@ -71,7 +71,10 @@ class LessonResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->reactive(),
+                            ->reactive()
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            ),
 
                         Select::make('teacher_id')
                             ->label(__('filament-panels::pages/dashboard.teacher'))
@@ -91,6 +94,9 @@ class LessonResource extends Resource
                                 optional(Teacher::find($state), fn($teacher) =>
                                 $set('commission_rate', $teacher->commission))
                             )
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
                             ->required()
                             ->preload()
                             ->reactive(),
@@ -101,6 +107,9 @@ class LessonResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required()
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
                             ->afterStateUpdated(
                                 fn($state, $set) =>
                                 optional(\App\Models\Student::find($state), fn($student) =>
@@ -119,11 +128,16 @@ class LessonResource extends Resource
                                 )->with('user')->get()->pluck('user.name', 'id')
                             )
                             ->preload()
-                            ->nullable(),
+                            ->nullable()
+                            ->reactive(),
 
+                            
                         DatePicker::make('lesson_date')
                             ->label(__('filament-panels::pages/lesson.lesson_date'))
                             ->native(false)
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
                             ->displayFormat('d/m/Y')
                             ->weekStartsOnSunday()
                             ->suffixIcon('heroicon-o-calendar-date-range')
@@ -155,6 +169,9 @@ class LessonResource extends Resource
 
                         TextInput::make('lesson_location')
                             ->label(__('filament-panels::pages/lesson.lesson_location'))
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
                             ->required(),
 
 
@@ -177,14 +194,14 @@ class LessonResource extends Resource
                         DateTimePicker::make('check_in_time')
                             ->label(__('filament-panels::pages/lesson.check_in_time'))
                             ->nullable()
-                            ->readOnly()
+                            // ->readOnly()
                             ->visibleOn('edit'),
 
                         DateTimePicker::make('check_out_time')
                             ->label(__('filament-panels::pages/lesson.check_out_time'))
                             ->nullable()
 
-                            ->readOnly()
+                            // ->readOnly()
                             ->visibleOn('edit'),
 
                         TextInput::make('uber_charge')
@@ -192,7 +209,9 @@ class LessonResource extends Resource
                             ->numeric()
                             ->prefix('QAR')
                             ->nullable()
-                            ->readOnly()
+                            ->visible(fn(callable $get) => $get('driver_id') === null)
+
+                            // ->readOnly()
                             ->visibleOn('edit'),
 
                         TextInput::make('lesson_price')
@@ -201,12 +220,12 @@ class LessonResource extends Resource
                             ->prefix('QR')
                             ->required(),
 
-                        TextInput::make('commission_rate')
-                            ->label(__('filament-panels::pages/lesson.commission_rate'))
-                            ->numeric()
-                            ->suffix('%')
-                            ->disabled()
-                            ->nullable(),
+                        // TextInput::make('commission_rate')
+                        //     ->label(__('filament-panels::pages/lesson.commission_rate'))
+                        //     ->numeric()
+                        //     ->suffix('%')
+                        //     ->disabled()
+                        //     ->nullable(),
 
                         Textarea::make('lesson_notes')
                             ->label(__('filament-panels::pages/lesson.lesson_notes'))
@@ -374,7 +393,7 @@ class LessonResource extends Resource
                             $query->whereHas('student', fn($q) => $q->where('guardian_id', $data['value']));
                         }
                     }),
-                ],layout:FiltersLayout::AboveContentCollapsible)
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

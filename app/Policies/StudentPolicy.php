@@ -14,8 +14,9 @@ class StudentPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value) || $user->hasRole( RoleEnum::TEACHER->value)
-            || $user->hasRole( RoleEnum::PARENT->value);
+        return $user->hasRole(RoleEnum::ADMIN->value)
+            || $user->hasRole(RoleEnum::TEACHER->value)
+            || $user->hasRole(RoleEnum::PARENT->value);
     }
 
     /**
@@ -23,7 +24,9 @@ class StudentPolicy
      */
     public function view(User $user, Student $student): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value) || $user->id === $student->guardian->user_id;
+        return $user->hasRole(RoleEnum::ADMIN->value)
+            || $user->hasRole(RoleEnum::TEACHER->value)
+            || ($user->hasRole(RoleEnum::PARENT->value) && $user->id === $student->guardian->user_id);
     }
 
     /**
@@ -31,7 +34,7 @@ class StudentPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -39,7 +42,8 @@ class StudentPolicy
      */
     public function update(User $user, Student $student): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value)
+            || ($user->hasRole(RoleEnum::PARENT->value) && $user->id === $student->guardian->user_id);
     }
 
     /**
@@ -47,7 +51,7 @@ class StudentPolicy
      */
     public function delete(User $user, Student $student): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -55,7 +59,7 @@ class StudentPolicy
      */
     public function restore(User $user, Student $student): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -63,6 +67,6 @@ class StudentPolicy
      */
     public function forceDelete(User $user, Student $student): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 }

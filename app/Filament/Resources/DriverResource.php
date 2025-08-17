@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RoleEnum;
 use App\Filament\Components\CreatorUpdator;
 use App\Filament\Components\UserTable;
 use App\Filament\Resources\DriverResource\Pages;
@@ -17,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class DriverResource extends Resource
 {
@@ -25,11 +27,35 @@ class DriverResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     protected static ?int $navigationSort = 2;
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return parent::getEloquentQuery();
+        }
+
+        if ($user->hasRole(RoleEnum::DRIVER->value)) {
+            return parent::getEloquentQuery()
+                ->where('user_id', $user->id);
+        }
+
+        return parent::getEloquentQuery()->whereRaw('1 = 0');
+    }
+
     public static function getNavigationBadge(): ?string
     {
+        $user = auth()->user();
 
-        return static::getModel()::count();
+        if ($user->hasRole(RoleEnum::DRIVER->value)) {
+            return static::getModel()::count();
+        }
+
+
+
+        return null;
     }
+
 
     public static function getModelLabel(): string
     {

@@ -14,7 +14,7 @@ class TeacherPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value) || $user->hasRole(RoleEnum::TEACHER->value);
     }
 
     /**
@@ -22,7 +22,8 @@ class TeacherPolicy
      */
     public function view(User $user, Teacher $teacher): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value) || $user->id === $teacher->user_id;
+        return $user->hasRole(RoleEnum::ADMIN->value)
+            || ($user->hasRole(RoleEnum::TEACHER->value) && $user->id === $teacher->user_id);
     }
 
     /**
@@ -30,7 +31,7 @@ class TeacherPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -38,7 +39,8 @@ class TeacherPolicy
      */
     public function update(User $user, Teacher $teacher): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value) || $user->id === $teacher->user_id;
+        return $user->hasRole(RoleEnum::ADMIN->value)
+            || ($user->hasRole(RoleEnum::TEACHER->value) && $user->id === $teacher->user_id);
     }
 
     /**
@@ -46,7 +48,7 @@ class TeacherPolicy
      */
     public function delete(User $user, Teacher $teacher): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -54,7 +56,7 @@ class TeacherPolicy
      */
     public function restore(User $user, Teacher $teacher): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 
     /**
@@ -62,6 +64,6 @@ class TeacherPolicy
      */
     public function forceDelete(User $user, Teacher $teacher): bool
     {
-        return $user->hasRole( RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value);
     }
 }
