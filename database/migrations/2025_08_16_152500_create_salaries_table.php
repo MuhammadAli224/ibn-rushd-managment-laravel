@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
-           $table->foreignId('user_id')->after('id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->decimal('amount', 12, 2)->default(0);
             $table->enum('type', ['fixed', 'commission', 'daily'])->default('fixed');
             $table->date('salary_date')->nullable(); // monthly salary date
