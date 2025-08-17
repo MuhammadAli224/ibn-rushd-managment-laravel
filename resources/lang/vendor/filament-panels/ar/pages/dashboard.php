@@ -24,6 +24,11 @@ return [
     "updated_by" => "تم التحديث بواسطة",
     "created_at" => "وقت الانشاء",
     "updated_at" => "وقت اخر تعديل",
+    "expenseCategory" => "تنصيف المصروفات",
+    "expenseCategories" => "تصنيفات المصروفات",
+    "center" => "مركز",
+    "centers" => "المراكز",
+    'center_info' => "معلومات المركز",
 
     'actions' => [
 

@@ -28,6 +28,7 @@ class UserProfileResource extends JsonResource
             "national_id" => (int)$this->national_id,
             "is_active" => $this->is_active,
             "fcm_token" => $this->fcm_token,
+            "onesignal_token" => $this->onesignal_token,
             'permissions' => $this->permissions?->pluck('name')->toArray() ?? [],
             'roles' => $this->roles?->pluck('name')->first() ?? [],
         ];

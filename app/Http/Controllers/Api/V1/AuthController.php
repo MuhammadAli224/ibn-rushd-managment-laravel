@@ -19,11 +19,12 @@ class AuthController extends Controller
 {
     use ApiResponseTrait;
 
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request, PushNotificationService $pushService)
     {
 
         try {
             $user = User::whereEmailOrPhone($request->input('login'))
+
                 ->active()
                 ->first();
             \Log::error('User found: ' . ($user ? $user->id : 'No user found'));
@@ -44,6 +45,13 @@ class AuthController extends Controller
                     ->update(['fcm_token' => null]);
 
                 $user->update(['fcm_token' => $request->fcm_token]);
+            }
+            if ($request->has('onesignal_token')) {
+                User::where('onesignal_token', $request->onesignal_token)
+                    ->where('id', '!=', $user->id)
+                    ->update(['onesignal_token' => null]);
+
+                $user->update(['onesignal_token' => $request->onesignal_token]);
 
 
 
@@ -51,7 +59,7 @@ class AuthController extends Controller
                 // $message = __('notification.new_login_notification') . $request->device_name;
                 // $user->notify(new OneSignalNotification($title, $message));
 
-                // $pushService->sendToUser($user->fcm_token, $title, $message);
+                // $pushService->sendToUser($user->onesignal_token, $title, $message);
             }
             // if ($user->tokens()->exists()) {
             //     return $this->error(

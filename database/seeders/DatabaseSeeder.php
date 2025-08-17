@@ -25,12 +25,12 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ExpenseCategorySeeder::class,
             SubjectSeeder::class,
-            TeacherSeeder::class,
-             SubjectTeacherSeeder::class,
-            GuardianSeeder::class,
-            DriverSeeder::class,
-            StudentSeeder::class,
-            LessonSeeder::class,
+            // TeacherSeeder::class,
+            // SubjectTeacherSeeder::class,
+            // GuardianSeeder::class,
+            // DriverSeeder::class,
+            // StudentSeeder::class,
+            // LessonSeeder::class,
            
 
         ]);

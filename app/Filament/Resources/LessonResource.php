@@ -8,6 +8,7 @@ use App\Filament\Components\CreatorUpdator;
 use App\Filament\Resources\LessonResource\Pages;
 use App\Filament\Resources\LessonResource\RelationManagers;
 use App\Models\Driver;
+use App\Models\Guardian;
 use App\Models\Lesson;
 use App\Models\Teacher;
 use Carbon\Carbon;
@@ -24,20 +25,89 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Date;
+use Filament\Tables\Enums\FiltersLayout;
+
+
 
 class LessonResource extends Resource
 {
     protected static ?string $model = Lesson::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return parent::getEloquentQuery();
+        }
+
+        if ($user->hasRole(RoleEnum::TEACHER->value)) {
+            return parent::getEloquentQuery()
+                ->where('teacher_id', $user->teacher->id);
+        }
+        if ($user->hasRole(RoleEnum::DRIVER->value)) {
+            return parent::getEloquentQuery()
+                ->where('driver_id', $user->driver->id);
+        }
+
+
+        if ($user->hasRole(RoleEnum::PARENT->value)) {
+            return parent::getEloquentQuery()
+                ->whereHas('student', fn($q) => $q->where('guardian_id', $user->guardian->id));
+        }
+
+
+
+        return parent::getEloquentQuery()->whereRaw('1 = 0');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $user = auth()->user();
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return parent::getEloquentQuery()->count();
+        }
+
+        if ($user->hasRole(RoleEnum::TEACHER->value)) {
+            return parent::getEloquentQuery()
+                ->where('teacher_id', $user->teacher->id)->count();
+        }
+        if ($user->hasRole(RoleEnum::DRIVER->value)) {
+            return parent::getEloquentQuery()
+                ->where('driver_id', $user->driver->id)->count();
+        }
+
+
+        if ($user->hasRole(RoleEnum::PARENT->value)) {
+            return parent::getEloquentQuery()
+                ->whereHas('student', fn($q) => $q->where('guardian_id', $user->guardian->id))->count();
+        }
+
+
+
+        return "1";
+    }
+
+
+    // public static function getNavigationBadge(): ?string
+    // {
+
+    //     return static::getModel()::today()->count();
+    // }
+
     public static function getModelLabel(): string
     {
         return  __('filament-panels::pages/dashboard.lesson');
     }
+
+
     public static function getPluralModelLabel(): string
     {
         return  __('filament-panels::pages/dashboard.lessons');
@@ -59,38 +129,14 @@ class LessonResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required()
-                            ->reactive(),
+                            ->reactive()
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            ),
 
                         Select::make('teacher_id')
                             ->label(__('filament-panels::pages/dashboard.teacher'))
-                            // ->options(
 
-                            //     function (callable $get) {
-                            //         $subjectId = $get('subject_id');
-
-                            //         if (!$subjectId) {
-                            //             return Teacher::whereHas(
-                            //                 'user.roles',
-                            //                 fn($q) =>
-                            //                 $q->where('name', RoleEnum::TEACHER->value)
-                            //             )->with('user')->get()->pluck('user.name', 'id');
-                            //         }
-
-                            //         return Teacher::whereHas(
-                            //             'user.roles',
-                            //             fn($q) =>
-                            //             $q->where('name', RoleEnum::TEACHER->value)
-                            //         )
-                            //             ->whereHas(
-                            //                 'subjects',
-                            //                 fn($query) =>
-                            //                 $query->where('subjects.id', $subjectId)
-                            //             )
-                            //             ->with('user')
-                            //             ->get()
-                            //             ->pluck('user.name', 'id');
-                            //     }
-                            // )
                             ->options(fn(callable $get) => Teacher::query()
                                 ->when(
                                     $get('subject_id'),
@@ -106,6 +152,9 @@ class LessonResource extends Resource
                                 optional(Teacher::find($state), fn($teacher) =>
                                 $set('commission_rate', $teacher->commission))
                             )
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
                             ->required()
                             ->preload()
                             ->reactive(),
@@ -116,6 +165,9 @@ class LessonResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required()
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
                             ->afterStateUpdated(
                                 fn($state, $set) =>
                                 optional(\App\Models\Student::find($state), fn($student) =>
@@ -134,15 +186,21 @@ class LessonResource extends Resource
                                 )->with('user')->get()->pluck('user.name', 'id')
                             )
                             ->preload()
-                            ->required(),
+                            ->nullable()
+                            ->reactive(),
+
 
                         DatePicker::make('lesson_date')
                             ->label(__('filament-panels::pages/lesson.lesson_date'))
                             ->native(false)
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
                             ->displayFormat('d/m/Y')
                             ->weekStartsOnSunday()
                             ->suffixIcon('heroicon-o-calendar-date-range')
                             ->locale('ar')
+                            ->timezone('Asia/Qatar')
                             ->closeOnDateSelection()
                             ->minDate(now()->subDays(5))
                             ->default(Carbon::now()->addDay())
@@ -154,6 +212,7 @@ class LessonResource extends Resource
                             ->native(false)
                             ->displayFormat('h:i A')
                             ->default(now()->format('h:i A'))
+                            ->timezone('Asia/Qatar')
                             ->required(),
 
                         TimePicker::make('lesson_end_time')
@@ -161,12 +220,16 @@ class LessonResource extends Resource
                             ->seconds(false)
                             ->native(false)
                             ->displayFormat('h:i A')
+                            ->timezone('Asia/Qatar')
                             ->default(now()->addHour()->format('h:i A'))
                             ->required(),
 
 
                         TextInput::make('lesson_location')
                             ->label(__('filament-panels::pages/lesson.lesson_location'))
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
                             ->required(),
 
 
@@ -189,14 +252,14 @@ class LessonResource extends Resource
                         DateTimePicker::make('check_in_time')
                             ->label(__('filament-panels::pages/lesson.check_in_time'))
                             ->nullable()
-                            ->readOnly()
+                            // ->readOnly()
                             ->visibleOn('edit'),
 
                         DateTimePicker::make('check_out_time')
                             ->label(__('filament-panels::pages/lesson.check_out_time'))
                             ->nullable()
 
-                            ->readOnly()
+                            // ->readOnly()
                             ->visibleOn('edit'),
 
                         TextInput::make('uber_charge')
@@ -204,21 +267,23 @@ class LessonResource extends Resource
                             ->numeric()
                             ->prefix('QAR')
                             ->nullable()
-                            ->readOnly()
+                            ->visible(fn(callable $get) => $get('driver_id') === null)
+
+                            // ->readOnly()
                             ->visibleOn('edit'),
 
                         TextInput::make('lesson_price')
                             ->label(__('filament-panels::pages/lesson.lesson_price'))
                             ->numeric()
                             ->prefix('QR')
-                            ->nullable(),
+                            ->required(),
 
-                        TextInput::make('commission_rate')
-                            ->label(__('filament-panels::pages/lesson.commission_rate'))
-                            ->numeric()
-                            ->suffix('%')
-                            ->disabled()
-                            ->nullable(),
+                        // TextInput::make('commission_rate')
+                        //     ->label(__('filament-panels::pages/lesson.commission_rate'))
+                        //     ->numeric()
+                        //     ->suffix('%')
+                        //     ->disabled()
+                        //     ->nullable(),
 
                         Textarea::make('lesson_notes')
                             ->label(__('filament-panels::pages/lesson.lesson_notes'))
@@ -230,6 +295,7 @@ class LessonResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('created_at', 'desc')
             ->columns([
                 TextColumn::make('subject.name')
                     ->label(__('filament-panels::pages/dashboard.subject'))
@@ -237,7 +303,7 @@ class LessonResource extends Resource
                     ->searchable()
                     ->toggleable(),
 
-                TextColumn::make('teacher.name')
+                TextColumn::make('teacher.user.name')
                     ->label(__('filament-panels::pages/dashboard.teacher'))
                     ->sortable()
                     ->searchable()
@@ -262,11 +328,11 @@ class LessonResource extends Resource
                     })
                     ->toggleable(),
 
-                TextColumn::make('driver.name')
+                TextColumn::make('driver.user.name')
                     ->label(__('filament-panels::pages/dashboard.driver'))
                     ->sortable()
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(),
 
                 TextColumn::make('lesson_date')
                     ->label(__('filament-panels::pages/lesson.lesson_date'))
@@ -318,7 +384,8 @@ class LessonResource extends Resource
 
                 TextColumn::make('uber_charge')
                     ->label(__('filament-panels::pages/lesson.uber_charge'))
-                    ->money("QAR"),
+                    ->money("QAR")
+                    ->toggleable(isToggledHiddenByDefault: true),
 
                 ...CreatorUpdator::columns(),
 
@@ -326,8 +393,68 @@ class LessonResource extends Resource
 
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('status')
+                    ->label(__('filament-panels::pages/lesson.status'))
+                    ->options(
+                        fn() => collect(LessonStatusEnum::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => __('filament-panels::pages/lesson.' . $case->value)])
+                            ->toArray()
+                    ),
+
+
+
+                Tables\Filters\Filter::make('lesson_date')
+                    ->label(__('filament-panels::pages/wallet.expenses.columns.specific_date'))
+                    ->form([
+                        Forms\Components\DatePicker::make('lesson_date')
+                            ->label(__('filament-panels::pages/wallet.expenses.columns.specific_date')),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when(
+                                $data['lesson_date'],
+                                fn(Builder $query, $date) => $query->whereDate('lesson_date', $date)
+                            );
+                    }),
+
+
+                SelectFilter::make('subject')
+                    ->label(__('filament-panels::pages/dashboard.subject'))
+                    ->relationship('subject', 'name'),
+
+                SelectFilter::make('teacher')
+                    ->label(__('filament-panels::pages/dashboard.teacher'))
+                    ->options(
+                        fn() => Teacher::with('user')->get()->pluck('user.name', 'id')->toArray()
+                    )
+                    ->visible(
+                        fn() => auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                    ),
+
+                SelectFilter::make('student')
+                    ->label(__('filament-panels::pages/dashboard.student'))
+                    ->relationship('student', 'name'),
+
+                SelectFilter::make('driver')
+                    ->label(__('filament-panels::pages/dashboard.driver'))
+                    ->options(
+                        fn() => Driver::with('user')->get()->pluck('user.name', 'id')->toArray()
+                    ),
+
+                SelectFilter::make('guardian')
+                    ->label(__('filament-panels::pages/dashboard.guardian'))
+                    ->options(function () {
+                        return Guardian::with('user')
+                            ->get()
+                            ->mapWithKeys(fn($guardian) => [$guardian->id => $guardian->user->name ?? ''])
+                            ->toArray();
+                    })
+                    ->query(function (Builder $query, array $data) {
+                        if (!empty($data['value'])) {
+                            $query->whereHas('student', fn($q) => $q->where('guardian_id', $data['value']));
+                        }
+                    }),
+            ], layout: FiltersLayout::AboveContentCollapsible)
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])

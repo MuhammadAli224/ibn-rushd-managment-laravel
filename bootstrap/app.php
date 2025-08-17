@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-       $middleware->alias([
+        $middleware->alias([
             'role' => RoleMiddleware::class,
             'permission' => PermissionMiddleware::class,
             'role_or_permission' => RoleOrPermissionMiddleware::class,
@@ -24,16 +24,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append([
             \App\Http\Middleware\SetLocale::class,
             \App\Http\Middleware\LanguageMiddleware::class,
-           
+
 
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->withProviders([
-         App\Providers\AppServiceProvider::class,
+        App\Providers\AppServiceProvider::class,
         App\Providers\Filament\AppPanelProvider::class,
         App\Providers\RouteServiceProvider::class,
-        // Berkayk\OneSignal\OneSignalServiceProvider::class
+        Berkayk\OneSignal\OneSignalServiceProvider::class
 
     ])->create();

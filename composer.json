@@ -8,6 +8,7 @@
     "require": {
         "php": "^8.2",
         "bavix/laravel-wallet": "^11.4",
+        "berkayk/onesignal-laravel": "^2.4",
         "bezhansalleh/filament-language-switch": "^3.1",
         "filament/actions": "^3.3",
         "filament/filament": "^3.3",

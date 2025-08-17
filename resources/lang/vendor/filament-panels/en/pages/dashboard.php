@@ -25,6 +25,11 @@ return [
     "updated_by" => "Updated By",
     "created_at" => "Created At",
     "updated_at" => "Updated At",
+    "expenseCategory" => "Expense Category",
+    "expenseCategories" => "Expense Categories",
+    "center" => "Center",
+    "centers" => "Centers",
+    'center_info' => "Center Info",
 
 
     'actions' => [

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RoleEnum;
 use App\Filament\Components\CreatorUpdator;
 use App\Filament\Components\UserTable;
 use App\Filament\Resources\GuardianResource\Pages;
@@ -26,6 +27,35 @@ class GuardianResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     protected static ?int $navigationSort = 3;
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return parent::getEloquentQuery();
+        }
+
+        if ($user->hasRole(RoleEnum::PARENT->value)) {
+            return parent::getEloquentQuery()
+                ->where('user_id', $user->id);
+        }
+
+        return parent::getEloquentQuery()->whereRaw('1 = 0');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return static::getModel()::count();
+        }
+
+
+
+        return null;
+    }
+
     public static function getModelLabel(): string
     {
         return  __('filament-panels::pages/dashboard.guardian');
@@ -69,6 +99,9 @@ class GuardianResource extends Resource
         return $table
             ->columns([
                 ...UserTable::columns(),
+                TextColumn::make('user.balance')
+                    ->label(__('filament-panels::pages/guardian.balance'))
+                    ->searchable(),
 
                 TextColumn::make('occupation')
                     ->label(__('filament-panels::pages/guardian.occupation'))

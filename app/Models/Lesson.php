@@ -6,6 +6,8 @@ use App\Enums\LessonStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Bavix\Wallet\Models\Transaction;
+
 
 class Lesson extends BaseModel
 {
@@ -39,8 +41,8 @@ class Lesson extends BaseModel
         'lesson_date' => 'date',
         // 'lesson_start_time' => 'datetime:H:i A',
         // 'lesson_end_time' => 'datetime:H:i A',
-        // 'check_in_time' => 'datetime:H:i A',
-        // 'check_out_time' => 'datetime:H:i A',
+        'check_in_time' => 'datetime',
+        'check_out_time' => 'datetime',
         'is_active' => 'boolean',
     ];
     public function subject()
@@ -50,12 +52,12 @@ class Lesson extends BaseModel
 
     public function teacher()
     {
-        return $this->belongsTo(User::class, 'teacher_id');
+        return $this->belongsTo(Teacher::class, 'teacher_id');
     }
 
     public function driver()
     {
-        return $this->belongsTo(User::class, 'driver_id');
+        return $this->belongsTo(Driver::class, 'driver_id');
     }
 
     public function student()
@@ -140,5 +142,9 @@ class Lesson extends BaseModel
     public function scopeOrdered($query)
     {
         return $query->orderBy('lesson_date')->orderBy('lesson_start_time');
+    }
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'meta->lesson_id', 'id');
     }
 }

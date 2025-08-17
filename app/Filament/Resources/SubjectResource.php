@@ -15,13 +15,13 @@ use Filament\Tables\Table;
 class SubjectResource extends Resource
 {
     protected static ?string $model = Subject::class;
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
     public static function getNavigationGroup(): ?string
 
     {
         return  __('filament-panels::pages/dashboard.settings');
     }
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-server-stack';
     public static function getModelLabel(): string
     {
         return  __('filament-panels::pages/dashboard.subject');
@@ -71,7 +71,7 @@ class SubjectResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('filament-panels::pages/general.name'))
                     ->searchable()
-                    
+
                     ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->label(__('filament-panels::pages/general.description'))

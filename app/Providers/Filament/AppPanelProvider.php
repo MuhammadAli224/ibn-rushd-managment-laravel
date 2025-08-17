@@ -78,6 +78,9 @@ class AppPanelProvider extends PanelProvider
                     ->defaultLocales(['en', 'ar']),
 
             )
+            ->databaseNotifications()
+
+
         ;
     }
 }

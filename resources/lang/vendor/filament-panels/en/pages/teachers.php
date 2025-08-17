@@ -10,6 +10,12 @@ return [
     "subjects" => "Subjects",
     "commission"=>"Commission",
 
+    "commission_type" => "Commission Type",
+    "commission_type_options" => [
+        "fixed" => "Fixed",
+        "changed" => "Changed",
+    ],
+
 
 
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\RoleEnum;
 use App\Filament\Components\CreatorUpdator;
 use App\Filament\Components\UserTable;
 use App\Filament\Resources\DriverResource\Pages;
@@ -9,6 +10,7 @@ use App\Filament\Sections\UserInfoSection;
 use App\Models\Driver;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class DriverResource extends Resource
 {
@@ -24,6 +27,35 @@ class DriverResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-identification';
 
     protected static ?int $navigationSort = 2;
+    public static function getEloquentQuery(): Builder
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
+            return parent::getEloquentQuery();
+        }
+
+        if ($user->hasRole(RoleEnum::DRIVER->value)) {
+            return parent::getEloquentQuery()
+                ->where('user_id', $user->id);
+        }
+
+        return parent::getEloquentQuery()->whereRaw('1 = 0');
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        $user = auth()->user();
+
+        if ($user->hasRole(RoleEnum::DRIVER->value)) {
+            return static::getModel()::count();
+        }
+
+
+
+        return null;
+    }
+
 
     public static function getModelLabel(): string
     {
@@ -71,6 +103,19 @@ class DriverResource extends Resource
                             ->directory('images/driver_attachments')
                             ->image()
                             ->visibility('public'),
+                        TextInput::make('salary')
+                            ->label(__('filament-panels::pages/drivers.salary'))
+                            ->numeric()
+                            ->required(),
+
+                        Select::make('salary_type')
+                            ->label(__('filament-panels::pages/drivers.salary_type'))
+                            ->options([
+                                'salary' => __('filament-panels::pages/drivers.salary_types.salary'),
+                                'private_car_salary' => __('filament-panels::pages/drivers.salary_types.private_car_salary'),
+                                'daily' => __('filament-panels::pages/drivers.salary_types.daily'),
+                            ])
+                            ->required(),
                     ])
             ]);
     }
@@ -98,9 +143,28 @@ class DriverResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
 
+                TextColumn::make('salary')
+                    ->label(__('filament-panels::pages/drivers.salary'))
+                    ->sortable()
+                    // ->numeric()
+                    ->searchable(),
+
+                TextColumn::make('salary_type')
+                    ->label(__('filament-panels::pages/drivers.salary_type'))
+                    ->sortable()
+                    ->badge()
+                    ->formatStateUsing(function ($state) {
+                        return match ($state) {
+                            'salary' => __('filament-panels::pages/drivers.salary_types.salary'),
+                            'private_car_salary' => __('filament-panels::pages/drivers.salary_types.private_car_salary'),
+                            'daily' => __('filament-panels::pages/drivers.salary_types.daily'),
+                            default => $state,
+                        };
+                    }),
+
                 ImageColumn::make('attachment')
                     ->label(__('filament-panels::pages/general.attachment'))
-                    
+
                     ->toggleable(isToggledHiddenByDefault: true),
                 ...CreatorUpdator::columns(),
 

@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
-        
+
 
         $centers = Center::pluck('id')->toArray();
 
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
         // Admin
         $admin = User::create([
             'center_id' => $centers[0] ?? null,
-            'name' => 'Mohammed Al-Thani',
+            'name' => 'Admin User',
             'email' => 'admin@test.qa',
             'phone' => '97433123456',
             'password' => Hash::make('password'),
@@ -36,30 +36,38 @@ class UserSeeder extends Seeder
             'country' => 'QA',
             'national_id' => '271' . str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT),
             'is_active' => true,
+            'is_super_admin' => true,
+        ]);
+        $admin->createWallet([
+            'name' => 'Default Wallet',
+            'slug' => 'default',
+            'balance' => 0,
+         
+
         ]);
         $admin->assignRole(RoleEnum::ADMIN->value);
 
-        // Management
-        $management = User::create([
-            'center_id' => $centers[0] ?? null,
-            'name' => 'Fatima Al-Sulaiti',
-            'email' => 'management@test.qa',
-            'phone' => '97433123457',
-            'password' => Hash::make('password'),
-            'status' => StatusEnum::ACTIVE->value,
-            'gender' => GenderEnum::FEMALE->value,
-            'country' => 'QA',
-            'national_id' => '282' . str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT),
-            'is_active' => true,
-        ]);
-        $management->assignRole(RoleEnum::MANAGMENT->value);
+        // // Management
+        // $management = User::create([
+        //     'center_id' => $centers[0] ?? null,
+        //     'name' => 'Fatima Al-Sulaiti',
+        //     'email' => 'management@test.qa',
+        //     'phone' => '97433123457',
+        //     'password' => Hash::make('password'),
+        //     'status' => StatusEnum::ACTIVE->value,
+        //     'gender' => GenderEnum::FEMALE->value,
+        //     'country' => 'QA',
+        //     'national_id' => '282' . str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT),
+        //     'is_active' => true,
+        // ]);
+        // $management->assignRole(RoleEnum::MANAGMENT->value);
 
         // Seed other roles
-        $this->createUsersWithRole(RoleEnum::TEACHER,  10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
-        $this->createUsersWithRole(RoleEnum::DRIVER, 10, $centers, $maleNames, [], $lastNames, $addresses);
-        $this->createUsersWithRole(RoleEnum::PARENT, 10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
-        $this->createUsersWithRole(RoleEnum::ACCOUNTING, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
-        $this->createUsersWithRole(RoleEnum::DISPATCHER, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::TEACHER,  10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::DRIVER, 10, $centers, $maleNames, [], $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::PARENT, 10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::ACCOUNTING, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
+        // $this->createUsersWithRole(RoleEnum::DISPATCHER, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
     }
 
     public function createUsersWithRole(RoleEnum $role, int $count, array $centers, array $maleNames, array $femaleNames, array $lastNames, array $addresses)
@@ -91,6 +99,4 @@ class UserSeeder extends Seeder
             $user->assignRole($role->value);
         }
     }
-
-    
 }

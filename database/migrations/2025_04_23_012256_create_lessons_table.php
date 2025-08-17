@@ -21,11 +21,11 @@ return new class extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(Center::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(Subject::class)->constrained()->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'teacher_id')->constrained('users')->onDelete('cascade');
-            $table->foreignIdFor(User::class, 'driver_id')->nullable()->constrained('users')->onDelete('cascade');
-            $table->foreignIdFor(Student::class, 'student_id')->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Center::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Subject::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'teacher_id')->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'driver_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Student::class)->constrained()->cascadeOnDelete();
 
             $table->date('lesson_date');
             $table->time('lesson_start_time');
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('lesson_location');
             $table->text('lesson_notes')->nullable();
 
-            $table->enum('status', array_column(LessonStatusEnum::cases(), 'value'))
+            $table->enum('status', collect(LessonStatusEnum::cases())->pluck('value')->toArray())
                 ->default(LessonStatusEnum::SCHEDULED->value);
 
             $table->unsignedInteger('lesson_duration')->nullable();
