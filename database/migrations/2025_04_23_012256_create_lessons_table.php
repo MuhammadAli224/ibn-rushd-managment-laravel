@@ -28,9 +28,9 @@ return new class extends Migration
             $table->foreignIdFor(Student::class)->constrained()->cascadeOnDelete();
 
             $table->date('lesson_date');
-            $table->time('lesson_start_time');
-            $table->time('lesson_end_time');
-            $table->string('lesson_location');
+            $table->time('lesson_start_time')->nullable();
+            $table->time('lesson_end_time')->nullable();
+            $table->string('lesson_location')->nullable();
             $table->text('lesson_notes')->nullable();
 
             $table->enum('status', collect(LessonStatusEnum::cases())->pluck('value')->toArray())

@@ -19,10 +19,10 @@ class CreateTeacher extends CreateRecord
     {
         $validatedUserData = Validator::make($data['user'], [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'nullable|email|unique:users,email',
             'phone' => 'required|string|max:20|unique:users,phone',
             'password' => 'required|min:8',
-            'national_id' => 'required|string|max:255|unique:users,national_id',
+            'national_id' => 'nullable|string|max:255|unique:users,national_id',
             'gender' => 'required|string',
             'country' => 'required|string',
             'image' => 'nullable|string',
@@ -32,16 +32,16 @@ class CreateTeacher extends CreateRecord
             try {
                 $user = User::create([
                     'name' => $validatedUserData['name'],
-                    'email' => $validatedUserData['email'],
+                    'email' => $validatedUserData['email'] ?? null,
                     'phone' => $validatedUserData['phone'],
                     'password' => Hash::make($validatedUserData['password']),
-                    'national_id' => $validatedUserData['national_id'],
+                    'national_id' => $validatedUserData['national_id'] ?? null,
                     'center_id' => $validatedUserData['center_id'],
                     'gender' => $validatedUserData['gender'],
                     'country' => $validatedUserData['country'],
-                    'image' => $validatedUserData['image']
+                    'image' => $validatedUserData['image'] ?? null
                 ]);
-               
+
                 $data['user_id'] = $user->id;
                 $user->assignRole(RoleEnum::TEACHER->value);
 
@@ -54,5 +54,3 @@ class CreateTeacher extends CreateRecord
         });
     }
 }
-
-

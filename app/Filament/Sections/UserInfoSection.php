@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserInfoSection
 {
-    public static function make(array $additionalFields = [], string $prefix = 'user.'): Section
+    public static function make(array $additionalFields = [], string $prefix = 'user.', bool $withEmail = true): Section
     {
         return Section::make(__('filament-panels::pages/general.user_info'))
 
@@ -29,8 +29,18 @@ class UserInfoSection
                 TextInput::make("{$prefix}email")
                     ->label(__('filament-panels::pages/general.email'))
                     ->email()
-                    ->unique(table: 'users', column: 'email', ignoreRecord: true)
-                    ->required(),
+                    ->nullable()
+                    ->unique(
+                        table: 'users',
+                        column: 'email',
+                        ignoreRecord: true
+                    )
+                    ->dehydrated(fn($state) => filled($state) ? $state : null)
+
+
+                // ->required()
+                ->visible( $withEmail)
+                ,
 
                 TextInput::make("{$prefix}phone")
                     ->label(__('filament-panels::pages/general.phone'))
@@ -38,7 +48,7 @@ class UserInfoSection
                     ->unique(table: 'users', column: 'phone', ignoreRecord: true)
                     ->required(),
 
-              
+
                 TextInput::make("{$prefix}password")
                     ->label(__('filament-panels::pages/general.password'))
                     ->minLength(8)
@@ -51,8 +61,14 @@ class UserInfoSection
                 TextInput::make("{$prefix}national_id")
                     ->numeric()
                     ->label(__('filament-panels::pages/general.national_id'))
-                    ->unique(table: 'users', column: 'national_id', ignoreRecord: true)
-                    ->required(),
+                    ->nullable()
+                    ->unique(
+                        table: 'users',
+                        column: 'national_id',
+                        ignoreRecord: true
+                    )
+                    ->dehydrated(fn($state) => filled($state) ? $state : null),
+
 
                 Select::make("{$prefix}gender")
                     ->label(__('filament-panels::pages/general.gender'))

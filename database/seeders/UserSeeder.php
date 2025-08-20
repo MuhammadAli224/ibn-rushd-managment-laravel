@@ -19,16 +19,12 @@ class UserSeeder extends Seeder
 
         $centers = Center::pluck('id')->toArray();
 
-        $maleNames = ['Mohammed', 'Ali', 'Ahmed', 'Omar', 'Khalid', 'Abdullah', 'Yousef', 'Ibrahim', 'Hamad', 'Fahad'];
-        $femaleNames = ['Fatima', 'Mariam', 'Aisha', 'Noor', 'Layla', 'Hessa', 'Shaikha', 'Noura', 'Amal', 'Maha'];
-        $lastNames = ['Al-Thani', 'Al-Sulaiti', 'Al-Mansoori', 'Al-Kuwari', 'Al-Hajri'];
-        $addresses = ['Al Sadd', 'West Bay', 'Al Waab', 'Al Khor', 'Al Wakrah', 'Doha'];
+       
 
-        // Admin
         $admin = User::create([
             'center_id' => $centers[0] ?? null,
             'name' => 'Admin User',
-            'email' => 'admin@test.qa',
+            'email' => 'amir@ibn-ruchd-edu.com',
             'phone' => '97433123456',
             'password' => Hash::make('password'),
             'status' => StatusEnum::ACTIVE->value,
@@ -45,29 +41,31 @@ class UserSeeder extends Seeder
          
 
         ]);
-        $admin->assignRole(RoleEnum::ADMIN->value);
+        $admin->assignRole(RoleEnum::ADMIN->value); 
+        
+        $admin2 = User::create([
+            'center_id' => $centers[0] ?? null,
+            'name' => 'Admin User',
+            'email' => 'muhammad@admin.com',
+            'phone' => '97433123456',
+            'password' => Hash::make('Mayan@224'),
+            'status' => StatusEnum::ACTIVE->value,
+            'gender' => GenderEnum::MALE->value,
+            'country' => 'QA',
+            'national_id' => '271' . str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT),
+            'is_active' => true,
+            'is_super_admin' => true,
+        ]);
+        $admin2->createWallet([
+            'name' => 'Default Wallet',
+            'slug' => 'default',
+            'balance' => 0,
+         
 
-        // // Management
-        // $management = User::create([
-        //     'center_id' => $centers[0] ?? null,
-        //     'name' => 'Fatima Al-Sulaiti',
-        //     'email' => 'management@test.qa',
-        //     'phone' => '97433123457',
-        //     'password' => Hash::make('password'),
-        //     'status' => StatusEnum::ACTIVE->value,
-        //     'gender' => GenderEnum::FEMALE->value,
-        //     'country' => 'QA',
-        //     'national_id' => '282' . str_pad(rand(0, 9999999), 7, '0', STR_PAD_LEFT),
-        //     'is_active' => true,
-        // ]);
-        // $management->assignRole(RoleEnum::MANAGMENT->value);
+        ]);
+        $admin2->assignRole(RoleEnum::ADMIN->value);
 
-        // Seed other roles
-        // $this->createUsersWithRole(RoleEnum::TEACHER,  10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
-        // $this->createUsersWithRole(RoleEnum::DRIVER, 10, $centers, $maleNames, [], $lastNames, $addresses);
-        // $this->createUsersWithRole(RoleEnum::PARENT, 10, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
-        // $this->createUsersWithRole(RoleEnum::ACCOUNTING, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
-        // $this->createUsersWithRole(RoleEnum::DISPATCHER, 5, $centers, $maleNames, $femaleNames, $lastNames, $addresses);
+       
     }
 
     public function createUsersWithRole(RoleEnum $role, int $count, array $centers, array $maleNames, array $femaleNames, array $lastNames, array $addresses)

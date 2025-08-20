@@ -19,7 +19,9 @@ return [
     "MANAGMENT" => "Managment",
     "PARENT" => "Parent",
     "STUDENT" => "Student",
-    
+    "MALE" => "Male",
+    "FEMALE" => "Female",
+
 
 
 ];

@@ -213,7 +213,7 @@ class LessonResource extends Resource
                             ->displayFormat('h:i A')
                             ->default(now()->format('h:i A'))
                             ->timezone('Asia/Qatar')
-                            ->required(),
+                            ->nullable(),
 
                         TimePicker::make('lesson_end_time')
                             ->label(__('filament-panels::pages/lesson.lesson_end_time'))
@@ -222,7 +222,7 @@ class LessonResource extends Resource
                             ->displayFormat('h:i A')
                             ->timezone('Asia/Qatar')
                             ->default(now()->addHour()->format('h:i A'))
-                            ->required(),
+                            ->nullable(),
 
 
                         TextInput::make('lesson_location')
@@ -230,7 +230,7 @@ class LessonResource extends Resource
                             ->disabled(
                                 fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
                             )
-                            ->required(),
+                            ->nullable(),
 
 
 
@@ -422,7 +422,7 @@ class LessonResource extends Resource
                     ->label(__('filament-panels::pages/dashboard.subject'))
                     ->relationship('subject', 'name'),
 
-                SelectFilter::make('teacher')
+                SelectFilter::make('teacher_id')
                     ->label(__('filament-panels::pages/dashboard.teacher'))
                     ->options(
                         fn() => Teacher::with('user')->get()->pluck('user.name', 'id')->toArray()
@@ -435,7 +435,7 @@ class LessonResource extends Resource
                     ->label(__('filament-panels::pages/dashboard.student'))
                     ->relationship('student', 'name'),
 
-                SelectFilter::make('driver')
+                SelectFilter::make('driver_id')
                     ->label(__('filament-panels::pages/dashboard.driver'))
                     ->options(
                         fn() => Driver::with('user')->get()->pluck('user.name', 'id')->toArray()

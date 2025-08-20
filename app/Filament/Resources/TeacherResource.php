@@ -118,17 +118,18 @@ class TeacherResource extends Resource
                             ])
                             ->default('fixed')
                             ->required()
-                            ->visibleOn((auth()->user()->hasRole(RoleEnum::ADMIN->value)))
-                            ->reactive(),
+                            ->reactive()
+                            ->disabled(!auth()->user()->hasRole(RoleEnum::ADMIN->value)),
 
                         TextInput::make('commission')
                             ->label(__('filament-panels::pages/teachers.commission'))
                             ->numeric()
                             ->suffix('%')
-                            ->visibleOn((auth()->user()->hasRole(RoleEnum::ADMIN->value)))
+                            ->required(fn($get) => $get('commission_type') === "changed") // required if type selected
+                            ->visible(fn($get) => $get('commission_type') === "changed") // always visible after selecting type
+                            ->disabled( fn($get) =>!auth()->user()->hasRole(RoleEnum::ADMIN->value)),
 
-                            ->required(fn($get) => $get('commission_type') !== 'changed')
-                            ->visible(fn($get) => $get('commission_type') !== 'changed'),
+
 
 
                         Select::make('subjects')

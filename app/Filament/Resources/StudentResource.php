@@ -14,6 +14,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -109,6 +110,17 @@ class StudentResource extends Resource
                         Forms\Components\TextInput::make('address')
                             ->label(__('filament-panels::pages/students.address'))
                             ->required(),
+
+                        Select::make('subjects')
+                            ->label(__('filament-panels::pages/teachers.subjects'))
+                            ->relationship('subjects', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->searchable()
+                            ->disabled(
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                            )
+                            ->required(),
                     ]),
             ]);
     }
@@ -128,6 +140,11 @@ class StudentResource extends Resource
                     ->formatStateUsing(fn($state) => __(
                         'filament-panels::pages/students.classes.' . $state
                     )),
+                TextColumn::make('subjects.name')
+                    ->label(__('filament-panels::pages/teachers.subjects'))
+                    ->sortable()
+                    ->badge()
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('phone')
                     ->label(__('filament-panels::pages/students.phone'))

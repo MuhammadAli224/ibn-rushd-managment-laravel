@@ -29,11 +29,16 @@ class Student extends BaseModel
 
     public function guardian()
     {
-        return $this->belongsTo(Guardian::class,'guardian_id');
+        return $this->belongsTo(Guardian::class, 'guardian_id');
     }
 
     public function lessons()
     {
         return $this->hasMany(Lesson::class);
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class, 'student_subject', 'student_id', 'subject_id');
     }
 }

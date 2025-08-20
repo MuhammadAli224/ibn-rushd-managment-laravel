@@ -47,7 +47,7 @@ class DriverResource extends Resource
     {
         $user = auth()->user();
 
-        if ($user->hasRole(RoleEnum::DRIVER->value)) {
+        if ($user->hasRole(RoleEnum::ADMIN->value)) {
             return static::getModel()::count();
         }
 
@@ -75,7 +75,7 @@ class DriverResource extends Resource
     {
         return $form
             ->schema([
-                UserInfoSection::make([], prefix: 'user.')
+                UserInfoSection::make([], prefix: 'user.', withEmail: false)
                     ->hiddenOn('edit'),
 
 
@@ -83,10 +83,10 @@ class DriverResource extends Resource
                     ->columns(3)
                     ->schema([
 
-                        TextInput::make('license_number')
-                            ->label(__('filament-panels::pages/drivers.license_number'))
-                            ->numeric()
-                            ->required(),
+                        // TextInput::make('license_number')
+                        //     ->label(__('filament-panels::pages/drivers.license_number'))
+                        //     ->numeric()
+                        //     ->required(),
 
                         TextInput::make('vehicle_type')
                             ->label(__('filament-panels::pages/drivers.vehicle_type'))
@@ -103,10 +103,7 @@ class DriverResource extends Resource
                             ->directory('images/driver_attachments')
                             ->image()
                             ->visibility('public'),
-                        TextInput::make('salary')
-                            ->label(__('filament-panels::pages/drivers.salary'))
-                            ->numeric()
-                            ->required(),
+
 
                         Select::make('salary_type')
                             ->label(__('filament-panels::pages/drivers.salary_type'))
@@ -115,6 +112,10 @@ class DriverResource extends Resource
                                 'private_car_salary' => __('filament-panels::pages/drivers.salary_types.private_car_salary'),
                                 'daily' => __('filament-panels::pages/drivers.salary_types.daily'),
                             ])
+                            ->required(),
+                        TextInput::make('salary')
+                            ->label(__('filament-panels::pages/drivers.salary'))
+                            ->numeric()
                             ->required(),
                     ])
             ]);
@@ -127,11 +128,7 @@ class DriverResource extends Resource
 
                 ...UserTable::columns(),
 
-                TextColumn::make('license_number')
-                    ->label(__('filament-panels::pages/drivers.license_number'))
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: false)
-                    ->searchable(),
+
 
                 TextColumn::make('vehicle_number')
                     ->label(__('filament-panels::pages/drivers.vehicle_number'))

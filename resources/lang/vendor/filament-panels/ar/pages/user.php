@@ -11,7 +11,7 @@ return [
     "address" => "العنوان",
     "image" => "الصورة",
     "status" => "الحالة",
-     "MALE" => "ذكر",
+    "MALE" => "ذكر",
     "FEMALE" => "أنثى",
     "DRIVER" => "سائق",
     "TEACHER" => "أستاذ",
