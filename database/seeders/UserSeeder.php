@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
             'center_id' => $centers[0] ?? null,
             'name' => 'Admin User',
             'email' => 'muhammad@admin.com',
-            'phone' => '97433123456',
+            'phone' => '97433145456',
             'password' => Hash::make('Mayan@224'),
             'status' => StatusEnum::ACTIVE->value,
             'gender' => GenderEnum::MALE->value,
