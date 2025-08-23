@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\WalletController;
+use App\Http\Controllers\FcmController;
 use App\Http\Middleware\LanguageMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -52,7 +53,7 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
     });
 
 
-    // Route::get('/ads-slider', [AdsController::class, 'index']);
+    Route::post('/test-fcm', [FcmController::class, 'sendFcmNotification']);
     // Route::get('/plans', [PlanController::class, 'index']);
     // Route::get('/faqs', [FaqController::class, 'index']);
     // Route::get('/our-clients', [OurClientController::class, 'index']);
