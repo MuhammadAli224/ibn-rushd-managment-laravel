@@ -83,6 +83,8 @@ class Lesson extends BaseModel
     public function scopeOngoing($query)
     {
         return $query->whereDate('lesson_date', Carbon::today())
+            ->whereNotNull('lesson_start_time')
+            ->whereNotNull('lesson_end_time')
             ->whereTime('lesson_start_time', '<=', now()->format('H:i:s'))
             ->whereTime('lesson_end_time', '>=', now()->format('H:i:s'));
     }

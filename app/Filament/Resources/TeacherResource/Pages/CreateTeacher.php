@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Validator;
 class CreateTeacher extends CreateRecord
 {
     protected static string $resource = TeacherResource::class;
+
+    
     protected function handleRecordCreation(array $data): Model
     {
         $validatedUserData = Validator::make($data['user'], [

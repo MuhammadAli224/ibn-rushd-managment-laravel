@@ -190,11 +190,11 @@ class User extends Authenticatable implements Wallet, WalletFloat
         }
 
         if ($this->hasRole(RoleEnum::TEACHER->value)) {
-            return Lesson::where('teacher_id', $this->id);
+            return Lesson::where('teacher_id', $this->teacher->id);
         }
 
         if ($this->hasRole(RoleEnum::DRIVER->value)) {
-            return Lesson::where('driver_id', $this->id);
+            return Lesson::where('driver_id', $this->driver->id);
         }
 
         if ($this->hasRole(RoleEnum::PARENT->value)) {

@@ -14,13 +14,12 @@ class LessonResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // return parent::toArray($request);
         return [
             'id' => $this->id,
             'center'  => $this->center->name ?? null,
             'subject' => $this->subject->name ?? null,
-            'teacher' =>  $this->teacher->name ?? null,
-            'driver' =>  $this->driver->name ?? null,
+            'teacher' =>  $this->teacher->user->name ?? null,
+            'driver' =>  $this->driver->user->name ?? null,
             'student' => $this->student->name ?? null,
             'lesson_date' => $this->lesson_date->format('Y-m-d'),
             'lesson_start_time' => $this->combineDateTime($this->lesson_date, $this->lesson_start_time),

@@ -35,8 +35,7 @@ class HomeController extends Controller
             $tomorrowLessons = $user->tomorrowLessons()->get();
             $upcomingLessons = $user->upcomingLessons()->limit(10)->get();
             $ongoingLessons = $user->ongoingLessons()->get();
-            // $user->deposit(10.0);
-            // $user->withdraw(20.0);
+           
 
             return $this->success(
                 data: [

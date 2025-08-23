@@ -46,7 +46,7 @@ class CreateLesson extends CreateRecord
         $recipients = $recipients->unique('id');
 
         $title = "تم انشاء درس جديد{$lesson->subject->name}";
-        $message = "تم انشاء درس جديد {$lesson->subject->name} في {$lesson->start_time} لدى {$lesson->teacher->name}  لدى الطالب {$lesson->student->name}";
+        $message = "تم انشاء درس جديد {$lesson->subject->name} في {$lesson->lesson_date} لدى {$lesson->teacher->name}  لدى الطالب {$lesson->student->name}";
         \Log::info('Lessone  create:', $this->record->toArray());
         \Log::info('Lessone recipients:', $recipients->toArray());
 
@@ -62,6 +62,7 @@ class CreateLesson extends CreateRecord
         if ($lesson->status !== \App\Enums\LessonStatusEnum::COMPLETED) {
             return;
         }
+
         if ($lesson->transactions()->exists()) {
             return;
         }
@@ -93,6 +94,7 @@ class CreateLesson extends CreateRecord
             // 3. Update teacher balance
             // -----------------------------
             $month = $lesson->lesson_date?->format('Y-m') ?? now()->format('Y-m');
+            
             $balance = \App\Models\Balance::firstOrNew([
                 'user_id' => $lesson->teacher->user->id,
                 'month' => $month,
