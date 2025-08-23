@@ -24,5 +24,7 @@ class CreateUser extends CreateRecord
 
             ]);
         }
+
+        $this->dispatch('refresh');
     }
 }

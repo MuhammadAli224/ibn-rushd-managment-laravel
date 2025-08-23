@@ -24,6 +24,17 @@ return [
     "Doctorate" => 'دكتوراه',
     "Other" => 'اخرى',
     "attachment" => 'المرفقات',
+    'send_notification' => 'إرسال إشعار',
+    'notification' => 'إشعار',
+    'notification_title' => 'عنوان الإشعار',
+    'notification_message' => 'رسالة الإشعار',
+    'select_all' => 'تحديد الجميع',
+    'deselect_all' => 'إلغاء تحديد الجميع',
+    'notifications_sent_successfully' => 'تم إرسال الإشعارات بنجاح',
+    'no_users_selected' => 'لم يتم تحديد أي مستخدمين',
+    'notification_title_required' => 'عنوان الإشعار مطلوب',
+    'notification_message_required' => 'رسالة الإشعار مطلوبة',
+    
     
 
 ];

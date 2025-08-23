@@ -12,7 +12,10 @@ class PushNotificationService
             $message,
             $playerId,
             null, // URL
-            null, // Data
+            [
+                'title' => $title,
+                'message' => $message,
+            ], // Data
             null, // Buttons
             null, // Schedule
             $title
@@ -21,8 +24,8 @@ class PushNotificationService
 
     public function sendToAll(string $title, string $message)
     {
-//       User::all()->each(function ($user) {
-//     $user->notify(new OneSignalNotification("Big Sale!", "Don't miss our huge sale!"));
+        //       User::all()->each(function ($user) {
+        //     $user->notify(new OneSignalNotification("Big Sale!", "Don't miss our huge sale!"));
         // });
 
         return OneSignalFacade::sendNotificationToAll(

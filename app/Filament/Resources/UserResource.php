@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 
 use App\Enums\RoleEnum;
+use App\Filament\Actions\OneSignalNotificationAction;
 use App\Filament\Actions\WalletAction;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Sections\UserInfoSection;
@@ -141,6 +142,7 @@ class UserResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll('10s')
             ->columns([
                 TextColumn::make('name')
                     ->label(__('filament-panels::pages/user.name'))
@@ -179,16 +181,9 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                //  WalletAction::make('wallet'),
-                // WalletAction::make('wallet')
-                //     ->visible(
-                //         fn($record) =>
-                //         auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
-                //             $record->hasRole(RoleEnum::TEACHER->value)
-                //     )
-                //     ->label(__('filament-panels::pages/user.wallet'))
-                //     ->icon('heroicon-o-wallet')
-                //     ->color('success'),
+                OneSignalNotificationAction::make('notification')
+                    ->visible(fn($record) => filled($record->onesignal_token))
+                    ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

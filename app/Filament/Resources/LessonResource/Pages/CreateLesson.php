@@ -10,6 +10,7 @@ use Filament\Resources\Pages\CreateRecord;
 use App\Notifications\OneSignalNotification;
 use App\Services\PushNotificationService;
 use Filament\Notifications\Notification;
+use Illuminate\Container\Attributes\Log;
 use Illuminate\Support\Facades\DB;
 
 class CreateLesson extends CreateRecord
@@ -46,7 +47,7 @@ class CreateLesson extends CreateRecord
         $recipients = $recipients->unique('id');
 
         $title = "تم انشاء درس جديد{$lesson->subject->name}";
-        $message = "تم انشاء درس جديد {$lesson->subject->name} في {$lesson->lesson_date} لدى {$lesson->teacher->name}  لدى الطالب {$lesson->student->name}";
+        $message = "تم انشاء درس جديد {$lesson->subject->name} في {$lesson->lesson_date->format('Y-m-d')} لدى {$lesson->teacher->name}  لدى الطالب {$lesson->student->name}";
         \Log::info('Lessone  create:', $this->record->toArray());
         \Log::info('Lessone recipients:', $recipients->toArray());
 
@@ -94,7 +95,7 @@ class CreateLesson extends CreateRecord
             // 3. Update teacher balance
             // -----------------------------
             $month = $lesson->lesson_date?->format('Y-m') ?? now()->format('Y-m');
-            
+
             $balance = \App\Models\Balance::firstOrNew([
                 'user_id' => $lesson->teacher->user->id,
                 'month' => $month,
@@ -102,7 +103,22 @@ class CreateLesson extends CreateRecord
 
             $balance->amount += $teacherAmount;
             $balance->save();
+            // -----------------------------
+            // 4. Notify teacher about the transaction
+            // -----------------------------
+
+            $title = "اكتملت الحصة: {$lesson->subject->name}";
+            $message = "تم الانتهاء من الحصة {$lesson->subject->name} بتاريخ {$lesson->lesson_date->format('Y-m-d')} وقد حصلت على مبلغ QAR{$teacherAmount}.";
+            \Log::info('Lesson completed:', $lesson->toArray());
+
+            $lesson->teacher->user->notify(new OneSignalNotification($title, $message));
+
+            if ($lesson->teacher->user->onesignal_token) {
+                app(PushNotificationService::class)
+                    ->sendToUser($lesson->teacher->user->onesignal_token, $title, $message);
+            }
         });
+        $this->dispatch('refresh');
     }
 
     protected function mutateFormDataBeforeCreate(array $data): array

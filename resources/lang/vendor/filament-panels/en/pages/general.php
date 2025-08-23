@@ -24,5 +24,15 @@ return [
     "Doctorate" => 'Doctorate',
     "Other" => 'Other',
     "attachment" => 'Attachment',
+    'send_notification' => 'Send Notification',
+    'notification' => 'Notification',
+    'notification_title' => 'Notification Title',
+    'notification_message' => 'Notification Message',
+    'select_all' => 'Select All',
+    'deselect_all' => 'Deselect All',
+    'notifications_sent_successfully' => 'Notifications sent successfully',
+    'no_users_selected' => 'No users selected',
+    'notification_title_required' => 'Notification title is required',
+    'notification_message_required' => 'Notification message is required',
 
 ];

@@ -21,3 +21,9 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# existing ignore
+/storage/*
+!/storage/app
+!/storage/app/json
+!/storage/app/json/**    

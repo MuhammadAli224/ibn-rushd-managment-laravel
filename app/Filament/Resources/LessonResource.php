@@ -270,7 +270,8 @@ class LessonResource extends Resource
                             ->visible(fn(callable $get) => $get('driver_id') === null)
 
                             // ->readOnly()
-                            ->visibleOn('edit'),
+                            ->visibleOn('edit')
+                            ,
 
                         TextInput::make('lesson_price')
                             ->label(__('filament-panels::pages/lesson.lesson_price'))
@@ -296,6 +297,7 @@ class LessonResource extends Resource
     {
         return $table
             ->defaultSort('created_at', 'desc')
+            ->poll('10s')
             ->columns([
                 TextColumn::make('subject.name')
                     ->label(__('filament-panels::pages/dashboard.subject'))
