@@ -34,7 +34,7 @@ class CreateGuardian extends CreateRecord
                     'name' => $validatedUserData['name'],
                     'email' => $validatedUserData['email'] ?? null,
                     'phone' => $validatedUserData['phone'],
-                    'password' => Hash::make($validatedUserData['password']),
+                    'password' => $validatedUserData['password'],
                     'national_id' => $validatedUserData['national_id'] ?? null,
                     'center_id' => $validatedUserData['center_id'],
                     'gender' => $validatedUserData['gender'],

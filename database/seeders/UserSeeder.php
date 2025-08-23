@@ -19,12 +19,12 @@ class UserSeeder extends Seeder
 
         $centers = Center::pluck('id')->toArray();
 
-       
+
 
         $admin = User::create([
             'center_id' => $centers[0] ?? null,
             'name' => 'Admin User',
-            'email' => 'amir@ibn-ruchd-edu.com',
+            'email' => 'amir@ibn-rushd-edu.com',
             'phone' => '97433123456',
             'password' => Hash::make('password'),
             'status' => StatusEnum::ACTIVE->value,
@@ -38,11 +38,11 @@ class UserSeeder extends Seeder
             'name' => 'Default Wallet',
             'slug' => 'default',
             'balance' => 0,
-         
+
 
         ]);
-        $admin->assignRole(RoleEnum::ADMIN->value); 
-        
+        $admin->assignRole(RoleEnum::ADMIN->value);
+
         $admin2 = User::create([
             'center_id' => $centers[0] ?? null,
             'name' => 'Admin User',
@@ -60,12 +60,10 @@ class UserSeeder extends Seeder
             'name' => 'Default Wallet',
             'slug' => 'default',
             'balance' => 0,
-         
+
 
         ]);
         $admin2->assignRole(RoleEnum::ADMIN->value);
-
-       
     }
 
     public function createUsersWithRole(RoleEnum $role, int $count, array $centers, array $maleNames, array $femaleNames, array $lastNames, array $addresses)

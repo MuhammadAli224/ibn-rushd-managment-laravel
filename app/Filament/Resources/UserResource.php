@@ -47,7 +47,10 @@ class UserResource extends Resource
 
         if ($user->hasRole(RoleEnum::ADMIN->value)) {
             return parent::getEloquentQuery()
-            ->where('email', '!=', 'muhammad@admin.com');
+                ->where(function ($query) {
+                    $query->where('email', '!=', 'muhammad@admin.com')
+                        ->orWhereNull('email');
+                });
         } else {
             return parent::getEloquentQuery()
                 ->where('id', $user->id);

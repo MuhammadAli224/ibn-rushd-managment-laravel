@@ -30,11 +30,12 @@ class CreateTeacher extends CreateRecord
         ])->validate();
         return DB::transaction(function () use ($data, $validatedUserData) {
             try {
+                Log::info('Creating teacher with data: ', $data);
                 $user = User::create([
                     'name' => $validatedUserData['name'],
                     'email' => $validatedUserData['email'] ?? null,
                     'phone' => $validatedUserData['phone'],
-                    'password' => Hash::make($validatedUserData['password']),
+                    'password' => $validatedUserData['password'],
                     'national_id' => $validatedUserData['national_id'] ?? null,
                     'center_id' => $validatedUserData['center_id'],
                     'gender' => $validatedUserData['gender'],
