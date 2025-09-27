@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\HomeController;
+use App\Http\Controllers\Api\V1\LessonsController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\WalletController;
 use App\Http\Controllers\FcmController;
 use App\Http\Middleware\LanguageMiddleware;
+use App\Models\Lesson;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(LanguageMiddleware::class)->group(function () {
@@ -49,6 +51,12 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
                 Route::get('/', 'index');
                 Route::put('/read/{id}', 'markAsRead');
                 Route::put('/read-all', 'markAllAsRead');
+            });
+
+        Route::prefix('lessons')
+            ->controller(LessonsController::class)
+            ->group(function () {
+                Route::get('/', 'index');
             });
     });
 

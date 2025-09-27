@@ -149,4 +149,9 @@ class Lesson extends BaseModel
     {
         return $this->hasMany(Transaction::class, 'meta->lesson_id', 'id');
     }
+
+    public function scopeOnDate($query, $date)
+    {
+        return $query->whereDate('lesson_date', Carbon::parse($date));
+    }
 }

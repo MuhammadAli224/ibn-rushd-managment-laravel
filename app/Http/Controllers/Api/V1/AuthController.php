@@ -47,7 +47,8 @@ class AuthController extends Controller
                 $user->update(['fcm_token' => $request->fcm_token]);
             }
             if ($request->has('onesignal_token')) {
-                User::where('onesignal_token', $request->onesignal_token)
+                User::
+                where('onesignal_token', $request->onesignal_token)
                     ->where('id', '!=', $user->id)
                     ->update(['onesignal_token' => null]);
 
