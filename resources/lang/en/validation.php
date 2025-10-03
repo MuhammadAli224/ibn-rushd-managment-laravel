@@ -111,6 +111,48 @@ return [
     ],
 
     'login_required' => 'The login field is required.',
+        'failed' => 'Validation failed.',
+    
+    'subject_string' => 'Subject must be a string.',
+    'subject_min'    => 'Subject must be at least 3 characters.',
+    'subject_max'    => 'Subject may not be greater than 100 characters.',
+
+    'lesson_date_valid' => 'Lesson date must be a valid date.',
+
+    'lesson_start_format' => 'Lesson start time must be in the format HH:MM.',
+    'lesson_end_format'   => 'Lesson end time must be in the format HH:MM.',
+    'lesson_end_after'    => 'Lesson end time must be after the start time.',
+
+    'lesson_location_string' => 'Lesson location must be a string.',
+    'lesson_location_max'    => 'Lesson location may not be greater than 255 characters.',
+
+    'lesson_notes_string' => 'Lesson notes must be a string.',
+
+    'lesson_duration_integer' => 'Lesson duration must be an integer.',
+    'lesson_duration_min'     => 'Lesson duration must be at least 1 minute.',
+
+    'checkin_format'  => 'Check-in time must be in the format HH:MM.',
+    'checkout_format' => 'Check-out time must be in the format HH:MM.',
+    'checkout_after'  => 'Check-out time must be after check-in time.',
+
+    'lesson_price_numeric' => 'Lesson price must be a number.',
+    'lesson_price_min'     => 'Lesson price must be at least 0.',
+
+    'status_invalid' => 'Lesson status is invalid.',
+
+    'attributes' => [
+        'subject'         => 'Subject',
+        'lessonDate'      => 'Lesson Date',
+        'lessonStartTime' => 'Lesson Start Time',
+        'lessonEndTime'   => 'Lesson End Time',
+        'lessonLocation'  => 'Lesson Location',
+        'lessonNotes'     => 'Lesson Notes',
+        'lessonDuration'  => 'Lesson Duration',
+        'checkInTime'     => 'Check-in Time',
+        'checkOutTime'    => 'Check-out Time',
+        'lessonPrice'     => 'Lesson Price',
+        'status'          => 'Status',
+    ],
 
 
 ];

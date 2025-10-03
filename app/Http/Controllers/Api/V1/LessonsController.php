@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\LessonUpdateRequest;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponseTrait;
 use App\Http\Resources\Api\LessonResource;
@@ -68,8 +69,9 @@ class LessonsController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(LessonUpdateRequest $request, $id)
     {
+
         try {
             $this->checkUserActive();
 
@@ -82,28 +84,10 @@ class LessonsController extends Controller
                 );
             }
 
-            $validated = $request->validate([
-                'subject_id'        => 'nullable|exists:subjects,id',
-                'teacher_id'        => 'nullable|exists:teachers,id',
-                'driver_id'         => 'nullable|exists:drivers,id',
-                'student_id'        => 'nullable|exists:students,id',
-                'center_id'         => 'nullable|exists:centers,id',
-                'lesson_date'       => 'nullable|date',
-                'lesson_start_time' => 'nullable|date_format:H:i',
-                'lesson_end_time'   => 'nullable|date_format:H:i|after:lesson_start_time',
-                'lesson_location'   => 'nullable|string|max:255',
-                'lesson_notes'      => 'nullable|string',
-                'status'            => 'nullable|string|in:pending,confirmed,cancelled,completed', // adjust if using enum
-                'lesson_duration'   => 'nullable|integer|min:0',
-                'check_in_time'     => 'nullable|date',
-                'check_out_time'    => 'nullable|date|after_or_equal:check_in_time',
-                'uber_charge'       => 'nullable|numeric|min:0',
-                'lesson_price'      => 'nullable|numeric|min:0',
-                'is_active'         => 'nullable|boolean',
-                'commission_rate'   => 'nullable|numeric|min:0|max:100',
-            ]);
 
-            $validated['updated_by'] = auth()->id();
+            $validated = $request->validated();
+
+            \Log::info('Validated Data:', $validated);
 
             $lesson->update($validated);
 

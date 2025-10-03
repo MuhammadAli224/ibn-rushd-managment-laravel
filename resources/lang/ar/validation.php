@@ -100,4 +100,47 @@ return [
     ],
 
     'login_required' => 'حقل تسجيل الدخول مطلوب.',
+
+    'failed' => 'فشل التحقق من البيانات.',
+    
+    'subject_string' => 'المادة يجب أن تكون نصًا.',
+    'subject_min'    => 'المادة يجب أن تكون على الأقل 3 أحرف.',
+    'subject_max'    => 'المادة لا يمكن أن تتجاوز 100 حرف.',
+
+    'lesson_date_valid' => 'تاريخ الدرس يجب أن يكون تاريخًا صحيحًا.',
+
+    'lesson_start_format' => 'وقت بدء الدرس يجب أن يكون بالصيغة HH:MM.',
+    'lesson_end_format'   => 'وقت نهاية الدرس يجب أن يكون بالصيغة HH:MM.',
+    'lesson_end_after'    => 'وقت نهاية الدرس يجب أن يكون بعد وقت البداية.',
+
+    'lesson_location_string' => 'موقع الدرس يجب أن يكون نصًا.',
+    'lesson_location_max'    => 'موقع الدرس لا يمكن أن يتجاوز 255 حرفًا.',
+
+    'lesson_notes_string' => 'ملاحظات الدرس يجب أن تكون نصًا.',
+
+    'lesson_duration_integer' => 'مدة الدرس يجب أن تكون عددًا صحيحًا.',
+    'lesson_duration_min'     => 'مدة الدرس يجب أن تكون دقيقة واحدة على الأقل.',
+
+    'checkin_format'  => 'وقت تسجيل الدخول يجب أن يكون بالصيغة HH:MM.',
+    'checkout_format' => 'وقت تسجيل الخروج يجب أن يكون بالصيغة HH:MM.',
+    'checkout_after'  => 'وقت تسجيل الخروج يجب أن يكون بعد تسجيل الدخول.',
+
+    'lesson_price_numeric' => 'سعر الدرس يجب أن يكون رقمًا.',
+    'lesson_price_min'     => 'سعر الدرس يجب أن يكون 0 أو أكثر.',
+
+    'status_invalid' => 'حالة الدرس غير صحيحة.',
+
+    'attributes' => [
+        'subject'         => 'المادة',
+        'lessonDate'      => 'تاريخ الدرس',
+        'lessonStartTime' => 'وقت بدء الدرس',
+        'lessonEndTime'   => 'وقت نهاية الدرس',
+        'lessonLocation'  => 'موقع الدرس',
+        'lessonNotes'     => 'ملاحظات الدرس',
+        'lessonDuration'  => 'مدة الدرس',
+        'checkInTime'     => 'وقت تسجيل الدخول',
+        'checkOutTime'    => 'وقت تسجيل الخروج',
+        'lessonPrice'     => 'سعر الدرس',
+        'status'          => 'الحالة',
+    ],
 ];

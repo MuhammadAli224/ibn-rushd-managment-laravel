@@ -9,6 +9,7 @@ use Illuminate\Contracts\Validation\Validator;
 
 class LessonUpdateRequest extends FormRequest
 {
+    use ApiResponseTrait;
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -25,36 +26,36 @@ class LessonUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subject'        => ['sometimes', 'string', 'min:3', 'max:100'],
-            'lessonDate'     => ['sometimes', 'date'],
-            'lessonStartTime'=> ['sometimes', 'date_format:H:i'],
-            'lessonEndTime'  => ['sometimes', 'date_format:H:i', 'after:lessonStartTime'],
-            'lessonLocation' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'lessonNotes'    => ['sometimes', 'nullable', 'string'],
-            'lessonDuration' => ['sometimes', 'integer', 'min:1'],
-            'checkInTime'    => ['sometimes', 'date_format:H:i'],
-            'checkOutTime'   => ['sometimes', 'date_format:H:i', 'after:checkInTime'],
-            'lessonPrice'    => ['sometimes', 'numeric', 'min:0'],
+            'id'              => ['required', 'exists:lessons,id'],
+            'lesson_date'      => ['sometimes', 'date'],
+            'lesson_start_time' => ['sometimes', 'date_format:H:i:s'],
+            'lesson_end_time'   => ['sometimes', 'date_format:H:i:s', 'after:lessonStartTime'],
+            'lesson_location'  => ['sometimes', 'nullable', 'string', 'max:255'],
+            'lesson_notes'     => ['sometimes', 'nullable', 'string'],
+            'lesson_duration'  => ['sometimes', 'nullable', 'integer', 'min:1'],
+            'check_in_time'     => ['sometimes', 'nullable', 'date_format:H:i:s'],
+            'check_out_time'    => ['sometimes', 'nullable', 'date_format:H:i:s', 'after:checkInTime'],
+            'lesson_price'     => ['sometimes', 'numeric', 'min:0'],
+            'status'          => ['sometimes', 'in:SCHEDULED,IN_PROGRESS,COMPLETED,CANCELLED'],
+            'uber_charge'      => ['sometimes', 'numeric', 'min:0'],
         ];
     }
-    public function attributes(): array
-    {
-                return [
-            'subject.string' => __('validation.subject_string'),
-            'subject.min'    => __('validation.subject_min'),
-            'subject.max'    => __('validation.subject_max'),
 
-            'lessonDate.date' => __('validation.lesson_date_valid'),
+    public function messages(): array
+    {
+        return [
+
+            'lessonDate.date'    => __('validation.lesson_date_valid'),
 
             'lessonStartTime.date_format' => __('validation.lesson_start_format'),
 
-            'lessonEndTime.date_format' => __('validation.lesson_end_format'),
-            'lessonEndTime.after'       => __('validation.lesson_end_after'),
+            'lessonEndTime.date_format'   => __('validation.lesson_end_format'),
+            'lessonEndTime.after'         => __('validation.lesson_end_after'),
 
             'lessonLocation.string' => __('validation.lesson_location_string'),
             'lessonLocation.max'    => __('validation.lesson_location_max'),
 
-            'lessonNotes.string' => __('validation.lesson_notes_string'),
+            'lessonNotes.string'   => __('validation.lesson_notes_string'),
 
             'lessonDuration.integer' => __('validation.lesson_duration_integer'),
             'lessonDuration.min'     => __('validation.lesson_duration_min'),
@@ -65,6 +66,8 @@ class LessonUpdateRequest extends FormRequest
 
             'lessonPrice.numeric' => __('validation.lesson_price_numeric'),
             'lessonPrice.min'     => __('validation.lesson_price_min'),
+
+            'status.in'           => __('validation.status_invalid'),
         ];
     }
 

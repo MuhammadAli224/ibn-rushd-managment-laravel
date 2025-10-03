@@ -57,7 +57,7 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
             ->controller(LessonsController::class)
             ->group(function () {
                 Route::get('/', 'index');
-                Route::get('/{id}', 'show');
+                Route::post('/{id}', 'update');
             });
     });
 
