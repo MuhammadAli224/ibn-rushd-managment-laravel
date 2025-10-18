@@ -168,7 +168,7 @@ class LessonResource extends Resource
                             ->preload()
                             ->required()
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) &&
                                     !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             )
                             ->afterStateUpdated(
