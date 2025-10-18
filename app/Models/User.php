@@ -105,6 +105,16 @@ class User extends Authenticatable implements Wallet, WalletFloat
 
     public function scopeWhereEmailOrPhone($query, string $value)
     {
+        $value = trim($value);
+
+    if (preg_match('/^[0-9]+$/', $value)) {
+        if (str_starts_with($value, '00') && !str_starts_with($value, '00974')) {
+            $value = '00974' . substr($value, 2);
+        }
+        elseif (str_starts_with($value, '0') && !str_starts_with($value, '00974')) {
+            $value = '00974' . ltrim($value, '0');
+        }
+    }
         return $query->where('email', $value)->orWhere('phone', $value);
     }
 

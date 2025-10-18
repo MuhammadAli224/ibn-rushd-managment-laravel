@@ -31,7 +31,7 @@ class GuardianPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value) || $user->hasRole(RoleEnum::TEACHER->value) ;
     }
 
     /**
@@ -40,7 +40,8 @@ class GuardianPolicy
     public function update(User $user, Guardian $guardian): bool
     {
         return $user->hasRole(RoleEnum::ADMIN->value)
-            || ($user->hasRole(RoleEnum::PARENT->value) && $user->id === $guardian->user_id);
+            || ($user->hasRole(RoleEnum::PARENT->value) && $user->id === $guardian->user_id)
+            || $user->hasRole(RoleEnum::TEACHER->value);
     }
 
     /**
