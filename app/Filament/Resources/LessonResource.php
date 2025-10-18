@@ -131,7 +131,7 @@ class LessonResource extends Resource
                             ->required()
                             ->reactive()
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) &&
                                     !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             ),
 
@@ -154,7 +154,7 @@ class LessonResource extends Resource
                                 $set('commission_rate', $teacher->commission))
                             )
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) &&
                                     !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             )
                             ->required()
@@ -197,7 +197,7 @@ class LessonResource extends Resource
                             ->label(__('filament-panels::pages/lesson.lesson_date'))
                             ->native(false)
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)||
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)&&
                                     !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             )
                             ->displayFormat('d/m/Y')
