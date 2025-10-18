@@ -16,7 +16,7 @@ class CreateTeacher extends CreateRecord
 {
     protected static string $resource = TeacherResource::class;
 
-    
+
     protected function handleRecordCreation(array $data): Model
     {
         $validatedUserData = Validator::make($data['user'], [
@@ -30,6 +30,8 @@ class CreateTeacher extends CreateRecord
             'image' => 'nullable|string',
             'center_id' => 'required|exists:centers,id',
         ])->validate();
+        $validatedUserData['phone'] = $this->normalizePhone($validatedUserData['phone']);
+
         return DB::transaction(function () use ($data, $validatedUserData) {
             try {
                 Log::info('Creating teacher with data: ', $data);
@@ -55,5 +57,21 @@ class CreateTeacher extends CreateRecord
                 throw $e;
             }
         });
+    }
+
+
+    private function normalizePhone(string $phone): string
+    {
+        $phone = preg_replace('/\D/', '', $phone); // remove any non-digit characters
+
+        if (str_starts_with($phone, '00') && !str_starts_with($phone, '00974')) {
+            return '00974' . substr($phone, 2);
+        }
+
+        if (str_starts_with($phone, '0') && !str_starts_with($phone, '00974')) {
+            return '00974' . ltrim($phone, '0');
+        }
+
+        return $phone;
     }
 }
