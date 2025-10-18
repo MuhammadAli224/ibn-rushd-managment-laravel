@@ -50,7 +50,9 @@ class LessonPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(RoleEnum::ADMIN->value);
+        return $user->hasRole(RoleEnum::ADMIN->value)
+        
+        || $user->hasRole(RoleEnum::TEACHER->value);
     }
 
     /**
