@@ -148,6 +148,8 @@ class LessonResource extends Resource
                                 ->with('user')
                                 ->get()
                                 ->pluck('user.name', 'id'))
+                            ->default(fn() => auth()->user()->teacher?->id)
+                            ->hidden(fn() => auth()->user()->hasRole(RoleEnum::TEACHER->value))
                             ->afterStateUpdated(
                                 fn($state, $set) =>
                                 optional(Teacher::find($state), fn($teacher) =>
@@ -197,7 +199,7 @@ class LessonResource extends Resource
                             ->label(__('filament-panels::pages/lesson.lesson_date'))
                             ->native(false)
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)&&
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) &&
                                     !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             )
                             ->displayFormat('d/m/Y')
@@ -232,7 +234,8 @@ class LessonResource extends Resource
                         TextInput::make('lesson_location')
                             ->label(__('filament-panels::pages/lesson.lesson_location'))
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) &&
+                                    !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             )
                             ->nullable(),
 
