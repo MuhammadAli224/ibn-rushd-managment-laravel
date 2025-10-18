@@ -44,7 +44,7 @@ class StudentPolicy
     public function update(User $user, Student $student): bool
     {
         return $user->hasRole(RoleEnum::ADMIN->value)
-         || $user->hasRole(RoleEnum::TEACHER->value)
+            || $user->hasRole(RoleEnum::TEACHER->value)
             || ($user->hasRole(RoleEnum::PARENT->value) && $user->id === $student->guardian->user_id);
     }
 

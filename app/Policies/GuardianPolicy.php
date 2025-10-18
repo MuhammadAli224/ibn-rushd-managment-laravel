@@ -14,7 +14,9 @@ class GuardianPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasRole(RoleEnum::ADMIN->value) || $user->hasRole(RoleEnum::PARENT->value);
+        return $user->hasRole(RoleEnum::ADMIN->value)
+            || $user->hasRole(RoleEnum::TEACHER->value)
+            || $user->hasRole(RoleEnum::PARENT->value);
     }
 
     /**
@@ -23,6 +25,7 @@ class GuardianPolicy
     public function view(User $user, Guardian $guardian): bool
     {
         return $user->hasRole(RoleEnum::ADMIN->value)
+            || $user->hasRole(RoleEnum::TEACHER->value)
             || ($user->hasRole(RoleEnum::PARENT->value) && $user->id === $guardian->user_id);
     }
 
@@ -31,7 +34,8 @@ class GuardianPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole(RoleEnum::ADMIN->value) || $user->hasRole(RoleEnum::TEACHER->value) ;
+        return $user->hasRole(RoleEnum::ADMIN->value)
+            || $user->hasRole(RoleEnum::TEACHER->value);
     }
 
     /**
