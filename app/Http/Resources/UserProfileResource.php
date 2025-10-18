@@ -20,7 +20,11 @@ class UserProfileResource extends JsonResource
             "email" => $this->email,
             "phone" => $this->phone,
             "address" => $this->address,
-            "image" => $this->image,
+            "image" => $this->image
+                ? (filter_var($this->image, FILTER_VALIDATE_URL)
+                    ? $this->image
+                    : Storage::url($this->image))
+                : null,
             "status" => $this->status,
             "gender" => $this->gender,
             "center_id" => $this->center_id,

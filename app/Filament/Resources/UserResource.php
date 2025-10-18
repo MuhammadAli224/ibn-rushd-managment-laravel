@@ -74,14 +74,7 @@ class UserResource extends Resource
         return "1";
     }
 
-    // public static function getNavigationBadge(): ?string
-    // {
 
-    //     return static::getModel()::where(function ($q) {
-    //         $q->where('is_super_admin', '!=', 1)
-    //             ->orWhereNull('is_super_admin');
-    //     })->count();
-    // }
 
     public static function form(Form $form): Form
     {
@@ -148,6 +141,22 @@ class UserResource extends Resource
                     ->label(__('filament-panels::pages/user.name'))
                     ->sortable()
                     ->searchable(),
+                ImageColumn::make('image')
+                    ->label(__('filament-panels::pages/user.image'))
+                    ->disk('public')
+                    ->getStateUsing(function ($record) {
+                        if (!$record->image) {
+                            return asset('images/default-avatar.png');
+                        }
+
+                        return filter_var($record->image, FILTER_VALIDATE_URL)
+                            ? $record->image
+                            : asset('storage/' . $record->image);
+                    })
+                    ->square()
+                    ->height(50)
+                    ->circular(),
+
 
                 TextColumn::make('email')
                     ->label(__('filament-panels::pages/user.email'))
