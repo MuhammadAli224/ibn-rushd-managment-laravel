@@ -131,7 +131,8 @@ class LessonResource extends Resource
                             ->required()
                             ->reactive()
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
+                                    !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             ),
 
                         Select::make('teacher_id')
@@ -153,7 +154,8 @@ class LessonResource extends Resource
                                 $set('commission_rate', $teacher->commission))
                             )
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
+                                    !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             )
                             ->required()
                             ->preload()
@@ -166,7 +168,8 @@ class LessonResource extends Resource
                             ->preload()
                             ->required()
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value) ||
+                                    !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             )
                             ->afterStateUpdated(
                                 fn($state, $set) =>
@@ -194,7 +197,8 @@ class LessonResource extends Resource
                             ->label(__('filament-panels::pages/lesson.lesson_date'))
                             ->native(false)
                             ->disabled(
-                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)
+                                fn($get) => !auth()->user()->hasRole(RoleEnum::ADMIN->value)||
+                                    !auth()->user()->hasRole(RoleEnum::TEACHER->value)
                             )
                             ->displayFormat('d/m/Y')
                             ->weekStartsOnSunday()
@@ -270,8 +274,7 @@ class LessonResource extends Resource
                             ->visible(fn(callable $get) => $get('driver_id') === null)
 
                             // ->readOnly()
-                            ->visibleOn('edit')
-                            ,
+                            ->visibleOn('edit'),
 
                         TextInput::make('lesson_price')
                             ->label(__('filament-panels::pages/lesson.lesson_price'))
