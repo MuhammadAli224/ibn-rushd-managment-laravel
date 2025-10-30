@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\GuardianController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\LessonsController;
 use App\Http\Controllers\Api\V1\NotificationController;
@@ -55,6 +56,13 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
 
         Route::prefix('lessons')
             ->controller(LessonsController::class)
+            ->group(function () {
+                Route::get('/', 'index');
+                Route::post('/', 'store');
+                Route::post('/{id}', 'update');
+            });
+        Route::prefix('guardians')
+            ->controller(GuardianController::class)
             ->group(function () {
                 Route::get('/', 'index');
                 Route::post('/', 'store');
