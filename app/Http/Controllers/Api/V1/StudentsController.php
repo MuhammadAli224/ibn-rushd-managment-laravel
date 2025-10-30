@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Enums\GenderEnum;
 use App\Enums\RoleEnum;
 use App\Models\Guardian;
+use App\Models\Student;
 use App\Models\User;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,25 @@ use Illuminate\Support\Facades\Hash;
 class StudentsController extends Controller
 {
     use ApiResponseTrait;
+
+    public function index(Request $request)
+    {
+        try {
+            $students = Student::get();
+
+            return $this->success(
+                data: $students,
+                message: __('general.get_success')
+            );
+        } catch (\Exception $e) {
+            \Log::error('Error in StudentsController index: ' . $e->getMessage());
+            return $this->error(
+                message: __('general.get_failed'),
+                error: $e->getMessage(),
+                statusCode: 500
+            );
+        }
+    }
 
     public function store(Request $request)
     {

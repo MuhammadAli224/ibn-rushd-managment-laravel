@@ -17,15 +17,6 @@ class Student extends BaseModel
     ];
 
 
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
-
-    // public function parent()
-    // {
-    //     return $this->belongsTo(User::class, 'guardian_id');
-    // }
 
     public function guardian()
     {

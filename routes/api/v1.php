@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\DriverController;
 use App\Http\Controllers\Api\V1\GuardianController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\LessonsController;
@@ -73,10 +74,16 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
         Route::prefix('students')
             ->controller(StudentsController::class)
             ->group(function () {
+                Route::get('/', 'index');
                 Route::post('/', 'store');
             });
         Route::prefix('subjects')
             ->controller(SubjectController::class)
+            ->group(function () {
+                Route::get('/', 'index');
+            });
+        Route::prefix('drivers')
+            ->controller(DriverController::class)
             ->group(function () {
                 Route::get('/', 'index');
             });
