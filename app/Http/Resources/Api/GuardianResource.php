@@ -17,10 +17,10 @@ class GuardianResource extends JsonResource
 
         return [
             "id" => $this->id,
-            "name" => $this->name,
-            "email" => $this->email,
-            "phone" => $this->phone,
-            "address" => $this->address,
+            "name" => $this->user->name,
+            "email" => $this->user->email,
+            "phone" => $this->user->phone,
+            "address" => $this->user->address,
             "children" => $this->students,
 
 

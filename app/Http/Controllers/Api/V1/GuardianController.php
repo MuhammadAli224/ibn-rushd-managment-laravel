@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Filament\Resources\GuardianResource;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\GuardianResource as ApiGuardianResource;
 use App\Models\Guardian;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
@@ -21,7 +23,7 @@ class GuardianController extends Controller
             $guardians = Guardian::get();
 
             return $this->success(
-                data: $guardians,
+                data: ApiGuardianResource::collection($guardians),
                 message: __('general.get_success')
             );
         } catch (\Exception $e) {
