@@ -74,6 +74,8 @@ class LessonsController extends Controller
         }
     }
 
+
+
     public function update(LessonUpdateRequest $request, $id)
     {
 
@@ -148,52 +150,7 @@ class LessonsController extends Controller
                 });
             }
 
-            // if (
-            //     $lesson->status === \App\Enums\LessonStatusEnum::COMPLETED->value &&
-            //     $previousStatus !== \App\Enums\LessonStatusEnum::COMPLETED->value
-            // ) {
 
-            //     if (!$lesson->transactions()->exists()) {
-
-            //         DB::transaction(function () use ($lesson) {
-            //             $teacherAmount = $lesson->lesson_price ?? 0;
-
-            //             // 1. Deduct from guardian's wallet
-            //             $lesson->student->guardian->user->forceWithdraw($teacherAmount, [
-            //                 'lesson_id' => $lesson->id,
-            //                 'type' => 'lesson_payment',
-            //             ]);
-
-            //             // 2. Deposit to teacher
-            //             $lesson->teacher->user->deposit($teacherAmount, [
-            //                 'lesson_id' => $lesson->id,
-            //                 'type' => 'lesson_earning',
-            //             ]);
-
-            //             // 3. Update teacher balance
-            //             $month = $lesson->lesson_date?->format('Y-m') ?? now()->format('Y-m');
-            //             $balance = \App\Models\Balance::firstOrNew([
-            //                 'user_id' => $lesson->teacher->user->id,
-            //                 'month' => $month,
-            //             ]);
-            //             $balance->amount += $teacherAmount;
-            //             $balance->save();
-
-            //             // 4. Notify teacher
-            //             $title = "اكتملت الحصة: {$lesson->subject->name}";
-            //             $message = "تم الانتهاء من الحصة {$lesson->subject->name} بتاريخ {$lesson->lesson_date->format('Y-m-d')} وقد حصلت على مبلغ QAR{$teacherAmount}.";
-
-            //             \Log::info('Lesson completed via API:', $lesson->toArray());
-
-            //             $lesson->teacher->user->notify(new \App\Notifications\OneSignalNotification($title, $message));
-
-            //             if ($lesson->teacher->user->onesignal_token) {
-            //                 app(\App\Services\PushNotificationService::class)
-            //                     ->sendToUser($lesson->teacher->user->onesignal_token, $title, $message);
-            //             }
-            //         });
-            //     }
-            // }
 
             return $this->success(
                 data: new LessonResource($lesson),
@@ -221,6 +178,88 @@ class LessonsController extends Controller
             return $this->error(
                 message: __('messages.account_inactive'),
                 statusCode: 403
+            );
+        }
+    }
+
+
+
+
+    public function store(Request $request)
+    {
+        try {
+            $this->checkUserActive();
+
+            $user = auth()->user();
+
+            $validated = $request->validate([
+                'subject_id'        => ['required', 'exists:subjects,id'],
+                'teacher_id'        => ['nullable', 'exists:teachers,id'],
+                'student_id'        => ['required', 'exists:students,id'],
+                'driver_id'         => ['nullable', 'exists:drivers,id'],
+                'lesson_date'       => ['required', 'date'],
+                'lesson_start_time' => ['nullable'],
+                'lesson_end_time'   => ['nullable'],
+                'lesson_location'   => ['nullable', 'string', 'max:255'],
+                'status'            => ['nullable', 'in:' . implode(',', array_column(\App\Enums\LessonStatusEnum::cases(), 'value'))],
+                'lesson_price'      => ['required', 'numeric', 'min:0'],
+                'uber_charge'       => ['nullable', 'numeric', 'min:0'],
+                'lesson_notes'      => ['nullable', 'string', 'max:1000'],
+            ]);
+
+            // Default role-based values
+            $centerId = $user->center->id ?? null;
+
+            // Auto-assign teacher if logged-in user is a teacher
+            if ($user->hasRole(\App\Enums\RoleEnum::TEACHER->value)) {
+                $validated['teacher_id'] = $user->teacher?->id;
+            }
+
+            // Default status
+            $validated['status'] = $validated['status'] ?? \App\Enums\LessonStatusEnum::SCHEDULED->value;
+
+            // Create lesson
+            $lesson = \App\Models\Lesson::create([
+                'center_id'         => $centerId,
+                'subject_id'        => $validated['subject_id'],
+                'teacher_id'        => $validated['teacher_id'],
+                'student_id'        => $validated['student_id'],
+                'driver_id'         => $validated['driver_id'] ?? null,
+                'lesson_date'       => \Carbon\Carbon::parse($validated['lesson_date']),
+                'lesson_start_time' => $validated['lesson_start_time'] ?? null,
+                'lesson_end_time'   => $validated['lesson_end_time'] ?? null,
+                'lesson_location'   => $validated['lesson_location'] ?? null,
+                'status'            => $validated['status'],
+                'lesson_price'      => $validated['lesson_price'],
+                'uber_charge'       => $validated['uber_charge'] ?? null,
+                'lesson_notes'      => $validated['lesson_notes'] ?? null,
+                'created_by'        => $user->id,
+            ]);
+
+            // Optional: send notification to student or teacher
+            if ($lesson->teacher?->user?->onesignal_token) {
+                $title = "تمت إضافة حصة جديدة";
+                $message = "تم تحديد حصة جديدة بتاريخ {$lesson->lesson_date->format('Y-m-d')}.";
+                app(\App\Services\PushNotificationService::class)
+                    ->sendToUser($lesson->teacher->user->onesignal_token, $title, $message);
+            }
+
+            return $this->success(
+                data: new LessonResource($lesson),
+                message: __('general.create_success')
+            );
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->error(
+                message: __('general.validation_error'),
+                error: $e->errors(),
+                statusCode: 422
+            );
+        } catch (\Exception $e) {
+            \Log::error('Error in LessonsController store: ' . $e->getMessage());
+            return $this->error(
+                message: __('general.create_failed'),
+                error: $e->getMessage(),
+                statusCode: 500
             );
         }
     }
