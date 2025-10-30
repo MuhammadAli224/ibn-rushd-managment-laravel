@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\LessonsController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\StudentsController;
+use App\Http\Controllers\Api\V1\SubjectController;
 use App\Http\Controllers\Api\V1\WalletController;
 use App\Http\Controllers\FcmController;
 use App\Http\Middleware\LanguageMiddleware;
@@ -73,6 +74,11 @@ Route::middleware(LanguageMiddleware::class)->group(function () {
             ->controller(StudentsController::class)
             ->group(function () {
                 Route::post('/', 'store');
+            });
+        Route::prefix('subjects')
+            ->controller(SubjectController::class)
+            ->group(function () {
+                Route::get('/', 'index');
             });
     });
 
