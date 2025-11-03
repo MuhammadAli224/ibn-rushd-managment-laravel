@@ -99,7 +99,7 @@ class LessonsController extends Controller
 
             $lesson->update($validated);
 
-            if ($lesson->status === \App\Enums\LessonStatusEnum::COMPLETED && !$lesson->transactions()->exists()) {
+            if ($lesson->status === LessonStatusEnum::COMPLETED && !$lesson->transactions()->exists()) {
                 DB::transaction(function () use ($lesson) {
 
                     $teacherAmount = $lesson->lesson_price ?? 0;
@@ -194,9 +194,9 @@ class LessonsController extends Controller
 
             $validated = $request->validate([
                 'subject_id'        => ['required', 'exists:subjects,id'],
-                'teacher_id'        => ['nullable', 'exists:teachers,id'],
+                'teacher_id'        => ['nullable', 'exists:users,id'],
                 'student_id'        => ['required', 'exists:students,id'],
-                'driver_id'         => ['nullable', 'exists:drivers,id'],
+                'driver_id'         => ['nullable', 'exists:users,id'],
                 'lesson_date'       => ['required', 'date'],
                 'lesson_start_time' => ['nullable'],
                 'lesson_end_time'   => ['nullable'],

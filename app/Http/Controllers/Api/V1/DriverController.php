@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Enums\RoleEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\GuardianResource;
 use App\Models\Driver;
+use App\Models\User;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,7 @@ class DriverController extends Controller
     public function index(Request $request)
     {
         try {
-            $drivers = Driver::get();
+            $drivers = User::where('role',RoleEnum::DRIVER->value)->get();
 
             return $this->success(
                 data: GuardianResource::collection($drivers),
