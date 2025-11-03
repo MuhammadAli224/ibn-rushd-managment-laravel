@@ -7,12 +7,10 @@ use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\Api\UpdateUserRequest;
 use App\Http\Resources\UserProfileResource;
 use App\Models\User;
-use App\Notifications\OneSignalNotification;
 use App\Services\PushNotificationService;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
